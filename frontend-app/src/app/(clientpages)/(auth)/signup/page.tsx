@@ -1,6 +1,5 @@
-"use client";
 import React, { useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FaGoogle,
   FaLock,
@@ -57,15 +56,17 @@ export default function SignupPage() {
     },
   };
 
-  const floatingIconVariants: Variants = {
+  const floatingIconVariants = {
     initial: { y: 0 },
-    animate: {
-      y: [0, -10, 0],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        repeatType: "reverse" as "reverse" | "loop" | "mirror",
-      },
+    animate: { y: 0 },
+  };
+
+  const floatingAnimation = {
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      repeatType: "reverse" as const,
     },
   };
 
@@ -87,7 +88,7 @@ export default function SignupPage() {
             <div className="relative mb-4">
               <motion.div
                 variants={floatingIconVariants}
-                animate="animate"
+                animate={floatingAnimation}
                 className="text-accent text-5xl"
               >
                 <FaGamepad />
