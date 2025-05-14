@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  /* Modern gaming color scheme - vibrant but not overwhelming */
+  --color-bg-primary: #0e1116; /* Dark blue-gray background */
+  --color-text-primary: #f5f7fa; /* Light gray text for readability */
+  --color-accent: #7d5bed; /* Vibrant purple */
+  --color-accent-muted: #9b81f2; /* Lighter purple */
+  --color-muted: #1e2328; /* Slightly lighter than background */
+  --color-border: #2e353e; /* Subtle borders */
+  --radius: 0.625rem;
+
+  /* System colors (oklch) */
+  --background: oklch(0.07 0.022 280); /* Dark background */
+  --foreground: oklch(0.98 0.01 280); /* Light text */
+  --card: oklch(0.09 0.022 280); /* Slightly lighter than background */
+  --card-foreground: oklch(0.98 0.01 280);
+  --popover: oklch(0 0 0 / 80%);
+  --popover-foreground: oklch(0.98 0.01 280);
+  --primary: oklch(0.6 0.22 280); /* Purple primary */
+  --primary-foreground: oklch(0.98 0.01 280);
+  --secondary: oklch(
+    0.11 0.03 280
+  ); /* Darker background for secondary elements */
+  --secondary-foreground: oklch(0.95 0.03 280);
+  --muted: oklch(0.12 0.02 280);
+  --muted-foreground: oklch(0.7 0.02 280);
+  --accent: oklch(0.6 0.22 280); /* Same as primary */
+  --accent-foreground: oklch(0.98 0.01 280);
+  --destructive: oklch(0.65 0.3 20); /* Reddish */
+  --border: oklch(0.2 0.03 280);
+  --input: oklch(0.15 0.03 280);
+  --ring: oklch(0.6 0.22 280); /* Same as primary */
+
+  /* Chart colors - vibrant and distinct */
+  --chart-1: oklch(0.6 0.22 280); /* Purple */
+  --chart-2: oklch(0.7 0.25 170); /* Teal */
+  --chart-3: oklch(0.65 0.26 80); /* Orange */
+  --chart-4: oklch(0.6 0.3 220); /* Blue */
+  --chart-5: oklch(0.65 0.28 130); /* Green */
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
