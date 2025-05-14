@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   FaGoogle,
   FaLock,
@@ -57,14 +57,14 @@ export default function SignupPage() {
     },
   };
 
-  const floatingIconVariants = {
+  const floatingIconVariants: Variants = {
     initial: { y: 0 },
     animate: {
       y: [0, -10, 0],
       transition: {
         duration: 3,
         repeat: Infinity,
-        repeatType: "reverse",
+        repeatType: "reverse" as "reverse" | "loop" | "mirror",
       },
     },
   };
