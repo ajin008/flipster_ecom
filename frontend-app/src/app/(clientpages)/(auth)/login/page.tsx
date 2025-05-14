@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { Variants } from "framer-motion";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -53,7 +54,7 @@ export default function LoginPage() {
     },
   };
 
-  const floatingIconVariants = {
+  const floatingIconVariants: Variants = {
     initial: { y: 0 },
     animate: {
       y: [0, -10, 0],
@@ -188,7 +189,7 @@ export default function LoginPage() {
 
           <motion.div className="mt-6 text-center" variants={itemVariants}>
             <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              First time using ZesTEX? Create an account?{" "}
               <a
                 href="#"
                 className="text-accent hover:underline"
