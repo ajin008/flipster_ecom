@@ -9,8 +9,8 @@ export default function Home() {
     <>
       <Header />
       <HeroSection />
-      <Footer />
       <ProductCardGrid />
+      <Footer />
     </>
   );
 }
