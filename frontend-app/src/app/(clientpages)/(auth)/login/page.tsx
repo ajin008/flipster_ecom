@@ -19,7 +19,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -28,6 +27,13 @@ import { LoginProp } from "@/lib/interface";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import LeftBanner from "@/components/layout/LeftBanner";
+
+// Custom styles for form error messages
+const errorStyles = {
+  color: "#e7e7ed", // Updated to the requested color
+  fontWeight: 500,
+  marginTop: "4px",
+};
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -102,7 +108,6 @@ export default function LoginForm() {
                     }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">Email</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <FiMail className="absolute left-3 top-3 text-muted-foreground" />
@@ -113,7 +118,9 @@ export default function LoginForm() {
                             />
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="custom-error-message">
+                          <FormMessage style={errorStyles} />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -126,9 +133,6 @@ export default function LoginForm() {
                     }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">
-                          Password
-                        </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <FiLock className="absolute left-3 top-3 text-muted-foreground" />
@@ -147,7 +151,9 @@ export default function LoginForm() {
                             </button>
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="custom-error-message">
+                          <FormMessage style={errorStyles} />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -181,7 +187,7 @@ export default function LoginForm() {
 
               <Button
                 variant="outline"
-                className="w-full border-border hover:bg-muted hover:text-foreground"
+                className="w-full border-border hover:bg-muted hover:text-foreground bg-muted"
                 onClick={() => console.log("Google sign in")}
               >
                 <FcGoogle className="mr-2 h-5 w-5" />

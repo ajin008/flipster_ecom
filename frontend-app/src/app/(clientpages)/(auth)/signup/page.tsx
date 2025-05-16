@@ -19,7 +19,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
@@ -28,6 +27,13 @@ import { Button } from "@/components/ui/button";
 import LeftBanner from "@/components/layout/LeftBanner";
 import { useRouter } from "next/navigation";
 import { SignupData } from "@/lib/interface";
+
+// Custom styles for form error messages
+const errorStyles = {
+  color: "#e7e7ed", // Light gray color for errors as requested
+  fontWeight: 500,
+  marginTop: "4px",
+};
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -102,9 +108,6 @@ export default function SignupForm() {
                     rules={{ required: "Username is required" }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">
-                          Username
-                        </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <FiUser className="absolute left-3 top-3 text-muted-foreground" />
@@ -115,7 +118,9 @@ export default function SignupForm() {
                             />
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="custom-error-message">
+                          <FormMessage style={errorStyles} />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -132,7 +137,6 @@ export default function SignupForm() {
                     }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">Email</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <FiMail className="absolute left-3 top-3 text-muted-foreground" />
@@ -143,7 +147,9 @@ export default function SignupForm() {
                             />
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="custom-error-message">
+                          <FormMessage style={errorStyles} />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -160,9 +166,6 @@ export default function SignupForm() {
                     }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">
-                          Password
-                        </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <FiLock className="absolute left-3 top-3 text-muted-foreground" />
@@ -181,7 +184,9 @@ export default function SignupForm() {
                             </button>
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="custom-error-message">
+                          <FormMessage style={errorStyles} />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -197,9 +202,6 @@ export default function SignupForm() {
                     }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">
-                          Confirm Password
-                        </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <FiLock className="absolute left-3 top-3 text-muted-foreground" />
@@ -218,7 +220,9 @@ export default function SignupForm() {
                             </button>
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="custom-error-message">
+                          <FormMessage style={errorStyles} />
+                        </div>
                       </FormItem>
                     )}
                   />
