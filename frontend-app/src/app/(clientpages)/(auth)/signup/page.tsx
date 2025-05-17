@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import LeftBanner from "@/components/layout/LeftBanner";
 import { useRouter } from "next/navigation";
 import { SignupData } from "@/lib/interface";
+import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -65,13 +66,13 @@ export default function SignupForm() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden lg:flex lg:w-1/2 bg-muted/20 flex-col items-center justify-center ">
+      <div className="hidden lg:flex lg:w-1/2 bg-muted/20 flex-col items-center justify-center  bg-[url('/signup.jpg')] bg-cover bg-center bg-black/50 ">
         <LeftBanner type="signup" />
       </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
         <button
           className="absolute top-4 right-4 bg-[#1e1d21] text-accent-foreground px-4 py-2 rounded-md "
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/login")}
         >
           <MdKeyboardDoubleArrowLeft />
         </button>
@@ -84,8 +85,8 @@ export default function SignupForm() {
           <Card className="border border-border bg-card shadow-lg">
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-center mb-2">
-                <div className="text-3xl font-bold text-primary">
-                  zes<span className="text-accent">TEX</span>
+                <div className="text-3xl ">
+                  <ZesTEXLogo />
                 </div>
               </div>
               <CardTitle className="text-2xl font-bold text-foreground text-center">

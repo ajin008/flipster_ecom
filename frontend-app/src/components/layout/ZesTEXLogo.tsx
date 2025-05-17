@@ -10,15 +10,6 @@ export default function ZesTEXLogo() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <motion.span
-        className="text-2xl sm:text-3xl lg:text-4xl mr-1"
-        initial={{ rotate: -10 }}
-        animate={{ rotate: 0 }}
-        whileHover={{ rotate: 15, transition: { duration: 0.3 } }}
-        transition={{ duration: 0.5 }}
-      >
-        🎮
-      </motion.span>
       <motion.span className="text-text-primary  relative" whileHover="hover">
         <motion.span
           className="inline-block  sm:text-2xl"

@@ -30,7 +30,7 @@ export default function LeftBanner({ type }: LeftBannerProps) {
 
   return (
     <motion.div
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 "
       variants={containerVariants}
       initial="hidden"
       animate="visible"

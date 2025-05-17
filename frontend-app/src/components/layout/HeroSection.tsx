@@ -103,10 +103,10 @@ export default function HeroSection({
     handleManualChange((currentBanner - 1 + banners.length) % banners.length);
 
   return (
-    <div className="w-full bg-bg-primary rounded-sm">
+    <div className="w-full bg-bg-primary rounded-sm ">
       {/* Add padding OUTSIDE the relative container */}
       <div className="px-4 py-2">
-        <div className="relative h-[280px] sm:h-96 md:h-[500px] w-full overflow-hidden rounded-sm">
+        <div className="relative h-[280px] sm:h-46 md:h-[300px] w-full overflow-hidden rounded-sm">
           <div
             className="flex h-full transition-transform duration-500 ease-in-out"
             style={{

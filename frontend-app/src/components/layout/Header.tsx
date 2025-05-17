@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Button } from "../ui/button";
-import CommandSearch from "./CommandSearch";
+
 import ZesTEXLogo from "./ZesTEXLogo";
 import { useRouter } from "next/navigation";
 
@@ -21,7 +21,6 @@ export default function Header() {
 
         {/* Bottom / Right section: Search + desktop GET IN */}
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 sm:ml-auto">
-          <CommandSearch />
           <Button
             className="hidden sm:block"
             onClick={() => router.push("/login")}

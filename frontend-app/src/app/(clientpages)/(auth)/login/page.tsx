@@ -27,6 +27,7 @@ import { LoginProp } from "@/lib/interface";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import LeftBanner from "@/components/layout/LeftBanner";
+import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -58,7 +59,7 @@ export default function LoginForm() {
   return (
     <div className="flex min-h-screen">
       {/* left side */}
-      <div className="hidden lg:flex lg:w-1/2 bg-muted/20 flex-col items-center justify-center ">
+      <div className="hidden lg:flex lg:w-1/2 bg-muted/20 flex-col items-center justify-center bg-[url('/login.jpg')] bg-cover bg-center">
         <LeftBanner type="login" />
       </div>
       {/* right side */}
@@ -78,8 +79,8 @@ export default function LoginForm() {
           <Card className="border border-border bg-card shadow-lg">
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-center mb-2">
-                <div className="text-3xl font-bold text-primary">
-                  zes<span className="text-accent">TEX</span>
+                <div className="text-3xl  ">
+                  <ZesTEXLogo />
                 </div>
               </div>
               <CardTitle className="text-2xl font-bold text-foreground text-center">

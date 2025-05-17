@@ -21,6 +21,9 @@ const config: Config = {
       borderRadius: {
         DEFAULT: "var(--radius)",
       },
+      height: {
+        46: "11.5rem", // 184px
+      },
     },
   },
   plugins: [],
