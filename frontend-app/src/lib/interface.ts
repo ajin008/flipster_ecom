@@ -13,3 +13,8 @@ export interface SignupData {
   password: string;
   confirmPassword: string;
 }
+
+export interface LoginContextType {
+  loginFormData: LoginProp | null;
+  setLoginFormData: (data: LoginProp | null) => void;
+}

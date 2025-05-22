@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -28,6 +28,7 @@ import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import LeftBanner from "@/components/layout/LeftBanner";
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
+import { MyLoginContext } from "./LoginContext";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -39,6 +40,8 @@ const errorStyles = {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
+  const { setLoginFormData, loginFormData } = useContext(MyLoginContext);
+
   const router = useRouter();
   const form = useForm({
     defaultValues: {
@@ -48,8 +51,8 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginProp) => {
-    console.log(data);
-    // Handle login submission
+    setLoginFormData(data);
+    console.log("from data", loginFormData);
   };
 
   const togglePasswordVisibility = () => {
