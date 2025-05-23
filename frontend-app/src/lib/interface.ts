@@ -18,3 +18,8 @@ export interface LoginContextType {
   loginFormData: LoginProp | null;
   setLoginFormData: (data: LoginProp | null) => void;
 }
+
+export interface SignupContextType {
+  signUpData: SignupData | null;
+  setSignUpData: (data: SignupData | null) => void;
+}

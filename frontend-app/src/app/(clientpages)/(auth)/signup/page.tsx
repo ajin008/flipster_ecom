@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
@@ -28,6 +28,7 @@ import LeftBanner from "@/components/layout/LeftBanner";
 import { useRouter } from "next/navigation";
 import { SignupData } from "@/lib/interface";
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
+import { MySignupContext } from "./SignupContext";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -39,6 +40,8 @@ const errorStyles = {
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const { setSignUpData, signUpData } = useContext(MySignupContext);
 
   const router = useRouter();
 
@@ -52,7 +55,8 @@ export default function SignupForm() {
   });
 
   const onSubmit = (data: SignupData) => {
-    console.log(data);
+    if (data) setSignUpData(data);
+
     // Handle form submission
   };
 
