@@ -1,139 +1,31 @@
 import React from "react";
-
-// Define the product type based on your data
-type GameAccount = {
-  id: string;
-  name: string;
-  shortDescription: string;
-  views: number;
-  price: number;
-  createdAt: string;
-  category: string;
-  game: string;
-  imageUrl: string;
-  region: string;
-  level: number;
-};
-
-// Sample data (using the provided data temporarily)
-const mobileGameAccounts = [
-  // MOBA Category
-  {
-    id: "moba001",
-    name: "Mythic Glory Mobile Legends Account",
-    shortDescription:
-      "Mythic Glory 1200+ points, 100+ skins including Legend Zodiac",
-    views: 3245,
-    price: 299.99,
-    createdAt: "2023-08-12T09:15:00Z",
-    category: "MOBA",
-    game: "Mobile Legends: Bang Bang",
-    imageUrl:
-      "https://images.unsplash.com/photo-1639762681057-408e52192e55?w=600&auto=format",
-    region: "SEA",
-    level: 120,
-  },
-  {
-    id: "moba002",
-    name: "AOV Challenger Account",
-    shortDescription:
-      "Arena of Valor Challenger rank, all heroes unlocked, 5 SS skins",
-    views: 1872,
-    price: 249.5,
-    createdAt: "2023-10-05T14:30:00Z",
-    category: "MOBA",
-    game: "Arena of Valor",
-    imageUrl:
-      "https://images.unsplash.com/photo-1616469829941-c7200edec809?w=600&auto=format",
-    region: "NA",
-    level: 95,
-  },
-
-  // Battle Royale Category
-  {
-    id: "br001",
-    name: "Conqueror PUBG Mobile Account",
-    shortDescription:
-      "Season 15-18 Conqueror, Ace Dominator frame, 30 legendary outfits",
-    views: 4210,
-    price: 399.99,
-    createdAt: "2023-06-18T11:20:00Z",
-    category: "Battle Royale",
-    game: "PUBG Mobile",
-    imageUrl:
-      "https://images.unsplash.com/photo-1600861195091-690c92f1d2cc?w=600&auto=format",
-    region: "Global",
-    level: 70,
-  },
-  {
-    id: "br002",
-    name: "Unicorn FF Max Account",
-    shortDescription:
-      "Free Fire MAX account with Unicorn bundle, 50+ gun skins, Level 70",
-    views: 2953,
-    price: 199.99,
-    createdAt: "2023-09-30T16:45:00Z",
-    category: "Battle Royale",
-    game: "Garena Free Fire",
-    imageUrl:
-      "https://images.unsplash.com/photo-1639762681057-408e52192e55?w=600&auto=format",
-    region: "LATAM",
-    level: 65,
-  },
-
-  // RPG Category
-  {
-    id: "rpg001",
-    name: "AR 60 Genshin Impact Account",
-    shortDescription: "AR 60 with C6 Hu Tao + Staff of Homa, 20+ 5★ characters",
-    views: 5380,
-    price: 899.99,
-    createdAt: "2023-04-22T10:10:00Z",
-    category: "RPG",
-    game: "Genshin Impact",
-    imageUrl:
-      "https://images.unsplash.com/photo-1639762681057-408e52192e55?w=600&auto=format",
-    region: "Asia",
-    level: 60,
-  },
-  {
-    id: "rpg002",
-    name: "Endgame Honkai Star Rail Account",
-    shortDescription:
-      "TL 65 with Seele+Light Cone, 8 limited 5★ characters, all content cleared",
-    views: 3124,
-    price: 549.99,
-    createdAt: "2023-11-15T13:25:00Z",
-    category: "RPG",
-    game: "Honkai: Star Rail",
-    imageUrl:
-      "https://images.unsplash.com/photo-1614294149010-950b698f72c0?w=600&auto=format",
-    region: "America",
-    level: 65,
-  },
-];
-
-// For demo purposes, let's categorize them differently
-const topPicks = mobileGameAccounts.slice(0, 2);
-const action = mobileGameAccounts.filter(
-  (account) => account.category === "Battle Royale"
-);
-const sports = mobileGameAccounts.filter(
-  (account) => account.category === "RPG"
-); // Using RPG as "sports" for demo
+import { CheckCircle } from "lucide-react";
+import Image from "next/image";
+import {
+  GameAccount,
+  getTopPicks,
+  getActionGames,
+  getSportsGames,
+} from "../../lib/utils/gameData";
 
 const SingleProductCard = ({ product }: { product: GameAccount }) => {
   return (
     <div className="bg-muted rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <div className="relative h-40">
-        <img
+        <Image
           src={product.imageUrl}
           alt={product.name}
+          width={400}
+          height={160}
           className="w-full h-full object-cover"
+          unoptimized
         />
-        <div className="absolute top-2 right-2 bg-accent/90 text-accent-foreground px-2 py-1 rounded text-xs font-medium">
-          {product.category}
-        </div>
+        {product.verificationStatus && (
+          <div className="absolute top-2 right-2 bg-green-600/90 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+            <CheckCircle size={12} />
+            Verified
+          </div>
+        )}
         <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
           {product.views.toLocaleString()} views
         </div>
@@ -145,21 +37,34 @@ const SingleProductCard = ({ product }: { product: GameAccount }) => {
             {product.name}
           </h3>
         </div>
-        <p className="text-muted-foreground text-xs line-clamp-2 mb-3">
+
+        <p className="text-muted-foreground text-xs line-clamp-2 mb-2">
           {product.shortDescription}
         </p>
 
-        <div className="mt-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="bg-secondary px-2 py-1 rounded text-xs">
-              Lvl {product.level}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {product.region}
-            </span>
+        <div className="text-xs text-accent font-medium mb-3">
+          {product.game}
+        </div>
+
+        <div className="mt-auto space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="bg-secondary px-2 py-1 rounded text-xs text-secondary-foreground">
+                Lvl {product.level}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {product.region}
+              </span>
+            </div>
           </div>
-          <div className="font-bold text-accent">
-            ₹{product.price.toFixed(2)}
+
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-lg text-foreground">
+              ₹{product.price.toFixed(2)}
+            </div>
+            <button className="bg-accent hover:bg-accent/90 text-accent-foreground px-4 py-2 rounded text-sm font-medium transition-colors duration-200">
+              Buy Now
+            </button>
           </div>
         </div>
       </div>
@@ -191,7 +96,7 @@ const CategorySection = ({
           <SingleProductCard key={product.id} product={product} />
         ))}
       </div>
-      {!showViewMore && (
+      {!showViewMore && products.length > 4 && (
         <div className="flex justify-end mt-4">
           <button className="text-accent text-sm hover:underline">
             View more
@@ -203,11 +108,24 @@ const CategorySection = ({
 };
 
 export default function ProductCardGrid() {
+  // Get data from the simplified gameData.ts
+  const topPicks = getTopPicks(6);
+  const actionGames = getActionGames(8);
+  const sportsGames = getSportsGames(8);
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8  min-h-screen">
       <CategorySection title="Top Picks" products={topPicks} />
-      <CategorySection title="Action Games" products={action} />
-      <CategorySection title="Sports & RPG" products={sports} />
+      <CategorySection
+        title="Action Games"
+        products={actionGames}
+        showViewMore
+      />
+      <CategorySection
+        title="Sports Games"
+        products={sportsGames}
+        showViewMore
+      />
     </div>
   );
 }

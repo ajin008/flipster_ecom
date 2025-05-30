@@ -30,25 +30,20 @@ export default function LeftBanner({ type }: LeftBannerProps) {
 
   return (
     <motion.div
-      className="flex flex-col gap-4 "
+      className="flex flex-col gap-4 p-6 rounded-2xl backdrop-blur-md bg-black/30 border border-white/20"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.div
-        className="text-4xl font-bold text-primary flex items-center"
+        className="text-4xl font-bold text-white flex items-center"
         variants={itemVariants}
       >
-        <span className="text-primary">zes</span>
+        <span className="text-white">zes</span>
         <motion.span
           className="text-accent"
           animate={{
             scale: [1, 1.05, 1],
-            color: [
-              "var(--color-accent)",
-              "var(--color-accent-muted)",
-              "var(--color-accent)",
-            ],
           }}
           transition={{
             duration: 2,
@@ -60,27 +55,17 @@ export default function LeftBanner({ type }: LeftBannerProps) {
         </motion.span>
       </motion.div>
 
-      <motion.p
-        className="text-muted-foreground text-lg max-w-md"
-        variants={itemVariants}
-      >
+      <motion.p className="text-white text-lg max-w-md" variants={itemVariants}>
         {type === "login" ? (
           <>
             Welcome back! Log in to continue exploring
             <motion.span
-              className="inline-block mx-1 font-medium"
-              style={{
-                background:
-                  "linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-muted) 50%, var(--color-accent) 100%)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+              className="inline-block mx-1 font-medium text-accent"
               animate={{
-                backgroundPosition: ["0% 50%", "100% 50%"],
+                opacity: [0.7, 1, 0.7],
               }}
               transition={{
-                duration: 3,
+                duration: 2,
                 repeat: Infinity,
                 repeatType: "reverse",
               }}
@@ -93,19 +78,12 @@ export default function LeftBanner({ type }: LeftBannerProps) {
           <>
             Join zesTEX today and unlock
             <motion.span
-              className="inline-block mx-1 font-medium"
-              style={{
-                background:
-                  "linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-muted) 50%, var(--color-accent) 100%)",
-                backgroundSize: "200% 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+              className="inline-block mx-1 font-medium text-accent"
               animate={{
-                backgroundPosition: ["0% 50%", "100% 50%"],
+                opacity: [0.7, 1, 0.7],
               }}
               transition={{
-                duration: 3,
+                duration: 2,
                 repeat: Infinity,
                 repeatType: "reverse",
               }}
@@ -132,7 +110,7 @@ export default function LeftBanner({ type }: LeftBannerProps) {
             }}
           />
           <motion.div
-            className="h-1 w-8 bg-primary rounded-full opacity-70"
+            className="h-1 w-8 bg-white rounded-full opacity-70"
             animate={{
               width: ["8px", "24px", "16px"],
             }}
@@ -159,10 +137,7 @@ export default function LeftBanner({ type }: LeftBannerProps) {
       </motion.div>
 
       {/* Subtle tagline */}
-      <motion.p
-        className="text-sm text-muted-foreground opacity-80 mt-2"
-        variants={itemVariants}
-      >
+      <motion.p className="text-sm text-white/80 mt-2" variants={itemVariants}>
         {type === "login"
           ? "Secure · Fast · Trusted"
           : "No Cheats · Fair Prices · Secure Transactions"}
