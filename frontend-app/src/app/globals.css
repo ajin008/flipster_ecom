@@ -3,7 +3,7 @@
 
 :root {
   /* Modern gaming color scheme - vibrant but not overwhelming */
-  --color-bg-primary: #0e1116; /* Dark blue-gray background */
+  --color-bg-primary: #060928; /* Single color instead of gradient */ /* Dark blue-gray background */
   --color-text-primary: #f5f7fa; /* Light gray text for readability */
   --color-accent: #7d5bed; /* Vibrant purple */
   --color-accent-muted: #9b81f2; /* Lighter purple */
