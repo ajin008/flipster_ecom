@@ -41,7 +41,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { setSignUpData, signUpData } = useContext(MySignupContext);
+  const { setSignUpData } = useContext(MySignupContext);
 
   const router = useRouter();
 
@@ -253,7 +253,6 @@ export default function SignupForm() {
               <Button
                 variant="outline"
                 className="w-full border-border hover:bg-muted hover:text-foreground"
-                onClick={() => console.log("Google sign in")}
               >
                 <FcGoogle className="mr-2 h-5 w-5" />
                 Sign up with Google

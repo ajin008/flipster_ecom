@@ -40,7 +40,7 @@ const errorStyles = {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { setLoginFormData, loginFormData } = useContext(MyLoginContext);
+  const { setLoginFormData } = useContext(MyLoginContext);
 
   const router = useRouter();
   const form = useForm({
@@ -52,7 +52,6 @@ export default function LoginForm() {
 
   const onSubmit = (data: LoginProp) => {
     setLoginFormData(data);
-    console.log("from data", loginFormData);
   };
 
   const togglePasswordVisibility = () => {
@@ -192,7 +191,6 @@ export default function LoginForm() {
               <Button
                 variant="outline"
                 className="w-full border-border hover:bg-muted hover:text-foreground bg-muted"
-                onClick={() => console.log("Google sign in")}
               >
                 <FcGoogle className="mr-2 h-5 w-5" />
                 Sign in with Google
