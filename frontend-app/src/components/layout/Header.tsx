@@ -9,7 +9,7 @@ export default function Header() {
   const router = useRouter();
 
   return (
-    <header className="bg-bg-primary px-4 py-2">
+    <header className=" px-4 py-2">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Top section: Logo + mobile GET IN */}
         <div className="w-full sm:w-auto flex items-center justify-between">

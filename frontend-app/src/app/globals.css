@@ -1,51 +1,66 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-:root {
-  /* Modern gaming color scheme - vibrant but not overwhelming */
-  --color-bg-primary: #060928; /* Single color instead of gradient */ /* Dark blue-gray background */
-  --color-text-primary: #f5f7fa; /* Light gray text for readability */
-  --color-accent: #7d5bed; /* Vibrant purple */
-  --color-accent-muted: #9b81f2; /* Lighter purple */
-  --color-muted: #1e2328; /* Slightly lighter than background */
-  --color-border: #2e353e; /* Subtle borders */
-  --radius: 0.625rem;
-
-  /* System colors (oklch) */
-  --background: oklch(0.07 0.022 280); /* Dark background */
-  --foreground: oklch(0.98 0.01 280); /* Light text */
-  --card: oklch(0.09 0.022 280); /* Slightly lighter than background */
-  --card-foreground: oklch(0.98 0.01 280);
-  --popover: oklch(0 0 0 / 80%);
-  --popover-foreground: oklch(0.98 0.01 280);
-  --primary: oklch(0.6 0.22 280); /* Purple primary */
-  --primary-foreground: oklch(0.98 0.01 280);
-  --secondary: oklch(
-    0.11 0.03 280
-  ); /* Darker background for secondary elements */
-  --secondary-foreground: oklch(0.95 0.03 280);
-  --muted: oklch(0.12 0.02 280);
-  --muted-foreground: oklch(0.7 0.02 280);
-  --accent: oklch(0.6 0.22 280); /* Same as primary */
-  --accent-foreground: oklch(0.98 0.01 280);
-  --destructive: oklch(0.65 0.3 20); /* Reddish */
-  --border: oklch(0.2 0.03 280);
-  --input: oklch(0.15 0.03 280);
-  --ring: oklch(0.6 0.22 280); /* Same as primary */
-
-  /* Chart colors - vibrant and distinct */
-  --chart-1: oklch(0.6 0.22 280); /* Purple */
-  --chart-2: oklch(0.7 0.25 170); /* Teal */
-  --chart-3: oklch(0.65 0.26 80); /* Orange */
-  --chart-4: oklch(0.6 0.3 220); /* Blue */
-  --chart-5: oklch(0.65 0.28 130); /* Green */
-}
-
+/* Modern Gaming Background */
 body {
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
+  background: radial-gradient(
+      ellipse at top left,
+      rgba(42, 62, 244, 0.1) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(14, 15, 32, 0.3) 0%,
+      transparent 50%
+    ),
+    linear-gradient(135deg, #000000 0%, #000000 40%, #0e0f20 70%, #2a3ef4 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  background-attachment: fixed;
+  animation: gradientShift 12s ease infinite;
+  min-height: 100vh;
 }
 
+/* Updated CSS variables with new color palette */
+:root {
+  /* New Gaming Color Scheme */
+  --color-bg-primary: rgba(0, 0, 0, 0.95);
+  --color-text-primary: #f8fafc;
+  --color-accent: #2a3ef4; /* Palatinate Blue */
+  --color-accent-muted: #0e0f20; /* Dark Blue */
+  --color-muted: rgba(14, 15, 32, 0.8);
+  --color-border: rgba(42, 62, 244, 0.2);
+  --radius: 0.75rem;
+
+  /* System colors */
+  --background: #000000;
+  --foreground: #f8fafc;
+  --card: rgba(14, 15, 32, 0.8);
+  --card-foreground: #f8fafc;
+  --popover: rgba(0, 0, 0, 0.95);
+  --popover-foreground: #f8fafc;
+  --primary: #2a3ef4; /* Palatinate Blue primary */
+  --primary-foreground: #ffffff;
+  --secondary: rgba(14, 15, 32, 0.6); /* Dark Blue secondary */
+  --secondary-foreground: #f8fafc;
+  --muted: rgba(14, 15, 32, 0.6);
+  --muted-foreground: rgba(248, 250, 252, 0.8);
+  --accent: #2a3ef4; /* Palatinate Blue accent */
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(42, 62, 244, 0.2);
+  --input: rgba(14, 15, 32, 0.8);
+  --ring: #2a3ef4;
+
+  /* Chart colors - new palette variations */
+  --chart-1: #2a3ef4; /* Palatinate Blue */
+  --chart-2: #0e0f20; /* Dark Blue */
+  --chart-3: #4a5ef6; /* Lighter Blue */
+  --chart-4: #1a2b52; /* Medium Blue */
+  --chart-5: #5a6ef8; /* Bright Blue */
+}
+
+/* Tailwind config colors */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -66,6 +81,7 @@ body {
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -83,4 +99,112 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom gradient classes with new palette */
+.bg-gradient-gaming-primary {
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #000000 50%,
+    #0e0f20 80%,
+    #2a3ef4 100%
+  );
+}
+
+.bg-gradient-gaming-card {
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #000000 40%,
+    rgba(14, 15, 32, 0.8) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(42, 62, 244, 0.2);
+}
+
+.bg-gradient-gaming-button {
+  background: linear-gradient(135deg, #2a3ef4 0%, #4a5ef6 50%, #5a6ef8 100%);
+}
+
+.bg-gradient-gaming-hero {
+  background: radial-gradient(
+      ellipse at center top,
+      rgba(42, 62, 244, 0.3) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse at bottom,
+      rgba(14, 15, 32, 0.4) 0%,
+      transparent 70%
+    );
+}
+
+/* Custom animations */
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Gaming-specific utility classes with new colors */
+.glass-card {
+  background: rgba(14, 15, 32, 0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(42, 62, 244, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.neon-border {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(135deg, #2a3ef4, #4a5ef6, #5a6ef8) border-box;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #2a3ef4 0%, #4a5ef6 50%, #5a6ef8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hover effects for gaming elements */
+.gaming-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gaming-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(42, 62, 244, 0.4);
+}
+
+/* Status indicators for game accounts with new palette */
+.status-online {
+  background: linear-gradient(135deg, #2a3ef4 0%, #4a5ef6 100%);
+}
+
+.status-offline {
+  background: linear-gradient(135deg, #0e0f20 0%, #000000 100%);
+}
+
+.status-rare {
+  background: linear-gradient(135deg, #4a5ef6 0%, #2a3ef4 100%);
+}
+
+.status-legendary {
+  background: linear-gradient(135deg, #5a6ef8 0%, #2a3ef4 100%);
 }
