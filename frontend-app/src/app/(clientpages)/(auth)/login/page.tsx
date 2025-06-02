@@ -190,7 +190,7 @@ export default function LoginForm() {
 
               <Button
                 variant="outline"
-                className="w-full border-border hover:bg-muted hover:text-foreground bg-muted"
+                className="w-full border-border hover:bg-muted hover:text-foreground bg-muted border-epic"
               >
                 <FcGoogle className="mr-2 h-5 w-5" />
                 Sign in with Google

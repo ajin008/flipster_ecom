@@ -1,63 +1,80 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Modern Gaming Background */
+/* Eye-Catching Gaming Background with Purple/Pink Theme */
 body {
   background: radial-gradient(
       ellipse at top left,
-      rgba(42, 62, 244, 0.1) 0%,
-      transparent 60%
+      rgba(108, 43, 217, 0.15) 0%,
+      transparent 50%
     ),
     radial-gradient(
       ellipse at bottom right,
-      rgba(14, 15, 32, 0.3) 0%,
-      transparent 50%
+      rgba(255, 97, 210, 0.08) 0%,
+      transparent 60%
     ),
-    linear-gradient(135deg, #000000 0%, #000000 40%, #0e0f20 70%, #2a3ef4 100%);
-  background-size: 100% 100%, 100% 100%, 100% 100%;
+    radial-gradient(
+      ellipse at center,
+      rgba(165, 95, 255, 0.05) 0%,
+      transparent 80%
+    ),
+    linear-gradient(
+      135deg,
+      #0e061c 0%,
+      #1a0d2f 30%,
+      #1b1033 60%,
+      #6c2bd9 85%,
+      #ff61d2 100%
+    );
+  background-size: 120% 120%, 100% 100%, 150% 150%, 100% 100%;
   background-attachment: fixed;
-  animation: gradientShift 12s ease infinite;
+  animation: gradientShift 18s ease infinite;
   min-height: 100vh;
 }
 
-/* Updated CSS variables with new color palette */
+/* Updated CSS variables with Gaming Purple/Pink palette */
 :root {
-  /* New Gaming Color Scheme */
-  --color-bg-primary: rgba(0, 0, 0, 0.95);
-  --color-text-primary: #f8fafc;
-  --color-accent: #2a3ef4; /* Palatinate Blue */
-  --color-accent-muted: #0e0f20; /* Dark Blue */
-  --color-muted: rgba(14, 15, 32, 0.8);
-  --color-border: rgba(42, 62, 244, 0.2);
+  /* Gaming Purple/Pink Color Scheme */
+  --color-bg-primary: rgba(14, 6, 28, 0.95);
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #c3b1e1;
+  --color-accent: #6c2bd9; /* Primary Purple */
+  --color-accent-secondary: #a55fff; /* Pinkish Violet */
+  --color-accent-pink: #ff61d2; /* Highlight Pink */
+  --color-accent-muted: #1a0d2f; /* Dark Purple */
+  --color-muted: rgba(27, 16, 51, 0.8);
+  --color-border: rgba(108, 43, 217, 0.3);
+  --color-gold: #ffa726; /* Gold accent */
+
   --radius: 0.75rem;
 
   /* System colors */
-  --background: #000000;
-  --foreground: #f8fafc;
-  --card: rgba(14, 15, 32, 0.8);
-  --card-foreground: #f8fafc;
-  --popover: rgba(0, 0, 0, 0.95);
-  --popover-foreground: #f8fafc;
-  --primary: #2a3ef4; /* Palatinate Blue primary */
+  --background: #0e061c;
+  --foreground: #ffffff;
+  --card: rgba(26, 13, 47, 0.9);
+  --card-foreground: #ffffff;
+  --popover: rgba(14, 6, 28, 0.98);
+  --popover-foreground: #ffffff;
+  --primary: #6c2bd9; /* Primary Purple */
   --primary-foreground: #ffffff;
-  --secondary: rgba(14, 15, 32, 0.6); /* Dark Blue secondary */
-  --secondary-foreground: #f8fafc;
-  --muted: rgba(14, 15, 32, 0.6);
-  --muted-foreground: rgba(248, 250, 252, 0.8);
-  --accent: #2a3ef4; /* Palatinate Blue accent */
+  --secondary: rgba(27, 16, 51, 0.8); /* Search Background */
+  --secondary-foreground: #c3b1e1;
+  --muted: rgba(27, 16, 51, 0.6);
+  --muted-foreground: #c3b1e1;
+  --accent: #a55fff; /* Pinkish Violet accent */
   --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --destructive: #ff4757;
   --destructive-foreground: #ffffff;
-  --border: rgba(42, 62, 244, 0.2);
-  --input: rgba(14, 15, 32, 0.8);
-  --ring: #2a3ef4;
+  --border: rgba(108, 43, 217, 0.3);
+  --input: rgba(27, 16, 51, 0.8);
+  --ring: #6c2bd9;
 
-  /* Chart colors - new palette variations */
-  --chart-1: #2a3ef4; /* Palatinate Blue */
-  --chart-2: #0e0f20; /* Dark Blue */
-  --chart-3: #4a5ef6; /* Lighter Blue */
-  --chart-4: #1a2b52; /* Medium Blue */
-  --chart-5: #5a6ef8; /* Bright Blue */
+  /* Chart colors - gaming purple/pink palette */
+  --chart-1: #6c2bd9; /* Primary Purple */
+  --chart-2: #a55fff; /* Pinkish Violet */
+  --chart-3: #ff61d2; /* Highlight Pink */
+  --chart-4: #ffa726; /* Gold */
+  --chart-5: #c3b1e1; /* Light Purple */
 }
 
 /* Tailwind config colors */
@@ -101,43 +118,42 @@ body {
   }
 }
 
-/* Custom gradient classes with new palette */
+/* Custom gradient classes with gaming purple/pink palette */
 .bg-gradient-gaming-primary {
-  background: linear-gradient(
-    135deg,
-    #000000 0%,
-    #000000 50%,
-    #0e0f20 80%,
-    #2a3ef4 100%
-  );
+  background: linear-gradient(135deg, #6c2bd9 0%, #ff61d2 100%);
 }
 
 .bg-gradient-gaming-card {
   background: linear-gradient(
     135deg,
-    #000000 0%,
-    #000000 40%,
-    rgba(14, 15, 32, 0.8) 100%
+    #0e061c 0%,
+    #0e061c 40%,
+    rgba(26, 13, 47, 0.9) 100%
   );
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(42, 62, 244, 0.2);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(108, 43, 217, 0.3);
 }
 
 .bg-gradient-gaming-button {
-  background: linear-gradient(135deg, #2a3ef4 0%, #4a5ef6 50%, #5a6ef8 100%);
+  background: linear-gradient(90deg, #a55fff 0%, #ff85ff 100%);
 }
 
 .bg-gradient-gaming-hero {
-  background: radial-gradient(
-      ellipse at center top,
-      rgba(42, 62, 244, 0.3) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse at bottom,
-      rgba(14, 15, 32, 0.4) 0%,
-      transparent 70%
-    );
+  background: linear-gradient(135deg, #6c2bd9 0%, #ff61d2 100%);
+}
+
+.bg-gradient-gaming-search {
+  background: rgba(27, 16, 51, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(108, 43, 217, 0.2);
+}
+
+.bg-gradient-gaming-purple {
+  background: linear-gradient(135deg, #6c2bd9 0%, #a55fff 50%, #c3b1e1 100%);
+}
+
+.bg-gradient-gaming-pink {
+  background: linear-gradient(135deg, #ff61d2 0%, #ff85ff 50%, #a55fff 100%);
 }
 
 /* Custom animations */
@@ -161,25 +177,81 @@ body {
   }
 }
 
-/* Gaming-specific utility classes with new colors */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(108, 43, 217, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 97, 210, 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Gaming-specific utility classes */
 .glass-card {
-  background: rgba(14, 15, 32, 0.4);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(42, 62, 244, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: rgba(26, 13, 47, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(108, 43, 217, 0.3);
+  box-shadow: 0 8px 32px rgba(14, 6, 28, 0.8);
+}
+
+.game-card {
+  background: #1a0d2f;
+  border: 1px solid rgba(108, 43, 217, 0.2);
+  box-shadow: 0 4px 20px rgba(14, 6, 28, 0.6);
+  transition: all 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 40px rgba(108, 43, 217, 0.4);
+  border-color: rgba(165, 95, 255, 0.5);
 }
 
 .neon-border {
   border: 2px solid transparent;
   background: linear-gradient(var(--background), var(--background)) padding-box,
-    linear-gradient(135deg, #2a3ef4, #4a5ef6, #5a6ef8) border-box;
+    linear-gradient(135deg, #6c2bd9, #a55fff, #ff61d2) border-box;
+}
+
+.neon-border-pink {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(135deg, #ff61d2, #ff85ff, #a55fff) border-box;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #2a3ef4 0%, #4a5ef6 50%, #5a6ef8 100%);
+  background: linear-gradient(135deg, #6c2bd9 0%, #a55fff 50%, #ff61d2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #ffa726 0%, #ffcc00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
 
 /* Hover effects for gaming elements */
@@ -188,23 +260,112 @@ body {
 }
 
 .gaming-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(42, 62, 244, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(108, 43, 217, 0.5);
 }
 
-/* Status indicators for game accounts with new palette */
+.gaming-hover-pink:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(255, 97, 210, 0.5);
+}
+
+.gaming-hover-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(255, 167, 38, 0.5);
+}
+
+/* Status indicators for gaming */
 .status-online {
-  background: linear-gradient(135deg, #2a3ef4 0%, #4a5ef6 100%);
+  background: linear-gradient(135deg, #6c2bd9 0%, #a55fff 100%);
 }
 
 .status-offline {
-  background: linear-gradient(135deg, #0e0f20 0%, #000000 100%);
+  background: linear-gradient(135deg, #1a0d2f 0%, #0e061c 100%);
+}
+
+.status-away {
+  background: linear-gradient(135deg, #ffa726 0%, #ffcc00 100%);
+}
+
+.status-dnd {
+  background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
 }
 
 .status-rare {
-  background: linear-gradient(135deg, #4a5ef6 0%, #2a3ef4 100%);
+  background: linear-gradient(135deg, #a55fff 0%, #6c2bd9 100%);
 }
 
 .status-legendary {
-  background: linear-gradient(135deg, #5a6ef8 0%, #2a3ef4 100%);
+  background: linear-gradient(135deg, #ff61d2 0%, #ff85ff 100%);
+}
+
+.status-epic {
+  background: linear-gradient(135deg, #ffa726 0%, #ffcc00 100%);
+}
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(90deg, #a55fff 0%, #ff85ff 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #6c2bd9 0%, #a55fff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(165, 95, 255, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(27, 16, 51, 0.8);
+  border: 1px solid rgba(108, 43, 217, 0.3);
+  color: #c3b1e1;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(108, 43, 217, 0.2);
+  border-color: rgba(165, 95, 255, 0.5);
+  color: white;
+}
+
+/* Search box styling */
+.search-box {
+  background: rgba(27, 16, 51, 0.8);
+  border: 1px solid rgba(108, 43, 217, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.search-box:focus {
+  border-color: #a55fff;
+  box-shadow: 0 0 0 3px rgba(165, 95, 255, 0.1);
+}
+
+/* Gold/coin elements */
+.gold-accent {
+  color: #ffa726;
+}
+
+.gold-bg {
+  background: linear-gradient(135deg, #ffa726 0%, #ffcc00 100%);
+}
+
+/* Eye-catching pulse animation */
+.pulse-gaming {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Floating elements */
+.float-gaming {
+  animation: float 3s ease-in-out infinite;
+}
+
+.border-epic {
+  border-color: var(--color-gold);
+}
+
+.verify-bg {
+  background-color: var(--color-gold);
 }

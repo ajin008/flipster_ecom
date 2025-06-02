@@ -252,7 +252,7 @@ export default function SignupForm() {
 
               <Button
                 variant="outline"
-                className="w-full border-border hover:bg-muted hover:text-foreground"
+                className="w-full border-border hover:bg-muted hover:text-foreground border-epic"
               >
                 <FcGoogle className="mr-2 h-5 w-5" />
                 Sign up with Google

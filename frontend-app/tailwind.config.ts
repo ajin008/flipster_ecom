@@ -8,8 +8,10 @@ const config: Config = {
         bg: {
           primary: "var(--color-bg-primary)",
         },
+        "verify-bg": "var(--color-gold)",
         text: {
           primary: "var(--color-text-primary)",
+          secondary: "var(--color-text-secondary)",
         },
         accent: {
           DEFAULT: "var(--color-accent)",
@@ -17,34 +19,63 @@ const config: Config = {
         },
         muted: "var(--color-muted)",
         border: "var(--color-border)",
-        // Updated color palette based on your specifications
-        cyber: {
-          black: "#000000", // Pure black - primary
-          darkBlue: "#0E0F20", // Dark blue - secondary
-          palatinateBlue: "#2A3EF4", // Palatinate blue - accent
-          lightBlue: "#4A5EF6", // Lighter variation
-          brightBlue: "#5A6EF8", // Brightest variation
-          mediumBlue: "#1A2B52", // Medium blue for variety
+        // Eye-Catching Gaming Purple/Pink Palette
+        gaming: {
+          // Base dark colors
+          background: "#0E061C", // Primary background - very dark purple
+          cardBg: "#1A0D2F", // Card backgrounds
+          searchBg: "#1B1033", // Search box and filters
+
+          // Purple shades (Primary)
+          purple: "#6C2BD9", // Primary purple - main accent
+          purpleLight: "#A55FFF", // Pinkish violet - CTA buttons
+          purpleMuted: "#8B5CF6", // Medium purple
+
+          // Pink shades (Secondary accent)
+          pink: "#FF61D2", // Highlight pink - hero banner
+          pinkLight: "#FF85FF", // Light pink for gradients
+          pinkSoft: "#E879F9", // Soft pink
+
+          // Text colors
+          textPrimary: "#FFFFFF", // Pure white - primary text
+          textSecondary: "#C3B1E1", // Soft lavender - secondary text
+          textMuted: "#D1C5F0", // Alternative muted text
+
+          // Gold/Yellow accents
+          gold: "#FFA726", // Gold for coins/currency
+          goldBright: "#FFCC00", // Bright gold for highlights
+          goldMuted: "#FFB74D", // Muted gold
+
+          // Status colors
+          success: "#4CAF50",
+          warning: "#FF9800",
+          error: "#ff4757",
+          info: "#2196F3",
         },
       },
       backgroundImage: {
-        // Updated gradients with more black on one side
-        "gradient-primary":
-          "linear-gradient(135deg, #000000 0%, #000000 50%, #0E0F20 80%, #2A3EF4 100%)",
-        "gradient-muted":
-          "linear-gradient(135deg, #000000 0%, #000000 40%, rgba(14, 15, 32, 0.8) 100%)",
+        // Eye-catching gaming gradients
+        "gradient-hero": "linear-gradient(135deg, #6C2BD9 0%, #FF61D2 100%)",
+        "gradient-button": "linear-gradient(90deg, #A55FFF 0%, #FF85FF 100%)",
+        "gradient-button-hover":
+          "linear-gradient(90deg, #6C2BD9 0%, #A55FFF 100%)",
         "gradient-card":
-          "linear-gradient(135deg, #000000 0%, #000000 60%, rgba(14, 15, 32, 0.7) 100%)",
-        "gradient-cyber":
-          "linear-gradient(135deg, #000000 0%, #000000 30%, #2A3EF4 70%, #4A5EF6 100%)",
-        "gradient-cyber-alt":
-          "linear-gradient(135deg, #000000 0%, #000000 45%, #2A3EF4 100%)",
-        "gradient-subtle":
-          "linear-gradient(135deg, #000000 0%, #000000 70%, rgba(14, 15, 32, 0.6) 100%)",
-        "gradient-gaming":
-          "linear-gradient(135deg, #000000 0%, #000000 35%, #0E0F20 60%, #2A3EF4 85%, #4A5EF6 100%)",
-        "gradient-reverse":
-          "linear-gradient(135deg, #2A3EF4 0%, #0E0F20 30%, #000000 60%, #000000 100%)",
+          "linear-gradient(135deg, #0E061C 0%, #0E061C 40%, rgba(26, 13, 47, 0.9) 100%)",
+        "gradient-purple":
+          "linear-gradient(135deg, #6C2BD9 0%, #A55FFF 50%, #C3B1E1 100%)",
+        "gradient-pink":
+          "linear-gradient(135deg, #FF61D2 0%, #FF85FF 50%, #A55FFF 100%)",
+        "gradient-gold": "linear-gradient(135deg, #FFA726 0%, #FFCC00 100%)",
+        "gradient-gaming-radial":
+          "radial-gradient(ellipse at center, rgba(108, 43, 217, 0.15) 0%, transparent 70%)",
+        "gradient-search": "rgba(27, 16, 51, 0.8)",
+        // Background variations
+        "gradient-primary":
+          "linear-gradient(135deg, #0E061C 0%, #0E061C 50%, #1A0D2F 80%, #6C2BD9 100%)",
+        "gradient-secondary":
+          "linear-gradient(135deg, #1A0D2F 0%, #1B1033 50%, #6C2BD9 100%)",
+        "gradient-tertiary":
+          "linear-gradient(135deg, #6C2BD9 0%, #1A0D2F 30%, #0E061C 60%, #0E061C 100%)",
       },
       borderRadius: {
         DEFAULT: "var(--radius)",
@@ -52,21 +83,78 @@ const config: Config = {
       height: {
         46: "11.5rem",
       },
-      // Updated glow effects with new blue palette
+      // Gaming-focused glow effects
       boxShadow: {
-        "cyber-sm": "0 0 10px rgba(42, 62, 244, 0.5)",
-        "cyber-md": "0 0 20px rgba(42, 62, 244, 0.5)",
-        "cyber-lg": "0 0 30px rgba(42, 62, 244, 0.5)",
-        "cyber-bright": "0 0 20px rgba(90, 110, 248, 0.5)",
-        "cyber-dark": "0 0 20px rgba(14, 15, 32, 0.8)",
-        "cyber-glow":
-          "0 0 40px rgba(42, 62, 244, 0.3), 0 0 80px rgba(90, 110, 248, 0.1)",
-        "palatinate-glow": "0 0 25px rgba(42, 62, 244, 0.6)",
+        "gaming-sm": "0 0 10px rgba(108, 43, 217, 0.3)",
+        "gaming-md": "0 0 20px rgba(108, 43, 217, 0.4)",
+        "gaming-lg": "0 0 30px rgba(108, 43, 217, 0.5)",
+        "gaming-xl": "0 0 40px rgba(108, 43, 217, 0.6)",
+        "gaming-glow":
+          "0 0 40px rgba(108, 43, 217, 0.4), 0 0 80px rgba(108, 43, 217, 0.2)",
+
+        "pink-sm": "0 0 10px rgba(255, 97, 210, 0.3)",
+        "pink-md": "0 0 20px rgba(255, 97, 210, 0.4)",
+        "pink-lg": "0 0 30px rgba(255, 97, 210, 0.5)",
+        "pink-glow":
+          "0 0 40px rgba(255, 97, 210, 0.4), 0 0 80px rgba(255, 97, 210, 0.2)",
+
+        "gold-sm": "0 0 10px rgba(255, 167, 38, 0.3)",
+        "gold-md": "0 0 20px rgba(255, 167, 38, 0.4)",
+        "gold-lg": "0 0 25px rgba(255, 167, 38, 0.5)",
+
+        "dark-card": "0 8px 32px rgba(14, 6, 28, 0.8)",
+        "gaming-card": "0 4px 20px rgba(14, 6, 28, 0.6)",
+        "gaming-hover": "0 8px 40px rgba(108, 43, 217, 0.4)",
+        "gaming-hover-pink": "0 8px 40px rgba(255, 97, 210, 0.4)",
       },
-      // Additional utility classes for the new palette
+      // Eye-catching animations
       animation: {
-        "gradient-shift": "gradientShift 12s ease infinite",
+        "gradient-shift": "gradientShift 18s ease infinite",
         float: "float 3s ease-in-out infinite",
+        "pulse-gaming": "pulseGlow 2s ease-in-out infinite",
+        shimmer: "shimmer 2s infinite",
+        "bounce-slow": "bounce 3s infinite",
+        "spin-slow": "spin 3s linear infinite",
+      },
+      // Custom keyframes for gaming effects
+      keyframes: {
+        gradientShift: {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(108, 43, 217, 0.4)" },
+          "50%": { boxShadow: "0 0 40px rgba(255, 97, 210, 0.6)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+      },
+      // Enhanced glass morphism
+      backdropBlur: {
+        xs: "2px",
+        sm: "4px",
+        md: "8px",
+        lg: "12px",
+        xl: "16px",
+        "2xl": "20px",
+        "3xl": "24px",
+      },
+      // Gaming-specific utilities
+      fontSize: {
+        "gaming-xl": ["1.75rem", { lineHeight: "2rem", fontWeight: "700" }],
+        "gaming-2xl": ["2.25rem", { lineHeight: "2.5rem", fontWeight: "800" }],
+        "gaming-3xl": ["3rem", { lineHeight: "3.25rem", fontWeight: "900" }],
+      },
+      spacing: {
+        "18": "4.5rem",
+        "88": "22rem",
+        "128": "32rem",
       },
     },
   },
