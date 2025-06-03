@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import TopProgressBar from "@/components/shared/TopProgressBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="container mx-auto px-2 sm:px-4 py-4 flex min-h-screen flex-col">
+          <TopProgressBar />
           <main className="flex-grow">{children}</main>
         </div>
       </body>
