@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import {
   ChevronLeft,
@@ -8,9 +9,10 @@ import {
   ShoppingBag,
   ArrowRight,
 } from "lucide-react";
+import { getBannerData } from "@/lib/queries";
 
 type Banner = {
-  id: number;
+  _id: string;
   title: string;
   description: string;
   cta: string;
@@ -25,86 +27,65 @@ type PromotionalOffer = {
   icon: React.ReactNode;
 };
 
-const defaultBanners: Banner[] = [
-  {
-    id: 1,
-    title: "Epic Account Sale!",
-    description:
-      "Get up to 50% off on top-tier game accounts. Limited time offer!",
-    cta: "Shop Now",
-    ctaLink: "/collections/game-accounts",
-    image: "/b1.jpg",
-    bgColor: "var(--color-bg-primary)",
-  },
-  {
-    id: 2,
-    title: "Rare Skins & Items",
-    description:
-      "Unlock exclusive skins and in-game items for your favorite games.",
-    cta: "Explore",
-    ctaLink: "/collections/rare-items",
-    image: "/b2.jpg",
-    bgColor: "var(--color-muted)",
-  },
-  {
-    id: 3,
-    title: "Level Up Fast",
-    description: "Buy high-ranked accounts and dominate the leaderboards!",
-    cta: "View Deals",
-    ctaLink: "/collections/high-ranked-accounts",
-    image: "/b3.jpg",
-    bgColor: "var(--color-accent-muted)",
-  },
-];
-
 type HeroSectionProps = {
-  banners?: Banner[];
   promotionalOffers?: PromotionalOffer[];
 };
 
 export default function HeroSection({
-  banners = defaultBanners,
   promotionalOffers = [],
 }: HeroSectionProps) {
+  const [banners, setBanners] = useState<Banner[]>([]);
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    async function fetchData() {
+      const data = await getBannerData();
+      setBanners(data);
+    }
+    fetchData();
+  }, []);
 
-    const interval = setInterval(() => {
+  // Auto-slide
+  useEffect(() => {
+    if (banners.length === 0) return;
+    timeoutRef.current = setTimeout(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, banners.length]);
-
-  useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [currentBanner, banners]);
 
-  const handleManualChange = (index: number) => {
-    setIsAutoPlaying(false);
-    setCurrentBanner(index);
-
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setIsAutoPlaying(true);
-    }, 10000);
+  const nextBanner = () => {
+    setCurrentBanner((prev) => (prev + 1) % banners.length);
   };
 
-  const nextBanner = () =>
-    handleManualChange((currentBanner + 1) % banners.length);
+  const prevBanner = () => {
+    setCurrentBanner((prev) => (prev - 1 + banners.length) % banners.length);
+  };
 
-  const prevBanner = () =>
-    handleManualChange((currentBanner - 1 + banners.length) % banners.length);
+  const handleManualChange = (index: number) => {
+    setCurrentBanner(index);
+  };
+
+  if (!banners.length) {
+    return (
+      <div className="w-full bg-bg-primary rounded-sm">
+        <div className="px-4 py-2">
+          <div className="relative h-[280px] sm:h-46 md:h-[300px] w-full overflow-hidden rounded-sm bg-gray-200 animate-pulse">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-gray-500">Loading banners...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full bg-bg-primary rounded-sm ">
-      {/* Add padding OUTSIDE the relative container */}
+    <div className="w-full bg-bg-primary rounded-sm">
       <div className="px-4 py-2">
         <div className="relative h-[280px] sm:h-46 md:h-[300px] w-full overflow-hidden rounded-sm">
           <div
@@ -116,21 +97,20 @@ export default function HeroSection({
           >
             {banners.map((banner, index) => (
               <div
-                key={banner.id}
+                key={banner._id}
                 className="relative flex h-full w-full shrink-0"
                 style={{ width: `${100 / banners.length}%` }}
               >
                 <div className="absolute inset-0 w-full h-full">
                   <Image
-                    src={banner.image}
-                    alt={`Banner background ${banner.title}`}
+                    src={urlFor(banner.image).url()}
+                    alt={`Banner ${banner.title}`}
                     fill
                     className="object-cover"
                     priority={index === 0}
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent w-full h-full" />
                 </div>
-
                 <div className="relative z-10 flex flex-col md:flex-row items-center w-full h-full px-4 md:px-12">
                   <div className="w-full md:w-1/2 pt-8 md:pt-0 text-center md:text-left">
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">
@@ -153,7 +133,7 @@ export default function HeroSection({
             ))}
           </div>
 
-          {/* Navigation arrows */}
+          {/* Arrows */}
           <button
             onClick={prevBanner}
             className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 rounded-full text-white z-20 transition-colors"
@@ -169,7 +149,7 @@ export default function HeroSection({
             <ChevronRight className="h-6 w-6" />
           </button>
 
-          {/* Indicator dots */}
+          {/* Dots */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
             {banners.map((_, index) => (
               <button
