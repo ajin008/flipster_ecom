@@ -11,6 +11,9 @@ const pwaConfig = withPWA({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  images: {
+    domains: ["cdn.sanity.io"],
+  },
 };
 
 export default pwaConfig(nextConfig);
