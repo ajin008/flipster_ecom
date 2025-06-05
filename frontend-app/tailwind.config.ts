@@ -52,6 +52,7 @@ const config: Config = {
           error: "#ff4757",
           info: "#2196F3",
         },
+        gold: "var(--color-gold)",
       },
       backgroundImage: {
         // Eye-catching gaming gradients

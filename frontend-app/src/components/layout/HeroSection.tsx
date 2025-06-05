@@ -60,7 +60,8 @@ export default async function HeroSection({
                 {offer.icon}
               </div>
               <div>
-                <h3 className="font-semibold text-lg">{offer.title}</h3>
+                <h3 className="text-gold font-bold text-lg">{offer.title}</h3>
+
                 <p className="text-sm text-text-primary/70">
                   {offer.description}
                 </p>

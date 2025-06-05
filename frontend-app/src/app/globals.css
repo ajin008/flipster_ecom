@@ -3,7 +3,8 @@
 
 /* Eye-Catching Gaming Background with Purple/Pink Theme */
 body {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at top left,
       rgba(108, 43, 217, 0.15) 0%,
       transparent 50%
@@ -26,7 +27,11 @@ body {
       #6c2bd9 85%,
       #ff61d2 100%
     );
-  background-size: 120% 120%, 100% 100%, 150% 150%, 100% 100%;
+  background-size:
+    120% 120%,
+    100% 100%,
+    150% 150%,
+    100% 100%;
   background-attachment: fixed;
   animation: gradientShift 18s ease infinite;
   min-height: 100vh;
@@ -219,13 +224,15 @@ body {
 
 .neon-border {
   border: 2px solid transparent;
-  background: linear-gradient(var(--background), var(--background)) padding-box,
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
     linear-gradient(135deg, #6c2bd9, #a55fff, #ff61d2) border-box;
 }
 
 .neon-border-pink {
   border: 2px solid transparent;
-  background: linear-gradient(var(--background), var(--background)) padding-box,
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
     linear-gradient(135deg, #ff61d2, #ff85ff, #a55fff) border-box;
 }
 
@@ -370,6 +377,12 @@ body {
   background-color: var(--color-gold);
 }
 
+.bannerTitle {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: var(--color-gold);
+}
+
 #nprogress .bar {
   background: var(--color-gold) !important;
   height: 4px !important;
@@ -386,8 +399,10 @@ body {
   right: 0px;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px var(--color-accent-pink),
-    0 0 5px var(--color-accent-pink), -10px 0 20px var(--color-accent-pink);
+  box-shadow:
+    0 0 10px var(--color-accent-pink),
+    0 0 5px var(--color-accent-pink),
+    -10px 0 20px var(--color-accent-pink);
   opacity: 1;
   transform: rotate(3deg) translate(0px, -4px);
 }
