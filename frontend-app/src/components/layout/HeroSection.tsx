@@ -1,7 +1,12 @@
+// components/HeroSection.tsx
 import { getBannerData } from "@/lib/queries";
-
 import { ArrowRight } from "lucide-react";
 import BannerSlider from "./BannerSlider";
+
+type SanityImage = {
+  _type: "image";
+  asset: { _ref: string; _type: "reference" };
+};
 
 type Banner = {
   _id: string;
@@ -9,7 +14,8 @@ type Banner = {
   description: string;
   cta: string;
   ctaLink: string;
-  image: string;
+  image: SanityImage;
+  extraImages?: SanityImage[];
   bgColor?: string;
 };
 
@@ -43,7 +49,10 @@ export default async function HeroSection({
   }
 
   return (
-    <div className="w-full bg-bg-primary rounded-sm">
+    <div
+      className="w-full rounded-sm"
+      style={{ backgroundColor: banners[0].bgColor ?? "inherit" }}
+    >
       <div className="px-4 py-2">
         <BannerSlider banners={banners} />
       </div>
