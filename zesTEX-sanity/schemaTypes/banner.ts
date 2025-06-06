@@ -25,11 +25,17 @@ export const banner = {
     },
     {
       name: 'image',
-      title: 'Banner Image',
+      title: 'Main Banner Image',
       type: 'image',
       options: {
         hotspot: true,
       },
+    },
+    {
+      name: 'extraImages',
+      title: 'Additional Images (optional)',
+      type: 'array',
+      of: [{type: 'image', options: {hotspot: true}}],
     },
     {
       name: 'bgColor',
