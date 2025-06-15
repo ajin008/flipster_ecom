@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { SignupData } from "@/lib/interface";
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 import { MySignupContext } from "./SignupContext";
+import TermsConditions from "@/components/layout/ TermsConditions";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -45,12 +46,14 @@ export default function SignupForm() {
 
   const router = useRouter();
 
-  const form = useForm({
+  // Explicitly type the form with SignupData
+  const form = useForm<SignupData, undefined, SignupData>({
     defaultValues: {
       username: "",
       email: "",
       password: "",
       confirmPassword: "",
+      agreeToTerms: false,
     },
   });
 
@@ -231,6 +234,8 @@ export default function SignupForm() {
                       </FormItem>
                     )}
                   />
+
+                  <TermsConditions form={form} />
 
                   <Button
                     type="submit"

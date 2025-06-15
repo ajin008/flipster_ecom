@@ -1,37 +1,72 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-
 import ZesTEXLogo from "./ZesTEXLogo";
 import { useRouter } from "next/navigation";
-import BuyerSellerToggle from "./BuyerSellerToggle";
+import { IoNotificationsOutline } from "react-icons/io5";
+import NotificationsModal from "./NotificationsModal";
 
 export default function Header() {
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  const handleNotificationClick = () => {
+    if (isLargeScreen) {
+      // Large screen: open modal
+      setIsNotificationModalOpen(true);
+    } else {
+      // Small screen: navigate to notifications page
+      router.push("/NotificationsPage");
+    }
+  };
+
   return (
-    <header className=" px-4 py-2">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        {/* Top section: Logo + mobile GET IN */}
-        <div className="w-full sm:w-auto flex items-center justify-between">
-          <ZesTEXLogo />
-          <Button className="sm:hidden" onClick={() => router.push("/login")}>
-            GET IN
-          </Button>
-        </div>
+    <>
+      <header className="px-4 py-2">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* Top section: Logo + mobile buttons */}
+          <div className="w-full sm:w-auto flex items-center justify-between">
+            <ZesTEXLogo />
+            {/* Mobile buttons grouped together */}
+            <div className="flex items-center gap-2 sm:hidden">
+              <Button className="bg-amber-400">start selling</Button>
+              <Button onClick={() => router.push("/login")}>GET IN</Button>
+            </div>
+            <Button
+              onClick={handleNotificationClick}
+              className="bg-transparent hover:bg-transparent cursor-pointer"
+            >
+              <IoNotificationsOutline />
+            </Button>
+          </div>
 
-        {/* Bottom / Right section: Search + desktop GET IN */}
-
-        <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 sm:ml-auto">
-          <BuyerSellerToggle />
-          <Button
-            className="hidden sm:block"
-            onClick={() => router.push("/login")}
-          >
-            GET IN
-          </Button>
+          {/* Desktop buttons */}
+          <div className="hidden sm:flex items-center gap-2 sm:ml-auto">
+            <Button className="bg-amber-400">start selling</Button>
+            <Button
+              onClick={handleNotificationClick}
+              className="bg-transparent hover:bg-transparent cursor-pointer"
+            >
+              <IoNotificationsOutline />
+            </Button>
+            <Button onClick={() => router.push("/login")}>GET IN</Button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <NotificationsModal
+        isOpen={isNotificationModalOpen}
+        onClose={() => setIsNotificationModalOpen(false)}
+      />
+    </>
   );
 }

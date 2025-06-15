@@ -12,6 +12,7 @@ export interface SignupData {
   email: string;
   password: string;
   confirmPassword: string;
+  agreeToTerms: boolean;
 }
 
 export interface LoginContextType {
