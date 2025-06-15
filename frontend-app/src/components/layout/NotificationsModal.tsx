@@ -44,7 +44,10 @@ export default function NotificationsModal({
 }: NotificationsModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md max-h-[80vh] overflow-hidden flex flex-col fixed right-4 top-16 translate-x-0 translate-y-0 sm:right-6 sm:top-20">
+      <DialogContent
+        className="max-w-md max-h-[80vh] overflow-hidden flex flex-col fixed right-6 top-16 sm:right-16 sm:top-[300px]"
+        style={{ left: "auto", transform: "none" }}
+      >
         <DialogHeader className="pb-4">
           <DialogTitle className="text-xl font-semibold">
             Notifications

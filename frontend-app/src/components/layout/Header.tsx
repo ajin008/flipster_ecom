@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import ZesTEXLogo from "./ZesTEXLogo";
 import { useRouter } from "next/navigation";
-import { IoNotificationsOutline } from "react-icons/io5";
+import { Bell } from "react-feather";
 import NotificationsModal from "./NotificationsModal";
 
 export default function Header() {
@@ -38,26 +38,26 @@ export default function Header() {
           <div className="w-full sm:w-auto flex items-center justify-between">
             <ZesTEXLogo />
             {/* Mobile buttons grouped together */}
+
             <div className="flex items-center gap-2 sm:hidden">
-              <Button className="bg-amber-400">start selling</Button>
+              <Button
+                onClick={handleNotificationClick}
+                className="bg-transparent hover:bg-transparent cursor-pointer"
+              >
+                <Bell />
+              </Button>
               <Button onClick={() => router.push("/login")}>GET IN</Button>
             </div>
-            <Button
-              onClick={handleNotificationClick}
-              className="bg-transparent hover:bg-transparent cursor-pointer"
-            >
-              <IoNotificationsOutline />
-            </Button>
           </div>
 
           {/* Desktop buttons */}
           <div className="hidden sm:flex items-center gap-2 sm:ml-auto">
-            <Button className="bg-amber-400">start selling</Button>
+            {/* <Button className="bg-amber-400">start selling</Button> */}
             <Button
               onClick={handleNotificationClick}
               className="bg-transparent hover:bg-transparent cursor-pointer"
             >
-              <IoNotificationsOutline />
+              <Bell size={28} />
             </Button>
             <Button onClick={() => router.push("/login")}>GET IN</Button>
           </div>
