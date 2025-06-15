@@ -5,6 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        gold: "#FFD700",
         bg: {
           primary: "var(--color-bg-primary)",
         },
@@ -51,8 +52,10 @@ const config: Config = {
           warning: "#FF9800",
           error: "#ff4757",
           info: "#2196F3",
+          gaming: {
+            gold: "#FFA726", // This works as bg-gaming-gold
+          },
         },
-        gold: "#FFD700",
       },
       backgroundImage: {
         // Eye-catching gaming gradients

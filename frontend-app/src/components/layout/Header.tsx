@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 
 import ZesTEXLogo from "./ZesTEXLogo";
 import { useRouter } from "next/navigation";
+import BuyerSellerToggle from "./BuyerSellerToggle";
 
 export default function Header() {
   const router = useRouter();
@@ -20,7 +21,9 @@ export default function Header() {
         </div>
 
         {/* Bottom / Right section: Search + desktop GET IN */}
+
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2 sm:ml-auto">
+          <BuyerSellerToggle />
           <Button
             className="hidden sm:block"
             onClick={() => router.push("/login")}

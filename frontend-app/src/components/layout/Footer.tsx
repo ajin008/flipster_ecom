@@ -17,7 +17,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className=" text-gray-300 border-t border-gray-700 mt-auto">
+    <footer className=" text-gray-300  mt-auto">
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -189,7 +189,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-700 pt-6">
+        <div className="border-t border-gaming-textSecondary pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-status-away ">
               <p>© {new Date().getFullYear()} zesTEX Pte Ltd.</p>
