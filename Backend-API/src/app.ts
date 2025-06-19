@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 import authRoute from "./api/routes/authRoute";
 import { authMiddleware } from "./api/middleware/auth";
+import { errorHandler } from "./api/middleware/errorHandler";
 
 const app: Application = express();
 
@@ -15,6 +16,8 @@ app.use(cors());
 
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "1mb" }));
+
+app.use(errorHandler);
 
 const httpServer = createServer(app);
 

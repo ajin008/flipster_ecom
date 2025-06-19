@@ -7,7 +7,7 @@ export interface LeftBannerProps {
   type: "login" | "signup";
 }
 
-export interface SignupData {
+export interface SignupProp {
   username: string;
   email: string;
   password: string;
@@ -18,9 +18,10 @@ export interface SignupData {
 export interface LoginContextType {
   loginFormData: LoginProp | null;
   setLoginFormData: (data: LoginProp | null) => void;
+  handleLogin: (data: LoginProp) => void;
 }
 
 export interface SignupContextType {
-  signUpData: SignupData | null;
-  setSignUpData: (data: SignupData | null) => void;
+  signUpData: SignupProp | null;
+  setSignUpData: (data: SignupProp | null) => void;
 }

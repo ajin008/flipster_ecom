@@ -40,7 +40,7 @@ const errorStyles = {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { setLoginFormData } = useContext(MyLoginContext);
+  const { handleLogin } = useContext(MyLoginContext);
 
   const router = useRouter();
   const form = useForm({
@@ -51,7 +51,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = (data: LoginProp) => {
-    setLoginFormData(data);
+    handleLogin(data);
   };
 
   const togglePasswordVisibility = () => {
