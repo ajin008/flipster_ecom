@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TopProgressBar from "@/components/shared/TopProgressBar";
-import { Toaster } from "sonner";
 import GamingToaster from "@/components/shared/GamingToaster";
 
 const geistSans = Geist({
