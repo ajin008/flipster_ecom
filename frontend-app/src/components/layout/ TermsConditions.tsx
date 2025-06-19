@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SignupProp } from "@/lib/interface";
+import { useRouter } from "next/navigation";
 
 interface TermsConditionsProps {
   form: UseFormReturn<SignupProp>;
@@ -21,6 +22,8 @@ const errorStyles = {
 };
 
 export default function TermsConditions({ form }: TermsConditionsProps) {
+  const router = useRouter();
+
   return (
     <FormField<SignupProp>
       control={form.control}
@@ -63,21 +66,23 @@ export default function TermsConditions({ form }: TermsConditionsProps) {
                 >
                   I agree to the{" "}
                   <a
-                    href="/terms"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push("/terms");
+                    }}
                     className="text-primary hover:underline font-medium"
-                    onClick={(e) => e.stopPropagation()}
+                    href="#"
                   >
                     Terms of Service
                   </a>{" "}
                   and{" "}
                   <a
-                    href="/privacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push("/privacy");
+                    }}
                     className="text-primary hover:underline font-medium"
-                    onClick={(e) => e.stopPropagation()}
+                    href="#"
                   >
                     Privacy Policy
                   </a>

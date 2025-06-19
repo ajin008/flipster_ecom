@@ -78,7 +78,7 @@ export default function SignupForm() {
       </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
         <button
-          className="absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-2 rounded-md "
+          className="hidden lg:block absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-2 rounded-md"
           onClick={() => router.push("/login")}
         >
           <MdKeyboardDoubleArrowLeft />
