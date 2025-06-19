@@ -15,7 +15,7 @@ const eslintConfig = [
     rules: {
       // Disable specific rules here
       "react/jsx-no-target-blank": "off", // Disable the rule for opening links in new tab
-      "no-console": "warn", // Show warning for console logs
+      "no-console": "off", // Show warning for console logs
       "react/prop-types": "off", // Disable PropTypes validation
       "react/no-unescaped-entities": "off", // Disable the rule for unescaped entities
     },

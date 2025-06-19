@@ -34,7 +34,7 @@ export const SignupContextProvider = ({
         }, 300);
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      console.log("error:", error);
       toast.error("Something went wrong!");
     }
   };

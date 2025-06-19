@@ -7,10 +7,10 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { SignupData } from "@/lib/interface";
+import { SignupProp } from "@/lib/interface";
 
 interface TermsConditionsProps {
-  form: UseFormReturn<SignupData>;
+  form: UseFormReturn<SignupProp>;
 }
 
 // Custom styles for form error messages (matching your existing pattern)
@@ -22,7 +22,7 @@ const errorStyles = {
 
 export default function TermsConditions({ form }: TermsConditionsProps) {
   return (
-    <FormField<SignupData>
+    <FormField<SignupProp>
       control={form.control}
       name="agreeToTerms"
       rules={{
