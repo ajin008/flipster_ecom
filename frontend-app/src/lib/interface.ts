@@ -24,4 +24,5 @@ export interface LoginContextType {
 export interface SignupContextType {
   signUpData: SignupProp | null;
   setSignUpData: (data: SignupProp | null) => void;
+  handleSignup: (data: SignupProp) => void;
 }

@@ -26,10 +26,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LeftBanner from "@/components/layout/LeftBanner";
 import { useRouter } from "next/navigation";
-import { SignupData } from "@/lib/interface";
+
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 import { MySignupContext } from "./SignupContext";
 import TermsConditions from "@/components/layout/ TermsConditions";
+import { SignupProp } from "@/lib/interface";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -42,12 +43,12 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { setSignUpData } = useContext(MySignupContext);
+  const { handleSignup } = useContext(MySignupContext);
 
   const router = useRouter();
 
   // Explicitly type the form with SignupData
-  const form = useForm<SignupData, undefined, SignupData>({
+  const form = useForm<SignupProp, undefined, SignupProp>({
     defaultValues: {
       username: "",
       email: "",
@@ -57,9 +58,8 @@ export default function SignupForm() {
     },
   });
 
-  const onSubmit = (data: SignupData) => {
-    if (data) setSignUpData(data);
-
+  const onSubmit = (data: SignupProp) => {
+    handleSignup(data);
     // Handle form submission
   };
 
