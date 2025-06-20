@@ -21,7 +21,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { IoChevronBackOutline } from "react-icons/io5";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LeftBanner from "@/components/layout/LeftBanner";
@@ -78,10 +79,10 @@ export default function SignupForm() {
       </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
         <button
-          className="hidden lg:block absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-2 rounded-md"
+          className="hidden lg:block absolute top-4 right-4  text-accent-foreground px-4 py-2 rounded-md"
           onClick={() => router.push("/login")}
         >
-          <MdKeyboardDoubleArrowLeft />
+          <IoChevronBackOutline size={32} />
         </button>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

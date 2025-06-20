@@ -1,8 +1,11 @@
 import { httpServer } from "./app";
 import { PORT } from "./config/config";
+import { disconnectDB } from "./db/connection";
 
 process.on("SIGINT", async () => {
   console.log("shutting down server...");
+
+  disconnectDB();
 
   httpServer.close(() => {
     console.log("server closed");

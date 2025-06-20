@@ -4,6 +4,7 @@ import React, { createContext, ReactNode, useState } from "react";
 import { signupUser } from "./api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 const defaultValue: SignupContextType = {
   signUpData: null,
@@ -34,8 +35,13 @@ export const SignupContextProvider = ({
         }, 300);
       }
     } catch (error) {
-      console.log("error:", error);
-      toast.error("Something went wrong!");
+      const axiosError = error as AxiosError;
+
+      if (axiosError.response?.status === 409) {
+        toast.error("User already exists. Please log in.");
+      } else {
+        toast.error("Something went wrong!");
+      }
     }
   };
   return (

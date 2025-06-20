@@ -1,16 +1,16 @@
+import dotenv from "dotenv";
 import cors from "cors";
+dotenv.config();
 import express, { Request, Application, Response } from "express";
 import { createServer } from "http";
 import morgan from "morgan";
-import dotenv from "dotenv";
 
+import { connectDB } from "./db/connection";
 import authRoute from "./api/routes/authRoute";
 import { authMiddleware } from "./api/middleware/auth";
 import { errorHandler } from "./api/middleware/errorHandler";
 
 const app: Application = express();
-
-dotenv.config();
 
 app.use(cors());
 
@@ -24,6 +24,8 @@ const httpServer = createServer(app);
 app.get("/", (req: Request, res: Response) => {
   res.send(`ok ${process.env.NODE_ENV || "development"}zesTEX`);
 });
+
+connectDB();
 
 app.use("/api/v1/auth", authRoute);
 

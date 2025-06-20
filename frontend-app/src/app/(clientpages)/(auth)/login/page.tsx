@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import LeftBanner from "@/components/layout/LeftBanner";
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 import { MyLoginContext } from "./LoginContext";
+import { IoChevronBackOutline } from "react-icons/io5";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -67,10 +68,10 @@ export default function LoginForm() {
       {/* right side */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
         <button
-          className="hidden lg:block absolute top-4 right-4 bg-accent text-accent-foreground px-4 py-2 rounded-md "
+          className="hidden lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md "
           onClick={() => router.push("/")}
         >
-          <MdKeyboardDoubleArrowLeft />
+          <IoChevronBackOutline size={32} />
         </button>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
