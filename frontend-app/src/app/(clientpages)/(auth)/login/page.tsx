@@ -59,7 +59,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen ">
       {/* left side */}
       <div className="hidden lg:flex lg:w-1/2 bg-muted/20 flex-col items-center justify-center bg-[url('/login.jpg')] bg-cover bg-center">
         <LeftBanner type="login" />

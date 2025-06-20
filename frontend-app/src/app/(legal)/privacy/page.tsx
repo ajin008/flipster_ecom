@@ -1,4 +1,4 @@
-"use client"; // Add this if using App Router
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -10,8 +10,7 @@ import {
   FiLock,
   FiMail,
 } from "react-icons/fi";
-import { useRouter } from "next/navigation"; // App Router
-// import { useRouter } from 'next/router'; // Pages Router
+import { useRouter } from "next/navigation";
 
 export default function PrivacyPage() {
   const router = useRouter();
@@ -36,27 +35,49 @@ export default function PrivacyPage() {
     if (window.history.length > 1) {
       router.back();
     } else {
-      router.push("/"); // Fallback to home page
+      router.push("/");
     }
   };
 
   return (
     <div className="min-h-screen bg-gaming-background text-gaming-textPrimary">
-      {/* Header */}
-      <div className="bg-gaming-cardBg border-b border-gaming-purple/20">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+      {/* Header with improved back button positioning */}
+      {/* <div className="bg-gaming-cardBg border-b border-gaming-purple/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex items-center gap-4">
             <button
               onClick={handleBack}
-              className="p-2 rounded-lg bg-gaming-purple/20 hover:bg-gaming-purple/30 transition-colors"
+              className="flex-shrink-0 p-2 rounded-lg bg-gaming-purple/20 hover:bg-gaming-purple/30 transition-colors"
+              aria-label="Go back"
             >
               <FiArrowLeft className="w-5 h-5" />
             </button>
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 Privacy Policy
               </h1>
-              <p className="text-gaming-textSecondary mt-2">
+              <p className="text-gaming-textSecondary mt-1 text-sm sm:text-base">
+                zesTEX - Last updated: June 2000, 2025
+              </p>
+            </div>
+          </div>
+        </div>
+      </div> */}
+
+      <div className=" border-b border-purple-500/20">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex items-start gap-4">
+            <button
+              onClick={handleBack}
+              className="p-2 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 transition-colors flex-shrink-0 mt-1"
+            >
+              <FiArrowLeft className="w-5 h-5 text-white" />
+            </button>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
+                Privacy Policy
+              </h1>
+              <p className="text-slate-400 mt-2 text-sm">
                 zesTEX - Last updated: June 20, 2025
               </p>
             </div>
@@ -64,29 +85,30 @@ export default function PrivacyPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      {/* Rest of your content remains the same */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Navigation Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8 bg-gaming-cardBg rounded-xl p-6 border border-gaming-purple/20">
+          <div className="lg:col-span-1 order-2 lg:order-1">
+            <div className="lg:sticky lg:top-8 bg-gaming-cardBg rounded-xl p-4 sm:p-6 border border-gaming-purple/20">
               <h3 className="font-semibold text-gaming-textPrimary mb-4">
                 Contents
               </h3>
-              <nav className="space-y-2">
+              <nav className="space-y-1 sm:space-y-2">
                 {sections.map((section) => {
                   const Icon = section.icon;
                   return (
                     <button
                       key={section.id}
                       onClick={() => scrollToSection(section.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                      className={`w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 rounded-lg text-left transition-colors ${
                         activeSection === section.id
                           ? "bg-gaming-purple text-white"
                           : "text-gaming-textSecondary hover:text-gaming-textPrimary hover:bg-gaming-purple/10"
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
-                      <span className="text-sm">{section.title}</span>
+                      <Icon className="w-4 h-4 flex-shrink-0" />
+                      <span className="text-sm truncate">{section.title}</span>
                     </button>
                   );
                 })}
@@ -95,15 +117,15 @@ export default function PrivacyPage() {
           </div>
 
           {/* Content */}
-          <div className="lg:col-span-3">
-            <div className="bg-gaming-cardBg rounded-xl p-8 border border-gaming-purple/20 space-y-8">
+          <div className="lg:col-span-3 order-1 lg:order-2">
+            <div className="bg-gaming-cardBg rounded-xl p-4 sm:p-6 lg:p-8 border border-gaming-purple/20 space-y-6 sm:space-y-8">
               {/* Overview Section */}
               <section id="overview" className="scroll-mt-8">
-                <h2 className="text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
-                  <FiShield className="w-6 h-6 text-gaming-purple" />
-                  Privacy Overview
+                <h2 className="text-xl sm:text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
+                  <FiShield className="w-5 h-5 sm:w-6 sm:h-6 text-gaming-purple flex-shrink-0" />
+                  <span>Privacy Overview</span>
                 </h2>
-                <div className="space-y-4 text-gaming-textSecondary">
+                <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
                   <p>
                     At zesTEX, we take your privacy seriously. This Privacy
                     Policy explains how we collect, use, and protect your
@@ -126,12 +148,12 @@ export default function PrivacyPage() {
 
               {/* Data Collection Section */}
               <section id="collection" className="scroll-mt-8">
-                <h2 className="text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
-                  <FiDatabase className="w-6 h-6 text-gaming-purple" />
-                  Data We Collect
+                <h2 className="text-xl sm:text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
+                  <FiDatabase className="w-5 h-5 sm:w-6 sm:h-6 text-gaming-purple flex-shrink-0" />
+                  <span>Data We Collect</span>
                 </h2>
-                <div className="space-y-4 text-gaming-textSecondary">
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary">
+                <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary">
                     Personal Information
                   </h3>
                   <ul className="space-y-2 ml-4">
@@ -143,7 +165,7 @@ export default function PrivacyPage() {
                     <li>• Profile information and preferences</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary mt-6">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary mt-6">
                     Transaction Data
                   </h3>
                   <ul className="space-y-2 ml-4">
@@ -153,7 +175,7 @@ export default function PrivacyPage() {
                     <li>• Gaming account details for listings</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary mt-6">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary mt-6">
                     Technical Data
                   </h3>
                   <ul className="space-y-2 ml-4">
@@ -167,12 +189,12 @@ export default function PrivacyPage() {
 
               {/* Data Usage Section */}
               <section id="usage" className="scroll-mt-8">
-                <h2 className="text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
-                  <FiEye className="w-6 h-6 text-gaming-purple" />
-                  How We Use Your Data
+                <h2 className="text-xl sm:text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
+                  <FiEye className="w-5 h-5 sm:w-6 sm:h-6 text-gaming-purple flex-shrink-0" />
+                  <span>How We Use Your Data</span>
                 </h2>
-                <div className="space-y-4 text-gaming-textSecondary">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="bg-gaming-purple/10 border border-gaming-purple/20 rounded-lg p-4">
                       <h4 className="font-semibold text-gaming-textPrimary mb-2">
                         Essential Services
@@ -197,7 +219,7 @@ export default function PrivacyPage() {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary mt-6">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary mt-6">
                     Communication
                   </h3>
                   <p>
@@ -210,11 +232,11 @@ export default function PrivacyPage() {
 
               {/* Data Sharing Section */}
               <section id="sharing" className="scroll-mt-8">
-                <h2 className="text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
-                  <FiUsers className="w-6 h-6 text-gaming-purple" />
-                  Data Sharing & Disclosure
+                <h2 className="text-xl sm:text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
+                  <FiUsers className="w-5 h-5 sm:w-6 sm:h-6 text-gaming-purple flex-shrink-0" />
+                  <span>Data Sharing & Disclosure</span>
                 </h2>
-                <div className="space-y-4 text-gaming-textSecondary">
+                <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
                   <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
                     <p className="text-green-400 font-medium mb-2">
                       We DO Share Data With:
@@ -243,7 +265,7 @@ export default function PrivacyPage() {
                     </ul>
                   </div>
 
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary mt-6">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary mt-6">
                     Legal Disclosure
                   </h3>
                   <p>
@@ -256,12 +278,12 @@ export default function PrivacyPage() {
 
               {/* Security Section */}
               <section id="security" className="scroll-mt-8">
-                <h2 className="text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
-                  <FiLock className="w-6 h-6 text-gaming-purple" />
-                  Security & Data Storage
+                <h2 className="text-xl sm:text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
+                  <FiLock className="w-5 h-5 sm:w-6 sm:h-6 text-gaming-purple flex-shrink-0" />
+                  <span>Security & Data Storage</span>
                 </h2>
-                <div className="space-y-4 text-gaming-textSecondary">
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary">
+                <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary">
                     Security Measures
                   </h3>
                   <ul className="space-y-2 ml-4">
@@ -272,7 +294,7 @@ export default function PrivacyPage() {
                     <li>• Employee background checks and training</li>
                   </ul>
 
-                  <h3 className="text-xl font-semibold text-gaming-textPrimary mt-6">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gaming-textPrimary mt-6">
                     Data Retention
                   </h3>
                   <p>
@@ -294,12 +316,12 @@ export default function PrivacyPage() {
 
               {/* Rights Section */}
               <section id="rights" className="scroll-mt-8">
-                <h2 className="text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
-                  <FiMail className="w-6 h-6 text-gaming-purple" />
-                  Your Privacy Rights
+                <h2 className="text-xl sm:text-2xl font-bold text-gaming-textPrimary mb-4 flex items-center gap-3">
+                  <FiMail className="w-5 h-5 sm:w-6 sm:h-6 text-gaming-purple flex-shrink-0" />
+                  <span>Your Privacy Rights</span>
                 </h2>
-                <div className="space-y-4 text-gaming-textSecondary">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="space-y-4">
                       <div className="bg-gaming-gold/10 border border-gaming-gold/20 rounded-lg p-4">
                         <h4 className="font-semibold text-gaming-textPrimary mb-2">

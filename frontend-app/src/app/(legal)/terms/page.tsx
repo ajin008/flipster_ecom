@@ -41,20 +41,20 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gaming-background text-gaming-textPrimary">
       {/* Header */}
-      <div className="bg-gaming-cardBg border-b border-gaming-purple/20">
+      <div className=" border-b border-purple-500/20">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-4">
+          <div className="flex items-start gap-4">
             <button
               onClick={handleBack}
-              className="p-2 rounded-lg bg-gaming-purple/20 hover:bg-gaming-purple/30 transition-colors"
+              className="p-2 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 transition-colors flex-shrink-0 mt-1"
             >
-              <FiArrowLeft className="w-5 h-5" />
+              <FiArrowLeft className="w-5 h-5 text-white" />
             </button>
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
                 Terms of Service
               </h1>
-              <p className="text-gaming-textSecondary mt-2">
+              <p className="text-slate-400 mt-2 text-sm">
                 zesTEX - Last updated: June 20, 2025
               </p>
             </div>
