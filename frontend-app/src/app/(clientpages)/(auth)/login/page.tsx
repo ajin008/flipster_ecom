@@ -24,7 +24,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LoginProp } from "@/lib/interface";
-import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import LeftBanner from "@/components/layout/LeftBanner";
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
