@@ -55,7 +55,7 @@ export default function TermsPage() {
                 Terms of Service
               </h1>
               <p className="text-slate-400 mt-2 text-sm">
-                zesTEX - Last updated: June 20, 2025
+                FlipSter - Last updated: June 20, 2025
               </p>
             </div>
           </div>
@@ -103,9 +103,9 @@ export default function TermsPage() {
                 </h2>
                 <div className="space-y-4 text-gaming-textSecondary">
                   <p>
-                    Welcome to zesTEX, a peer-to-peer marketplace for buying and
-                    selling gaming accounts. By using our platform, you agree to
-                    these Terms of Service ("Terms").
+                    Welcome to FlipSter, a peer-to-peer marketplace for buying
+                    and selling gaming accounts. By using our platform, you
+                    agree to these Terms of Service ("Terms").
                   </p>
                   <p>
                     Our platform facilitates transactions between users for
@@ -118,8 +118,8 @@ export default function TermsPage() {
                       Important Notice:
                     </p>
                     <p className="text-sm mt-2">
-                      zesTEX acts as an intermediary platform. We do not own or
-                      control the gaming accounts being traded. Users are
+                      FlipSter acts as an intermediary platform. We do not own
+                      or control the gaming accounts being traded. Users are
                       responsible for ensuring compliance with individual game
                       publishers' terms of service.
                     </p>
@@ -259,7 +259,7 @@ export default function TermsPage() {
                     Platform Limitations
                   </h3>
                   <p>
-                    zesTEX provides the platform but does not guarantee the
+                    FlipSter provides the platform but does not guarantee the
                     quality, legality, or functionality of gaming accounts.
                     Users transact at their own risk.
                   </p>
@@ -271,7 +271,7 @@ export default function TermsPage() {
                     <li>• Report disputes within 48 hours of transaction</li>
                     <li>• Provide evidence and documentation</li>
                     <li>• Mediation attempted before refund processing</li>
-                    <li>• Final decisions made by zesTEX support team</li>
+                    <li>• Final decisions made by FlipSter support team</li>
                   </ul>
 
                   <div className="bg-gaming-gold/10 border border-gaming-gold/20 rounded-lg p-4 mt-6">
@@ -279,11 +279,11 @@ export default function TermsPage() {
                       Contact Information:
                     </p>
                     <p className="text-sm mt-2">
-                      For legal matters: legal@zestex.com
+                      For legal matters: legal@FlipSter.com
                       <br />
-                      For disputes: disputes@zestex.com
+                      For disputes: disputes@FlipSter.com
                       <br />
-                      For general support: support@zestex.com
+                      For general support: support@FlipSter.com
                     </p>
                   </div>
                 </div>

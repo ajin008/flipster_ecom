@@ -89,7 +89,7 @@ export default function LoginForm() {
                 Welcome back
               </CardTitle>
               <CardDescription className="text-muted-foreground text-center">
-                Enter your credentials to sign in to zesTEX
+                Enter your credentials to sign in to FlipSter
               </CardDescription>
             </CardHeader>
 

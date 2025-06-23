@@ -25,9 +25,9 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">Z</span>
+                <span className="text-white font-bold text-lg">F</span>
               </div>
-              <h3 className="text-xl font-bold text-white">zesTEX.COM</h3>
+              <h3 className="text-xl font-bold text-white">Flipster.COM</h3>
             </div>
             <p className="text-gray-400 mb-4 text-sm">
               Trading platform for gamers all over the world
@@ -80,7 +80,7 @@ export default function Footer() {
                   className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2"
                 >
                   <Shield size={14} />
-                  zesTEX Guarantee
+                  Flipster Guarantee
                 </a>
               </li>
               <li>
@@ -192,7 +192,7 @@ export default function Footer() {
         <div className="border-t border-gaming-textSecondary pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-status-away ">
-              <p>© {new Date().getFullYear()} zesTEX Pte Ltd.</p>
+              <p>© {new Date().getFullYear()} Flipster Pte Ltd.</p>
               <div className="flex gap-4">
                 <a href="#" className="hover:text-gray-300 transition-colors">
                   Terms

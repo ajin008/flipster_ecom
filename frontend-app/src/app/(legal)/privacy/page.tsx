@@ -78,7 +78,7 @@ export default function PrivacyPage() {
                 Privacy Policy
               </h1>
               <p className="text-slate-400 mt-2 text-sm">
-                zesTEX - Last updated: June 20, 2025
+                FlipSter - Last updated: June 20, 2025
               </p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default function PrivacyPage() {
                 </h2>
                 <div className="space-y-4 text-gaming-textSecondary text-sm sm:text-base">
                   <p>
-                    At zesTEX, we take your privacy seriously. This Privacy
+                    At FlipSter, we take your privacy seriously. This Privacy
                     Policy explains how we collect, use, and protect your
                     personal information when you use our gaming account
                     marketplace.
@@ -357,9 +357,9 @@ export default function PrivacyPage() {
                     <p className="text-sm">
                       For privacy-related questions or to exercise your rights:
                       <br />
-                      <strong>Email:</strong> privacy@zestex.com
+                      <strong>Email:</strong> privacy@FlipSter.com
                       <br />
-                      <strong>Phone:</strong> +1-800-ZESTEX
+                      <strong>Phone:</strong> +1-800-FlipSter
                       <br />
                       <strong>Address:</strong> 123 Gaming Street, Digital City,
                       DC 12345

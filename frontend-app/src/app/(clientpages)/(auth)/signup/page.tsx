@@ -101,7 +101,7 @@ export default function SignupForm() {
                 Create an account
               </CardTitle>
               <CardDescription className="text-muted-foreground text-center">
-                Enter your details to sign up for zesTEX
+                Enter your details to sign up for FlipSter
               </CardDescription>
             </CardHeader>
 
