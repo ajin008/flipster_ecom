@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "zesTEX",
+  title: "FlipSter",
   description: "E-commerce Platform",
 };
 
