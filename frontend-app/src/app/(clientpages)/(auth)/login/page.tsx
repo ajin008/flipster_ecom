@@ -116,7 +116,7 @@ export default function LoginForm() {
                             <FiMail className="absolute left-3 top-3 text-muted-foreground" />
                             <Input
                               placeholder="name@example.com"
-                              className="pl-10 bg-muted border-border focus:border-primary"
+                              className="pl-10 bg-muted border-border focus:border-primary text-foreground"
                               {...field}
                             />
                           </div>

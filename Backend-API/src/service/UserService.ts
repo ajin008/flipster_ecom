@@ -24,3 +24,15 @@ export const registerUser = async ({
     agreeToTerms,
   });
 };
+
+export const loginUser = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const existing = await findUserByEmail(email);
+  if (!existing) throw new Error("User Not Found");
+  return true;
+};

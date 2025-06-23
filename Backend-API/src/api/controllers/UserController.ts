@@ -1,8 +1,13 @@
-import { registerUser } from "../../service/UserService";
+import { loginUser, registerUser } from "../../service/UserService";
 
 export const logInHandler = async (req: any, res: any, next: any) => {
   console.log(`logInHandler is triggering`, req.body);
   try {
+    const { email, password } = req.body;
+    await loginUser({ email, password });
+    res.status(201).json({
+      message: "user login successful",
+    });
   } catch (error) {
     next(error);
   }
