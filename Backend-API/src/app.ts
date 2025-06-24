@@ -12,12 +12,16 @@ import { errorHandler } from "./api/middleware/errorHandler";
 
 const app: Application = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://flipster.store"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "1mb" }));
-
-app.use(errorHandler);
 
 const httpServer = createServer(app);
 
@@ -28,5 +32,6 @@ app.get("/", (req: Request, res: Response) => {
 connectDB();
 
 app.use("/api/v1/auth", authRoute);
+app.use(errorHandler);
 
 export { app, httpServer };
