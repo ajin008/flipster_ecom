@@ -28,7 +28,7 @@ const Career = () => {
       department: "Quality Assurance",
       location: "Remote / Hybrid",
       type: "Full-time",
-      salary: "₹3,000,000 - ₹4,500,000",
+      salary: "₹2,200,00 - ₹3,500,00",
       icon: <GamepadIcon className="w-6 h-6" />,
       description:
         "Join our QA team to ensure game accounts and transactions meet the highest quality standards on Flipster.",
@@ -61,7 +61,7 @@ const Career = () => {
       department: "Engineering",
       location: "Remote / Bangalore",
       type: "Full-time",
-      salary: "₹6,500,000 - ₹10,000,000",
+      salary: "₹6,500,00 - ₹10,000,00",
       icon: <Code className="w-6 h-6" />,
       description:
         "Build and scale the robust backend infrastructure that powers Flipster's gaming marketplace.",
@@ -94,7 +94,7 @@ const Career = () => {
       department: "Design",
       location: "Remote / Mumbai",
       type: "Full-time",
-      salary: "₹5,000,000 - ₹7,500,000",
+      salary: "₹5,000,00 - ₹7,500,00",
       icon: <Palette className="w-6 h-6" />,
       description:
         "Shape the visual identity and user experience of the leading gaming marketplace platform.",
