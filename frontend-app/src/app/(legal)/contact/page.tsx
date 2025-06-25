@@ -15,7 +15,6 @@ import {
   Mail,
   Clock,
   CheckCircle,
-  AlertCircle,
   Info,
   BookOpen,
   Video,
