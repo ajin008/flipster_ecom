@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Facebook,
@@ -11,11 +12,13 @@ import {
   Shield,
   HelpCircle,
   Phone,
-  BookOpen,
   Info,
+  Award,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Footer() {
+  const router = useRouter();
   return (
     <footer className=" text-gray-300  mt-auto">
       <div className="container mx-auto px-4 py-12">
@@ -120,6 +123,10 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/about");
+                  }}
                   className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2"
                 >
                   <Info size={14} />
@@ -129,15 +136,10 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2"
-                >
-                  <HelpCircle size={14} />
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/contact");
+                  }}
                   className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2"
                 >
                   <Phone size={14} />
@@ -146,11 +148,15 @@ export default function Footer() {
               </li>
               <li>
                 <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/career");
+                  }}
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2"
                 >
-                  <BookOpen size={14} />
-                  Blog
+                  <Award size={14} />
+                  career
                 </a>
               </li>
             </ul>
