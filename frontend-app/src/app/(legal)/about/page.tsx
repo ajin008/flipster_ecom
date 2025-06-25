@@ -15,6 +15,7 @@ import {
   Heart,
   ArrowLeft,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const About = () => {
   const [activeTab, setActiveTab] = useState("mission");
@@ -153,6 +154,8 @@ const About = () => {
     { id: "values", label: "Our Values", icon: <Heart className="w-5 h-5" /> },
   ];
 
+  const router = useRouter();
+
   return (
     <div className="min-h-screen bg-gaming-background text-gaming-textPrimary">
       {/* Hero Section */}
@@ -160,7 +163,7 @@ const About = () => {
       <section className="relative overflow-hidden">
         <div className="absolute top-6 left-6 z-10">
           <button
-            onClick={() => window.history.back()}
+            onClick={() => router.push("/")}
             className="flex items-center gap-2 text-gaming-textSecondary hover:text-gaming-purple transition-colors duration-300"
           >
             <ArrowLeft className="w-5 h-5" />

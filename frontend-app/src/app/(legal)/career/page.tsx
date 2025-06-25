@@ -15,9 +15,11 @@ import {
   Building,
   ArrowLeft,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Career = () => {
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
+  const router = useRouter();
 
   const jobs = [
     {
@@ -151,7 +153,7 @@ const Career = () => {
         {/* Back Button */}
         <div className="absolute top-6 left-6 z-10">
           <button
-            onClick={() => window.history.back()}
+            onClick={() => router.push("/")}
             className="flex items-center gap-2 text-gaming-textSecondary hover:text-gaming-purple transition-colors duration-300"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -178,10 +180,20 @@ const Career = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <button className="px-8 py-4 bg-gradient-button hover:bg-gradient-button-hover text-white font-bold rounded-xl shadow-gaming-lg hover:shadow-gaming-xl transition-all duration-300 transform hover:scale-105">
+              <button
+                onClick={() => {
+                  document.getElementById("open-positions")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+                className="px-8 py-4 bg-gradient-button hover:bg-gradient-button-hover text-white font-bold rounded-xl shadow-gaming-lg hover:shadow-gaming-xl transition-all duration-300 transform hover:scale-105"
+              >
                 View Open Positions
               </button>
-              <button className="px-8 py-4 border-2 border-gaming-purple text-gaming-purple hover:bg-gaming-purple hover:text-white font-bold rounded-xl transition-all duration-300">
+              <button
+                onClick={() => router.push("/about")}
+                className="px-8 py-4 border-2 border-gaming-purple text-gaming-purple hover:bg-gaming-purple hover:text-white font-bold rounded-xl transition-all duration-300"
+              >
                 Learn About Culture
               </button>
             </div>
@@ -264,7 +276,7 @@ const Career = () => {
       </section>
 
       {/* Open Positions Section */}
-      <section className="py-20">
+      <section id="open-positions" className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-black mb-6">
