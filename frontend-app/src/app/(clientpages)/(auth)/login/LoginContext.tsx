@@ -9,6 +9,7 @@ const defaultValue: LoginContextType = {
   loginFormData: null,
   setLoginFormData: () => {},
   handleLogin: () => {},
+  loading: false,
 };
 
 export const MyLoginContext = createContext<LoginContextType>(defaultValue);
@@ -19,22 +20,30 @@ export const MyLoginContextProvider = ({
   children: ReactNode;
 }) => {
   const [loginFormData, setLoginFormData] = useState<LoginProp | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (data: LoginProp) => {
     setLoginFormData(data);
-    const res = await loginUser(data);
-    if (res.status === 201 || res.status === 200)
-      toast.success("Welcome back, 🎉 Your exclusive deals await.");
+    setLoading(true);
+    try {
+      const res = await loginUser(data);
+      if (res.status === 201 || res.status === 200)
+        toast.success("Welcome back, 🎉 Your exclusive deals await.");
 
-    setTimeout(() => {
-      router.push("/");
-    }, 1000);
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("Login failed!");
+      setLoading(false);
+    }
   };
 
   return (
     <MyLoginContext.Provider
-      value={{ loginFormData, setLoginFormData, handleLogin }}
+      value={{ loginFormData, setLoginFormData, handleLogin, loading }}
     >
       {children}
     </MyLoginContext.Provider>

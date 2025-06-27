@@ -12,13 +12,7 @@ import { errorHandler } from "./api/middleware/errorHandler";
 
 const app: Application = express();
 
-app.use(
-  cors({
-    origin: ["https://flipster.store"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "1mb" }));

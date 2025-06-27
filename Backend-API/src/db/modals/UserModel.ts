@@ -7,6 +7,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   agreeToTerms: boolean;
+  otp?: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -15,6 +16,7 @@ const UserSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     agreeToTerms: { type: Boolean, required: true },
+    otp: { type: String, required: false },
   },
   { timestamps: true }
 );

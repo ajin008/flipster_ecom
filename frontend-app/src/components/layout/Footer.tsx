@@ -156,7 +156,7 @@ export default function Footer() {
                   className="text-gray-400 hover:text-white transition-colors text-sm flex items-center gap-2"
                 >
                   <Award size={14} />
-                  career
+                  Career
                 </a>
               </li>
             </ul>

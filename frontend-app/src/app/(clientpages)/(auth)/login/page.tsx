@@ -29,6 +29,7 @@ import LeftBanner from "@/components/layout/LeftBanner";
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 import { MyLoginContext } from "./LoginContext";
 import { IoChevronBackOutline } from "react-icons/io5";
+import PropagateLoader from "@/components/shared/PropagateLoader";
 
 // Custom styles for form error messages
 const errorStyles = {
@@ -40,7 +41,7 @@ const errorStyles = {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { handleLogin } = useContext(MyLoginContext);
+  const { handleLogin, loading } = useContext(MyLoginContext);
 
   const router = useRouter();
   const form = useForm({
@@ -174,7 +175,7 @@ export default function LoginForm() {
                     type="submit"
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                   >
-                    Sign In
+                    {loading ? <PropagateLoader /> : "Sign In"}
                   </Button>
                 </form>
               </Form>

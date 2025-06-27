@@ -13,16 +13,22 @@ export interface SignupProp {
   password: string;
   confirmPassword: string;
   agreeToTerms: boolean;
+  otp: string;
 }
 
 export interface LoginContextType {
   loginFormData: LoginProp | null;
   setLoginFormData: (data: LoginProp | null) => void;
   handleLogin: (data: LoginProp) => void;
+  loading: boolean;
 }
 
 export interface SignupContextType {
   signUpData: SignupProp | null;
   setSignUpData: (data: SignupProp | null) => void;
   handleSignup: (data: SignupProp) => void;
+  loading: boolean;
+  isOtpOpen: boolean;
+  handleSignupWithOtp: (otp: string) => void;
+  setIsOtpOpen: (isOpen: boolean) => void;
 }

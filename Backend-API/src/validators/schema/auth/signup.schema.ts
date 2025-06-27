@@ -5,8 +5,12 @@ export const signUpSchema = z.object({
   email: z.string().email({ message: "Invalid email format" }),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters" }),
+    .min(8, { message: "Password must be at least 8 characters" }),
   agreeToTerms: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
   }),
+  otp: z
+    .string()
+    .length(6, { message: "OTP must be 6 digits" })
+    .regex(/^\d{6}$/, { message: "OTP must contain only digits" }),
 });
