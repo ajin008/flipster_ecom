@@ -1,14 +1,5 @@
-node_modules/
-.env
-.next/
-dist/
-build/
-
-
-# Ignore editor-specific folders
-.history
+# Global ignores
+.DS_Store
+*.log
 .vscode/
-
-# Ignore environment and local config files
-.env
-.env.local
+.history
