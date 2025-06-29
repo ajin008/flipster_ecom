@@ -91,6 +91,11 @@ export const SignupContextProvider = ({
       const message =
         axiosError.response?.data?.message || "Something went wrong!";
       toast.error(message);
+      if (message) {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
     }
   };
 
