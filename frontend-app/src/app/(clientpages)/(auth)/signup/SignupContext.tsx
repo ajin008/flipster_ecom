@@ -1,11 +1,12 @@
 "use client";
 import { SignupContextType, SignupProp } from "@/lib/interface";
 import React, { createContext, ReactNode, useState } from "react";
-import { generateOtp, signupUser } from "./api";
+import { generateOtp, getUser, signupUser } from "./api";
 import { toast } from "sonner";
 
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/store/userStore";
 
 const defaultValue: SignupContextType = {
   signUpData: null,
@@ -27,11 +28,12 @@ export const SignupContextProvider = ({
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState<SignupProp | null>(null);
   const [isOtpOpen, setIsOtpOpen] = useState(false);
+  const { setUser } = useUserStore();
 
   const router = useRouter();
 
   const handleSignup = async (data: SignupProp) => {
-    console.log("handleSignup is triggered with data:", data);
+    console.log("handleSignup is triggering");
     try {
       setSignUpData(data);
       setLoading(true);
@@ -76,14 +78,25 @@ export const SignupContextProvider = ({
         agreeToTerms: signUpData.agreeToTerms,
         otp,
       };
-      const res = await signupUser(data);
+      const signupRes = await signupUser(data);
 
-      if (res.status === 200 || res.status === 201) {
+      if (signupRes.status === 200 || signupRes.status === 201) {
         toast.success("Signup successful!");
-        setTimeout(() => {
-          router.push("/");
-          setLoading(false);
-        }, 1000);
+
+        const res = await getUser(signupRes.data.user.id);
+
+        if (res.status === 200 || res.status === 201) {
+          const userData = res.data.user.user;
+          console.log("✅ setting user as:", userData);
+          setUser(userData);
+
+          setTimeout(() => {
+            router.push("/");
+            setLoading(false);
+          }, 1000);
+        } else {
+          toast.error("Failed to fetch user data");
+        }
       }
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;

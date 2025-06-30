@@ -43,7 +43,7 @@ export default function LoginForm() {
 
   const { handleLogin, loading } = useContext(MyLoginContext);
 
-  const router = useRouter();
+  const history = useRouter();
   const form = useForm({
     defaultValues: {
       email: "",
@@ -68,8 +68,8 @@ export default function LoginForm() {
       {/* right side */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
         <button
-          className="hidden lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md "
-          onClick={() => router.push("/")}
+          className=" lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md hover:bg-muted/50 transition-colors"
+          onClick={() => history.back()}
         >
           <IoChevronBackOutline size={32} />
         </button>

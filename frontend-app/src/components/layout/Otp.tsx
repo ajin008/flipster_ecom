@@ -189,6 +189,8 @@ const Otp = () => {
           <CardContent className="px-4 sm:px-6">
             <Form {...form}>
               <form
+                autoComplete="off"
+                data-form-type="other"
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
@@ -208,13 +210,16 @@ const Otp = () => {
                         <FormItem>
                           <FormControl>
                             <input
+                              name={`otp-${index}`}
                               ref={(el: HTMLInputElement | null) => {
                                 inputRefs.current[index] = el;
                               }}
                               type="text"
                               inputMode="numeric"
                               maxLength={1}
-                              className="w-7 h-7 sm:w-12  sm:h-12 text-center text-xs sm:text-lg font-semibold bg-muted border-gold border rounded-sm focus:border-primary text-foreground transition-colors font-mono"
+                              autoComplete="off"
+                              autoCorrect="off"
+                              className="w-12 h-12 sm:w-12  sm:h-12 text-center text-xs sm:text-lg font-semibold bg-muted border-gold border rounded-sm focus:border-primary text-foreground transition-colors font-mono"
                               value={field.value}
                               onChange={(e) =>
                                 handleInputChange(e.target.value, index, field)

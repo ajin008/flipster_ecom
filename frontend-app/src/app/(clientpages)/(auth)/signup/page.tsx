@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -26,7 +27,6 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LeftBanner from "@/components/layout/LeftBanner";
-import { useRouter } from "next/navigation";
 
 import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 import { MySignupContext } from "./SignupContext";
@@ -48,7 +48,7 @@ export default function SignupForm() {
 
   const { handleSignup, isOtpOpen, loading } = useContext(MySignupContext);
 
-  const router = useRouter();
+  const history = useRouter();
 
   // Explicitly type the form with SignupData
   const form = useForm<SignupProp, undefined, SignupProp>({
@@ -84,8 +84,8 @@ export default function SignupForm() {
       ) : (
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
           <button
-            className="hidden lg:block absolute top-4 right-4  text-accent-foreground px-4 py-2 rounded-md"
-            onClick={() => router.push("/login")}
+            className=" lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md hover:bg-muted/50 transition-colors"
+            onClick={() => history.back()}
           >
             <IoChevronBackOutline size={32} />
           </button>

@@ -5,12 +5,15 @@ import ZesTEXLogo from "./ZesTEXLogo";
 import { useRouter } from "next/navigation";
 import { Bell } from "react-feather";
 import NotificationsModal from "./NotificationsModal";
+import { useUserStore } from "@/store/userStore";
+import ProfileDropDown from "./ProfileDropDown";
 
 export default function Header() {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const router = useRouter();
 
+  const { user } = useUserStore();
   useEffect(() => {
     const checkScreenSize = () => {
       setIsLargeScreen(window.innerWidth >= 1024);
@@ -39,28 +42,43 @@ export default function Header() {
             <ZesTEXLogo />
             {/* Mobile buttons grouped together */}
 
-            <div className="flex items-center gap-2 sm:hidden">
+            {user ? (
+              <div className="sm:hidden">
+                {" "}
+                {/* Hide on desktop */}
+                <ProfileDropDown />
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 sm:hidden">
+                <Button
+                  onClick={handleNotificationClick}
+                  className="bg-transparent hover:bg-transparent cursor-pointer"
+                >
+                  <Bell />
+                </Button>
+                <Button onClick={() => router.push("/login")}>GET IN</Button>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop buttons */}
+          {user ? (
+            <div className="hidden sm:block">
+              {" "}
+              {/* Hide on mobile */}
+              <ProfileDropDown />
+            </div>
+          ) : (
+            <div className="hidden sm:flex items-center gap-2 sm:ml-auto">
               <Button
                 onClick={handleNotificationClick}
                 className="bg-transparent hover:bg-transparent cursor-pointer"
               >
-                <Bell />
+                <Bell size={28} />
               </Button>
               <Button onClick={() => router.push("/login")}>GET IN</Button>
             </div>
-          </div>
-
-          {/* Desktop buttons */}
-          <div className="hidden sm:flex items-center gap-2 sm:ml-auto">
-            {/* <Button className="bg-amber-400">start selling</Button> */}
-            <Button
-              onClick={handleNotificationClick}
-              className="bg-transparent hover:bg-transparent cursor-pointer"
-            >
-              <Bell size={28} />
-            </Button>
-            <Button onClick={() => router.push("/login")}>GET IN</Button>
-          </div>
+          )}
         </div>
       </header>
       <NotificationsModal

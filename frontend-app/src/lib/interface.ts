@@ -32,3 +32,13 @@ export interface SignupContextType {
   handleSignupWithOtp: (otp: string) => void;
   setIsOtpOpen: (isOpen: boolean) => void;
 }
+
+export interface IUserId {
+  id: string;
+}
+
+export interface IUser {
+  id: string;
+  email: string;
+  username: string;
+}

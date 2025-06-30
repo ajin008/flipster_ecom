@@ -1,11 +1,11 @@
 import axios, { AxiosError } from "axios";
 import qs from "query-string";
 import { API_BASE_URL } from "@/lib/constants";
-import { attachToken } from "./interceptors";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 12000,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -14,8 +14,12 @@ const apiClient = axios.create({
     qs.stringify(params, { arrayFormat: "bracket" }),
 });
 
-apiClient.interceptors.request.use(attachToken, (error: AxiosError) =>
-  Promise.reject(error)
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    console.error("API Error:", error.response?.data || error.message);
+    return Promise.reject(error);
+  }
 );
 
 export default apiClient;
