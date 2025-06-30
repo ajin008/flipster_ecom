@@ -123,18 +123,18 @@ const ProfileDropDown = () => {
 
       {/* Dropdown Modal */}
       {isOpen && (
-        <div className="absolute top-12 right-0 w-64 bg-slate-950 backdrop-blur-xl rounded-xl shadow-2xl border z-50 overflow-hidden">
+        <div className="absolute top-12 right-0 w-64 md:w-80 bg-slate-950 backdrop-blur-xl rounded-xl shadow-2xl border z-50 overflow-hidden">
           {/* Header */}
-          <div className="px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-700 border-b border-purple-500/30">
+          <div className="px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-purple-600 to-purple-700 border-b border-purple-500/30">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                <User size={16} className="text-white" />
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center">
+                <User size={16} className="text-white md:w-5 md:h-5" />
               </div>
               <div>
-                <p className="text-white font-semibold text-sm">
+                <p className="text-white font-semibold text-sm md:text-base">
                   {user?.username}
                 </p>
-                <p className="text-purple-100 text-xs opacity-80">
+                <p className="text-purple-100 text-xs md:text-sm opacity-80">
                   {user?.email}
                 </p>
               </div>
@@ -149,15 +149,15 @@ const ProfileDropDown = () => {
                 <button
                   key={index}
                   onClick={() => handleItemClick(item)}
-                  className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-800/60 transition-all duration-200 text-left group ${
+                  className={`w-full px-4 py-3 md:px-6 md:py-4 flex items-center gap-3 md:gap-4 hover:bg-gray-800/60 transition-all duration-200 text-left group ${
                     item.className || "text-gray-200 hover:text-white"
                   }`}
                 >
                   <IconComponent
                     size={18}
-                    className="group-hover:text-purple-400 transition-colors"
+                    className="group-hover:text-purple-400 transition-colors md:w-5 md:h-5"
                   />
-                  <span className="text-sm font-medium flex-1">
+                  <span className="text-sm md:text-base font-medium flex-1">
                     {item.label}
                   </span>
                   {item.badge && (
@@ -171,8 +171,8 @@ const ProfileDropDown = () => {
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2 bg-gray-900/60 border-t border-gray-700/50">
-            <p className="text-xs text-gray-400 text-center">
+          <div className="px-4 py-2 md:px-6 md:py-3 bg-gray-900/60 border-t border-gray-700/50">
+            <p className="text-xs md:text-sm text-gray-400 text-center">
               FlipSter Gaming Platform
             </p>
           </div>
