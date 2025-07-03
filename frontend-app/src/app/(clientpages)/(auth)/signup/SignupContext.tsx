@@ -1,12 +1,11 @@
 "use client";
 import { SignupContextType, SignupProp } from "@/lib/interface";
 import React, { createContext, ReactNode, useState } from "react";
-import { generateOtp, getUser, signupUser } from "./api";
+import { generateOtp, signupUser } from "./api";
 import { toast } from "sonner";
 
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useUserStore } from "@/store/userStore";
+import { extractAxiosErrorMessage } from "@/lib/utils/extractAxiosError";
 
 const defaultValue: SignupContextType = {
   signUpData: null,
@@ -28,7 +27,6 @@ export const SignupContextProvider = ({
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState<SignupProp | null>(null);
   const [isOtpOpen, setIsOtpOpen] = useState(false);
-  const { setUser } = useUserStore();
 
   const router = useRouter();
 
@@ -45,13 +43,8 @@ export const SignupContextProvider = ({
       }
       setLoading(false);
     } catch (error) {
-      const axiosError = error as AxiosError;
-
-      if (axiosError.response?.status === 409) {
-        toast.error("User already exists. Please log in.");
-      } else {
-        toast.error("Something went wrong!");
-      }
+      const message = extractAxiosErrorMessage(error);
+      toast.error(message);
       setLoading(false);
     }
   };
@@ -82,33 +75,14 @@ export const SignupContextProvider = ({
 
       if (signupRes.status === 200 || signupRes.status === 201) {
         toast.success("Signup successful!");
-
-        const res = await getUser(signupRes.data.user.id);
-
-        if (res.status === 200 || res.status === 201) {
-          const userData = res.data.user.user;
-          console.log("✅ setting user as:", userData);
-          setUser(userData);
-
-          setTimeout(() => {
-            router.push("/");
-            setLoading(false);
-          }, 1000);
-        } else {
-          toast.error("Failed to fetch user data");
-        }
-      }
-    } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>;
-
-      const message =
-        axiosError.response?.data?.message || "Something went wrong!";
-      toast.error(message);
-      if (message) {
         setTimeout(() => {
+          router.push("/");
           setLoading(false);
         }, 1000);
       }
+    } catch (error) {
+      const message = extractAxiosErrorMessage(error);
+      toast.error(message);
     }
   };
 

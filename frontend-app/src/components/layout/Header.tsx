@@ -23,10 +23,9 @@ export default function Header() {
         const res = await getMe();
         console.log("✅ API response:", res);
         if (res.status === 200 || res.status === 201) {
-          const data = await res.data.user.user;
-          setUser(data);
-        }
-        if (res.data.user === null) {
+          const userData = res.data.user.user;
+          setUser(userData);
+        } else if (res.data.user === null) {
           console.log("User not logged in.");
         } else {
           setUser(res.data.user);

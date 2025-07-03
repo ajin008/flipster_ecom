@@ -4,6 +4,7 @@ import React, { createContext, useState, ReactNode } from "react";
 import { loginUser } from "./api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { extractAxiosErrorMessage } from "@/lib/utils/extractAxiosError";
 
 const defaultValue: LoginContextType = {
   loginFormData: null,
@@ -35,8 +36,8 @@ export const MyLoginContextProvider = ({
         router.push("/");
       }, 1000);
     } catch (error) {
-      console.log(error);
-      toast.error("Login failed!");
+      const msg = extractAxiosErrorMessage(error);
+      toast.error(msg);
       setLoading(false);
     }
   };

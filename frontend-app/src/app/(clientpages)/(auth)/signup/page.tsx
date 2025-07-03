@@ -6,6 +6,7 @@ import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { IoClose } from "react-icons/io5";
 
 import {
   Card,
@@ -84,7 +85,7 @@ export default function SignupForm() {
       ) : (
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
           <button
-            className=" lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md hover:bg-muted/50 transition-colors"
+            className="hidden lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md hover:bg-muted/50 transition-colors"
             onClick={() => history.back()}
           >
             <IoChevronBackOutline size={32} />
@@ -95,7 +96,13 @@ export default function SignupForm() {
             transition={{ duration: 0.5 }}
             className="w-full max-w-md"
           >
-            <Card className="border border-border bg-card shadow-lg">
+            <Card className="border border-border bg-card shadow-lg relative">
+              <button
+                className="lg:hidden absolute top-4 right-4 text-accent-foreground hover:bg-muted/50 transition-colors rounded-full p-1 z-10"
+                onClick={() => history.back()}
+              >
+                <IoClose size={24} />
+              </button>
               <CardHeader className="space-y-1">
                 <div className="flex items-center justify-center mb-2">
                   <div className="text-3xl ">
@@ -257,7 +264,7 @@ export default function SignupForm() {
                     <div className="w-full border-t border-border"></div>
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">
+                    <span className="bg-card/80 backdrop-blur-sm px-3 py-1 text-muted-foreground border border-border/20 rounded-full">
                       OR
                     </span>
                   </div>
