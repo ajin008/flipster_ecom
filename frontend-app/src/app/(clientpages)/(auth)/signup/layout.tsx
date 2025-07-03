@@ -4,5 +4,5 @@ export default function signupLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <SignupContextProvider>{children};</SignupContextProvider>;
+  return <SignupContextProvider>{children}</SignupContextProvider>;
 }
