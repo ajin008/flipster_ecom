@@ -83,7 +83,7 @@ export default function SignupForm() {
       {isOtpOpen ? (
         <Otp />
       ) : (
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative">
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-6 relative -mt-8 lg:mt-0">
           <button
             className="hidden lg:block absolute top-4 right-4 text-accent-foreground px-4 py-2 rounded-md hover:bg-muted/50 transition-colors"
             onClick={() => history.back()}
