@@ -29,7 +29,6 @@ export interface SignupContextType {
   handleSignup: (data: SignupProp) => void;
   loading: boolean;
   isOtpOpen: boolean;
-  handleSignupWithOtp: (otp: string) => void;
   setIsOtpOpen: (isOpen: boolean) => void;
 }
 
