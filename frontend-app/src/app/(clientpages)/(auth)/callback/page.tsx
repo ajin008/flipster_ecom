@@ -14,21 +14,25 @@ export default function AuthCallback() {
 
       if (user) {
         // Check if profile already exists
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id)
-          .single();
+        try {
+          const { data: profile, error: profileError } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .single();
 
-        if (!profile) {
-          // Insert profile
-          await supabase.from("profiles").insert({
-            id: user.id,
-            username: user.user_metadata?.username || "",
-          });
+          if (profileError || !profile) {
+            await supabase.from("profiles").insert({
+              id: user.id,
+              username: user.user_metadata?.username || "",
+            });
+          }
+
+          router.push("/");
+        } catch (error) {
+          console.error("Error completing signup:", error);
+          router.push("/login");
         }
-
-        router.push("/");
       } else {
         router.push("/login");
       }

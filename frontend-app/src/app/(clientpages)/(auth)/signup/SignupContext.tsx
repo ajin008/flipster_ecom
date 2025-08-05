@@ -29,7 +29,7 @@ export const SignupContextProvider = ({
     try {
       setSignUpData(data);
       setLoading(true);
-      const { data: error } = await supabase.auth.signUp({
+      const { data: signupData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
@@ -37,6 +37,7 @@ export const SignupContextProvider = ({
           data: { username: data.username },
         },
       });
+      console.log("📦 Signup Response:", signupData);
 
       if (error) throw error;
       toast.success("Confirmation email sent. Please check your inbox.");
