@@ -1,10 +1,10 @@
 "use client";
 import { LoginContextType, LoginProp } from "@/lib/interface";
 import React, { createContext, useState, ReactNode } from "react";
-import { loginUser } from "./api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { extractAxiosErrorMessage } from "@/lib/utils/extractAxiosError";
+import supabase from "@/lib/supabaseClient";
 
 const defaultValue: LoginContextType = {
   loginFormData: null,
@@ -28,9 +28,13 @@ export const MyLoginContextProvider = ({
     setLoginFormData(data);
     setLoading(true);
     try {
-      const res = await loginUser(data);
-      if (res.status === 201 || res.status === 200)
-        toast.success("Welcome back, 🎉 Your exclusive deals await.");
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (error) throw error;
+      toast.success("Welcome back, 🎉 Your exclusive deals await.");
 
       setTimeout(() => {
         router.push("/");

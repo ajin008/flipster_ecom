@@ -33,7 +33,6 @@ import ZesTEXLogo from "@/components/layout/ZesTEXLogo";
 import { MySignupContext } from "./SignupContext";
 import TermsConditions from "@/components/layout/ TermsConditions";
 import { SignupProp } from "@/lib/interface";
-import Otp from "@/components/layout/Otp";
 import PropagateLoader from "@/components/shared/PropagateLoader";
 
 // Custom styles for form error messages
