@@ -8,22 +8,29 @@ export default function AuthCallback() {
 
   useEffect(() => {
     console.log("auth/callback page is triggering");
+
     const completeSignup = async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
+      const user = session?.user;
 
       if (user) {
-        // Check if profile already exists
+        console.log("✅ Session user:", user);
+        console.log("📦 Metadata:", user.user_metadata);
+
         try {
           const { data: profile, error: profileError } = await supabase
             .from("profiles")
             .select("*")
             .eq("id", user.id)
-            .single();
+            .maybeSingle(); // ✅ safe if 0 rows
 
-          if (profileError || !profile) {
-            console.log("Inserting profile for:", user.id, user.user_metadata);
+          if (profileError)
+            console.error("Profile select error:", profileError);
+
+          if (!profile) {
+            console.log("🆕 Inserting new profile");
             await supabase.from("profiles").insert({
               id: user.id,
               username: user.user_metadata?.username || "",
@@ -32,7 +39,7 @@ export default function AuthCallback() {
 
           router.push("/");
         } catch (error) {
-          console.error("Error completing signup:", error);
+          console.error("❌ Error completing signup:", error);
           router.push("/login");
         }
       } else {
