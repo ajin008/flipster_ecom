@@ -7,7 +7,7 @@ import { Bell } from "react-feather";
 import NotificationsModal from "./NotificationsModal";
 import { useUserStore } from "@/store/userStore";
 import ProfileDropDown from "./ProfileDropDown";
-import { getMe } from "@/api/api";
+import { getCurrentUser } from "../../../services/getUser";
 
 export default function Header() {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
@@ -20,15 +20,13 @@ export default function Header() {
     console.log("Fetching user Data...");
     const fetchUser = async () => {
       try {
-        const res = await getMe();
-        console.log("✅ API response:", res);
-        if (res.status === 200 || res.status === 201) {
-          const userData = res.data.user.user;
-          setUser(userData);
-        } else if (res.data.user === null) {
-          console.log("User not logged in.");
+        const user = await getCurrentUser();
+        console.log("✅ API response:", user);
+
+        if (user) {
+          setUser(user); // ✅ Includes id, email, username
         } else {
-          setUser(res.data.user);
+          console.log("No user logged in.");
         }
       } catch (error) {
         console.log("error in fetching user data", error);
@@ -38,6 +36,7 @@ export default function Header() {
   }, [setUser]);
 
   const { user } = useUserStore();
+
   useEffect(() => {
     const checkScreenSize = () => {
       setIsLargeScreen(window.innerWidth >= 1024);

@@ -1,6 +1,6 @@
-import { logoutApi } from "@/api/api";
 import { IUser } from "@/lib/interface";
 import { create } from "zustand";
+import supabase from "@/lib/supabaseClient";
 
 interface UserState {
   user: IUser | null;
@@ -15,7 +15,7 @@ export const useUserStore = create<UserState>((set) => ({
   clearUser: () => set({ user: null }),
   logout: async () => {
     try {
-      await logoutApi();
+      await supabase.auth.signOut();
       set({ user: null });
       console.log("✅ Logout successful");
     } catch (error) {

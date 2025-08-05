@@ -40,8 +40,16 @@ export const MyLoginContextProvider = ({
         router.push("/");
       }, 1000);
     } catch (error) {
-      const msg = extractAxiosErrorMessage(error);
-      toast.error(msg);
+      const rawMessage = extractAxiosErrorMessage(error);
+
+      let message = "Something went wrong. Please try again.";
+      if (rawMessage.includes("Invalid login credentials")) {
+        message = "Invalid email or password.";
+      } else if (rawMessage.includes("Email not confirmed")) {
+        message = "Please confirm your email before logging in.";
+      }
+
+      toast.error(message);
       setLoading(false);
     }
   };
