@@ -29,6 +29,8 @@ export const SignupContextProvider = ({
     try {
       setSignUpData(data);
       setLoading(true);
+
+      console.log("📤 Calling supabase.auth.signUp...");
       const { data: signupData, error: signupError } =
         await supabase.auth.signUp({
           email: data.email,
@@ -38,6 +40,7 @@ export const SignupContextProvider = ({
             data: { username: data.username },
           },
         });
+      console.log("📥 signUp response received");
 
       if (signupError) {
         console.error("❌ Signup error:", signupError);
