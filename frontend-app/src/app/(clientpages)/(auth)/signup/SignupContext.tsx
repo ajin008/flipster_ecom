@@ -29,17 +29,23 @@ export const SignupContextProvider = ({
     try {
       setSignUpData(data);
       setLoading(true);
-      const { data: signupData, error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-          data: { username: data.username },
-        },
-      });
-      console.log("📦 Signup Response:", signupData);
+      const { data: signupData, error: signupError } =
+        await supabase.auth.signUp({
+          email: data.email,
+          password: data.password,
+          options: {
+            emailRedirectTo: `${location.origin}/auth/callback`,
+            data: { username: data.username },
+          },
+        });
 
-      if (error) throw error;
+      if (signupError) {
+        console.error("❌ Signup error:", signupError);
+        toast.error(signupError.message);
+        setLoading(false);
+        return;
+      }
+      console.log("✅ signupData", signupData);
       toast.success("Confirmation email sent. Please check your inbox.");
       setLoading(false);
     } catch (error) {

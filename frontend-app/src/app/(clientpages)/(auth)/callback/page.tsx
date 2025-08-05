@@ -7,6 +7,7 @@ export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("auth/callback page is triggering");
     const completeSignup = async () => {
       const {
         data: { user },
@@ -22,6 +23,7 @@ export default function AuthCallback() {
             .single();
 
           if (profileError || !profile) {
+            console.log("Inserting profile for:", user.id, user.user_metadata);
             await supabase.from("profiles").insert({
               id: user.id,
               username: user.user_metadata?.username || "",
