@@ -28,8 +28,6 @@ export interface SignupContextType {
   setSignUpData: (data: SignupProp | null) => void;
   handleSignup: (data: SignupProp) => void;
   loading: boolean;
-  isOtpOpen: boolean;
-  setIsOtpOpen: (isOpen: boolean) => void;
 }
 
 export interface IUserId {

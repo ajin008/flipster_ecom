@@ -12,9 +12,6 @@ const defaultValue: SignupContextType = {
   setSignUpData: () => {},
   handleSignup: () => {},
   loading: false,
-  isOtpOpen: false,
-
-  setIsOtpOpen: () => {},
 };
 
 export const MySignupContext = createContext(defaultValue);
@@ -26,7 +23,6 @@ export const SignupContextProvider = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState<SignupProp | null>(null);
-  const [isOtpOpen, setIsOtpOpen] = useState(false);
 
   const handleSignup = async (data: SignupProp) => {
     console.log("handleSignup is triggering");
@@ -59,8 +55,6 @@ export const SignupContextProvider = ({
         setSignUpData,
         handleSignup,
         loading,
-        isOtpOpen,
-        setIsOtpOpen,
       }}
     >
       {children}
