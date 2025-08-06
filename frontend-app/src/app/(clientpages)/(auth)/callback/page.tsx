@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
 import { useUserStore } from "@/store/userStore";
+import AuthenticatingLoader from "@/components/shared/AuthenticatingLoader";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -44,5 +45,5 @@ export default function AuthCallback() {
     handleCallback();
   }, [router, setUser]);
 
-  return <p className="text-center mt-10">Authenticating...</p>;
+  return <AuthenticatingLoader />;
 }

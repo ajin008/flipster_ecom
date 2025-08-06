@@ -1,295 +1,191 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
-import { urlFor } from "@/lib/sanity";
-
-type SanityImage = {
-  _type: "image";
-  asset: { _ref: string; _type: "reference" };
-  crop?: {
-    _type: "sanity.imageCrop";
-    bottom: number;
-    left: number;
-    right: number;
-    top: number;
-  };
-  hotspot?: {
-    _type: "sanity.imageHotspot";
-    height: number;
-    width: number;
-    x: number;
-    y: number;
-  };
-};
-
-type Banner = {
-  _id: string;
-  title: string;
-  description: string;
-  cta: string;
-  ctaLink: string;
-  image: SanityImage;
-  extraImages?: SanityImage[];
-  bgColor?: string;
-};
+import { useEffect, useState } from "react";
+import { Banner } from "@/lib/types";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 
 type Props = {
   banners: Banner[];
 };
 
-type Slide = {
-  _id: string;
-  title: string;
-  description: string;
-  cta: string;
-  ctaLink: string;
-  image: SanityImage;
-  bgColor?: string;
-  isMainImage: boolean;
-  originalBannerId: string;
-};
-
 export default function BannerSlider({ banners }: Props) {
-  // Memoize slides to prevent recalculation on every render
-  const slides: Slide[] = useMemo(() => {
-    if (!banners || banners.length === 0) return [];
+  const [index, setIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-    return banners.flatMap((banner) => {
-      const slides: Slide[] = [];
-
-      // Add main image slide
-      slides.push({
-        ...banner,
-        _id: `${banner._id}-main`,
-        image: banner.image,
-        isMainImage: true,
-        originalBannerId: banner._id,
-      });
-
-      // Add extra images if they exist
-      if (banner.extraImages && banner.extraImages.length > 0) {
-        banner.extraImages.forEach((img, idx) => {
-          slides.push({
-            ...banner,
-            _id: `${banner._id}-extra-${idx}`,
-            image: img,
-            isMainImage: false,
-            originalBannerId: banner._id,
-          });
-        });
-      }
-
-      return slides;
-    });
-  }, [banners]);
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Set ready state after component mounts
   useEffect(() => {
-    if (slides.length > 0) {
-      setIsReady(true);
-    }
-  }, [slides.length]);
+    if (!isPlaying) return;
 
-  // Memoize current background color to prevent unnecessary re-renders
-  const currentBgColor = useMemo(() => {
-    return slides[currentSlide]?.bgColor || "transparent";
-  }, [slides, currentSlide]);
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % banners.length);
+    }, 5000); // Change every 5 seconds
 
-  // Clear timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+    return () => clearInterval(interval);
+  }, [banners.length, isPlaying]);
 
-  // Auto-slide functionality with better cleanup
-  useEffect(() => {
-    if (!isReady || slides.length <= 1 || isTransitioning) return;
+  const goToSlide = (slideIndex: number) => {
+    setIndex(slideIndex);
+  };
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+  const goToPrevious = () => {
+    setIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+  };
 
-    timeoutRef.current = setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+  const goToNext = () => {
+    setIndex((prev) => (prev + 1) % banners.length);
+  };
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [currentSlide, slides.length, isTransitioning, isReady]);
+  const toggleAutoplay = () => {
+    setIsPlaying(!isPlaying);
+  };
 
-  // Optimized slide change function
-  const changeSlide = useCallback(
-    (newIndex: number) => {
-      if (
-        isTransitioning ||
-        newIndex === currentSlide ||
-        newIndex < 0 ||
-        newIndex >= slides.length
-      ) {
-        return;
-      }
-
-      setIsTransitioning(true);
-
-      // Clear any existing timeout
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      setCurrentSlide(newIndex);
-
-      // Reset transition state
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 500);
-    },
-    [currentSlide, slides.length, isTransitioning]
-  );
-
-  const nextSlide = useCallback(() => {
-    changeSlide((currentSlide + 1) % slides.length);
-  }, [changeSlide, currentSlide, slides.length]);
-
-  const prevSlide = useCallback(() => {
-    changeSlide((currentSlide - 1 + slides.length) % slides.length);
-  }, [changeSlide, currentSlide, slides.length]);
-
-  // Don't render anything until ready
-  if (!isReady || slides.length === 0) {
-    return (
-      <div className="relative h-[280px] sm:h-46 md:h-[300px] w-full overflow-hidden rounded-sm bg-gray-100">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-gray-500">Loading banners...</div>
-        </div>
-      </div>
-    );
-  }
+  const current = banners[index];
 
   return (
-    <div
-      ref={containerRef}
-      className="relative h-[280px] sm:h-46 md:h-[300px] w-full overflow-hidden rounded-sm transition-colors duration-300"
-      style={{ backgroundColor: currentBgColor }}
-    >
-      {/* Slides Container */}
+    <div className="relative group">
+      {/* Main Banner Container */}
       <div
-        className="flex h-full"
-        style={{
-          transform: `translateX(-${currentSlide * 100}%)`,
-          transition: isTransitioning
-            ? "transform 500ms cubic-bezier(0.4, 0, 0.2, 1)"
-            : "none",
-          width: `${slides.length * 100}%`,
-          willChange: "transform",
-        }}
+        className="relative h-[240px] sm:h-[280px] md:h-[360px] lg:h-[420px] w-full overflow-hidden rounded-2xl 
+                      shadow-gaming-xl border border-gaming-purple/20"
       >
-        {slides.map((slide, index) => {
-          // Only render slides that are visible or adjacent for performance
-          const isVisible = Math.abs(index - currentSlide) <= 1;
+        {/* Banner Image - Enhanced with cropping and scaling */}
+        <div className="relative w-full h-full">
+          <Image
+            src={current.image_url}
+            alt={current.title}
+            fill
+            className="object-cover transition-all duration-700 hover:scale-110 
+                      scale-125 -translate-y-8 -translate-x-4 sm:-translate-y-12 sm:-translate-x-6 
+                      md:-translate-y-16 md:-translate-x-8"
+            priority
+            style={{
+              transformOrigin: "center center",
+            }}
+          />
+          {/* Stronger overlay to cover any remaining unwanted text */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20" />
 
-          return (
-            <div
-              key={slide._id}
-              className="relative flex-none h-full"
-              style={{ width: `${100 / slides.length}%` }}
+          {/* Additional top overlay to cover template text */}
+          <div
+            className="absolute top-0 left-0 right-0 h-16 sm:h-20 md:h-24 
+                         bg-gradient-to-b from-black/90 to-transparent"
+          />
+        </div>
+
+        {/* Content Overlay */}
+        <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-12 z-10">
+          <div className="max-w-2xl">
+            {/* Title */}
+            <h2
+              className="text-gaming-textPrimary text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold 
+                           mb-2 sm:mb-3 md:mb-4 animate-fade-in leading-tight"
+              style={{ textShadow: "2px 2px 8px rgba(0, 0, 0, 0.9)" }}
             >
-              {isVisible && (
-                <>
-                  {/* Image Container */}
-                  <div className="absolute inset-0 w-full h-full">
-                    <Image
-                      src={urlFor(slide.image).url()}
-                      alt={slide.title}
-                      fill
-                      className="object-cover"
-                      priority={index === 0 || index === currentSlide}
-                      sizes="100vw"
-                      quality={85}
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgXmkfYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgXmkfYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgXmkfYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgXmkfYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgXmkfYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgUwqlvYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9iYUJBCY5iGxTqLJGBnmLBBOjCqjqSaEgXmkfYdof1txfvSXWGaRmknyLDKPKjHN0TaGFgROwMOkdcGRmrpxEKCW4+I1qJUXFiEXqPgZXYQb+oBsVYcCxmrCKCaWvYLHNuCzYNrXRYhJOaXNJBqkgOmNnqhEF9h"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-                  </div>
+              {current.title}
+            </h2>
 
-                  {/* Content */}
-                  <div className="relative z-10 flex flex-col md:flex-row items-center w-full h-full px-4 md:px-12">
-                    <div className="w-full md:w-1/2 pt-8 md:pt-0 text-center md:text-left">
-                      <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
-                        {slide.title}
-                      </h1>
-                      <p className="text-lg mb-6 text-white/90 leading-relaxed line-clamp-3">
-                        {slide.description}
-                      </p>
-                      <a
-                        href={slide.ctaLink}
-                        className="inline-flex items-center px-6 py-3 rounded-lg bg-accent text-white hover:bg-accent/90 transition-colors duration-200 font-medium"
-                      >
-                        {slide.cta}
-                        <ShoppingBag className="ml-2 h-5 w-5" />
-                      </a>
-                    </div>
-                    <div className="w-full md:w-1/2 h-full" />
-                  </div>
-                </>
-              )}
-            </div>
-          );
-        })}
+            {/* Subtitle */}
+            <p
+              className="text-gaming-textSecondary text-sm sm:text-base md:text-lg lg:text-xl 
+                          mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-2 sm:line-clamp-3"
+              style={{ textShadow: "1px 1px 4px rgba(0, 0, 0, 0.8)" }}
+            >
+              {current.subtitle}
+            </p>
+
+            {/* CTA Button */}
+            {current.cta_text && current.cta_link && (
+              <a
+                href={current.cta_link}
+                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-button hover:bg-gradient-button-hover 
+                          px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-lg sm:rounded-xl 
+                          text-white font-bold text-sm sm:text-base md:text-lg
+                          shadow-gaming-lg hover:shadow-gaming-xl transition-all duration-300 
+                          hover:scale-105 group/button"
+                style={{ textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)" }}
+              >
+                <span>{current.cta_text}</span>
+                <div className="transition-transform duration-300 group-hover/button:translate-x-1">
+                  <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
+                </div>
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        {banners.length > 1 && (
+          <>
+            <button
+              onClick={goToPrevious}
+              className="absolute left-2 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 bg-gaming-background/70 
+                        hover:bg-gaming-purple border border-gaming-purple/30 
+                        rounded-full p-2 sm:p-2.5 md:p-3 text-gaming-textPrimary hover:text-white
+                        opacity-0 group-hover:opacity-100 transition-all duration-300
+                        hover:shadow-gaming-md backdrop-blur-sm z-20"
+            >
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+            </button>
+            <button
+              onClick={goToNext}
+              className="absolute right-2 sm:right-3 md:right-4 top-1/2 -translate-y-1/2 bg-gaming-background/70 
+                        hover:bg-gaming-purple border border-gaming-purple/30 
+                        rounded-full p-2 sm:p-2.5 md:p-3 text-gaming-textPrimary hover:text-white
+                        opacity-0 group-hover:opacity-100 transition-all duration-300
+                        hover:shadow-gaming-md backdrop-blur-sm z-20"
+            >
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+            </button>
+          </>
+        )}
+
+        {/* Autoplay Control */}
+        {banners.length > 1 && (
+          <button
+            onClick={toggleAutoplay}
+            className="absolute top-2 sm:top-3 md:top-4 right-2 sm:right-3 md:right-4 
+                      bg-gaming-background/70 border border-gaming-purple/30 
+                      rounded-full p-1.5 sm:p-2 text-gaming-textSecondary hover:text-gaming-gold
+                      opacity-0 group-hover:opacity-100 transition-all duration-300
+                      hover:shadow-gaming-sm backdrop-blur-sm z-20"
+            title={isPlaying ? "Pause slideshow" : "Play slideshow"}
+          >
+            <Play
+              className={`h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 ${isPlaying ? "rotate-0" : "rotate-0"}`}
+              fill={isPlaying ? "currentColor" : "none"}
+            />
+          </button>
+        )}
       </div>
 
-      {/* Navigation Arrows - Only show if more than one slide */}
-      {slides.length > 1 && (
-        <>
-          <button
-            onClick={prevSlide}
-            disabled={isTransitioning}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 disabled:opacity-50 disabled:cursor-not-allowed p-3 rounded-full text-white z-30 transition-all duration-200 backdrop-blur-sm"
-            aria-label="Previous banner"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            onClick={nextSlide}
-            disabled={isTransitioning}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 disabled:opacity-50 disabled:cursor-not-allowed p-3 rounded-full text-white z-30 transition-all duration-200 backdrop-blur-sm"
-            aria-label="Next banner"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </>
-      )}
-
-      {/* Dots Indicator - Only show if more than one slide */}
-      {slides.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-30 bg-black/30 backdrop-blur-sm rounded-full px-3 py-2">
-          {slides.map((_, index) => (
+      {/* Slide Indicators */}
+      {banners.length > 1 && (
+        <div className="flex justify-center mt-4 sm:mt-5 md:mt-6 space-x-2 sm:space-x-3">
+          {banners.map((_, slideIndex) => (
             <button
-              key={index}
-              onClick={() => changeSlide(index)}
-              disabled={isTransitioning}
-              className={`h-2.5 w-2.5 rounded-full transition-all duration-200 disabled:cursor-not-allowed ${
-                currentSlide === index
-                  ? "bg-white scale-125"
-                  : "bg-white/50 hover:bg-white/80"
-              }`}
-              aria-label={`Go to banner ${index + 1}`}
+              key={slideIndex}
+              onClick={() => goToSlide(slideIndex)}
+              className={`w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 rounded-full transition-all duration-300 
+                         ${
+                           index === slideIndex
+                             ? "bg-gaming-purple shadow-gaming-sm scale-125"
+                             : "bg-gaming-textMuted hover:bg-gaming-purpleLight"
+                         }`}
             />
           ))}
+        </div>
+      )}
+
+      {/* Slide Counter */}
+      {banners.length > 1 && (
+        <div
+          className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-2 sm:left-3 md:left-4 
+                        bg-gaming-background/80 backdrop-blur-sm 
+                        border border-gaming-purple/20 rounded-md sm:rounded-lg px-2 sm:px-3 py-1 z-20"
+        >
+          <span className="text-gaming-textSecondary text-xs sm:text-sm font-medium">
+            {index + 1} / {banners.length}
+          </span>
         </div>
       )}
     </div>

@@ -12,7 +12,13 @@ const pwaConfig = withPWA({
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["cdn.sanity.io"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ueilbcjjobjcaoqtfbrh.supabase.co",
+        pathname: "/storage/v1/object/**",
+      },
+    ],
   },
 };
 
