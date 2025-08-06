@@ -34,6 +34,7 @@ export default function AuthCallback() {
       if (!profileExist || profileError) {
         await supabase.from("profiles").insert({
           id: user.id,
+          email: user.email,
           username:
             user.user_metadata?.full_name || user.user_metadata?.name || "",
         });
