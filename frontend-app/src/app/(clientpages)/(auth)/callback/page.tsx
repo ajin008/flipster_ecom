@@ -1,54 +1,47 @@
 "use client";
 import { useEffect } from "react";
-import supabase from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import supabase from "@/lib/supabaseClient";
+import { useUserStore } from "@/store/userStore";
 
 export default function AuthCallback() {
   const router = useRouter();
+  const { setUser } = useUserStore();
 
   useEffect(() => {
-    console.log("auth/callback page is triggering");
+    const handleCallback = async () => {
+      const { data, error } = await supabase.auth.getUser();
 
-    const completeSignup = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const user = session?.user;
-
-      if (user) {
-        console.log("✅ Session user:", user);
-        console.log("📦 Metadata:", user.user_metadata);
-
-        try {
-          const { data: profile, error: profileError } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", user.id)
-            .maybeSingle(); // ✅ safe if 0 rows
-
-          if (profileError)
-            console.error("Profile select error:", profileError);
-
-          if (!profile) {
-            console.log("🆕 Inserting new profile");
-            await supabase.from("profiles").insert({
-              id: user.id,
-              username: user.user_metadata?.username || "",
-            });
-          }
-
-          router.push("/");
-        } catch (error) {
-          console.error("❌ Error completing signup:", error);
-          router.push("/login");
-        }
-      } else {
-        router.push("/login");
+      if (error || !data?.user) {
+        router.replace("/");
       }
+
+      const user = data.user!;
+
+      setUser({
+        id: user.id!,
+        email: user.email!,
+        username:
+          user.user_metadata?.full_name || user.user_metadata?.name || "",
+      });
+
+      const { data: profileExist, error: profileError } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!profileExist || profileError) {
+        await supabase.from("profiles").insert({
+          id: user.id,
+          username:
+            user.user_metadata?.full_name || user.user_metadata?.name || "",
+        });
+      }
+      router.replace("/");
     };
+    handleCallback();
+  }, [router, setUser]);
 
-    completeSignup();
-  }, [router]);
-
-  return <p>Completing signup...</p>;
+  return <p className="text-center mt-10">Authenticating...</p>;
 }

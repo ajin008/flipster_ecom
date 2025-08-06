@@ -7,33 +7,16 @@ import { Bell } from "react-feather";
 import NotificationsModal from "./NotificationsModal";
 import { useUserStore } from "@/store/userStore";
 import ProfileDropDown from "./ProfileDropDown";
-import { getCurrentUser } from "../../../services/getUser";
+import GoogleSignupModal from "../shared/GoogleOnlyAuthenticationModal";
+import { signInwithOauth } from "../../../services/signInWithOAuth";
 
 export default function Header() {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+
   const router = useRouter();
-
-  const { setUser } = useUserStore();
-
-  useEffect(() => {
-    console.log("Fetching user Data...");
-    const fetchUser = async () => {
-      try {
-        const user = await getCurrentUser();
-        console.log("✅ API response:", user);
-
-        if (user) {
-          setUser(user); // ✅ Includes id, email, username
-        } else {
-          console.log("No user logged in.");
-        }
-      } catch (error) {
-        console.log("error in fetching user data", error);
-      }
-    };
-    fetchUser();
-  }, [setUser]);
 
   const { user } = useUserStore();
 
@@ -54,6 +37,10 @@ export default function Header() {
       // Small screen: navigate to notifications page
       router.push("/NotificationsPage");
     }
+  };
+
+  const handleGetInBtn = () => {
+    setShowModal(true);
   };
 
   return (
@@ -79,7 +66,7 @@ export default function Header() {
               </div>
             ) : (
               <div className="flex items-center gap-2 sm:hidden">
-                <Button onClick={() => router.push("/login")}>GET IN</Button>
+                <Button onClick={handleGetInBtn}>GET IN</Button>
               </div>
             )}
           </div>
@@ -99,7 +86,7 @@ export default function Header() {
             </div>
           ) : (
             <div className="hidden sm:flex items-center gap-2 sm:ml-auto">
-              <Button onClick={() => router.push("/login")}>GET IN</Button>
+              <Button onClick={handleGetInBtn}>GET IN</Button>
             </div>
           )}
         </div>
@@ -107,6 +94,11 @@ export default function Header() {
       <NotificationsModal
         isOpen={isNotificationModalOpen}
         onClose={() => setIsNotificationModalOpen(false)}
+      />
+      <GoogleSignupModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onGoogleSignup={() => signInwithOauth()}
       />
     </>
   );

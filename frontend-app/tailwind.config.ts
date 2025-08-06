@@ -43,7 +43,7 @@ const config: Config = {
           textMuted: "#D1C5F0", // Alternative muted text
 
           // Gold/Yellow accents
-          gold: "#FFA726", // Gold for coins/currency
+          gold: "#FFA726", // Gold for coins/currency - FIXED: removed nested gaming object
           goldBright: "#FFCC00", // Bright gold for highlights
           goldMuted: "#FFB74D", // Muted gold
 
@@ -52,9 +52,6 @@ const config: Config = {
           warning: "#FF9800",
           error: "#ff4757",
           info: "#2196F3",
-          gaming: {
-            gold: "#FFA726", // This works as bg-gaming-gold
-          },
         },
       },
       backgroundImage: {
