@@ -32,14 +32,18 @@ export default function Step2MediaDescription({
 }: Step2MediaDescriptionProps) {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  // Function to update the FileList in react-hook-form's state
+  // ✅ Helper to update react-hook-form's FileList state
   const updateFormFiles = (files: File[]) => {
     const dataTransfer = new DataTransfer();
     files.forEach((file) => dataTransfer.items.add(file));
-    setValue("images", dataTransfer.files, { shouldValidate: true });
+    setValue("images", dataTransfer.files, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
-  // Sync previews with form state when component loads (e.g., navigating back)
+  // ✅ Load previews on mount
   useEffect(() => {
     const existingFiles = getValues("images");
     if (existingFiles && existingFiles.length > 0) {
@@ -49,12 +53,12 @@ export default function Step2MediaDescription({
       setImagePreviews(urls);
     }
 
-    // Cleanup object URLs on unmount to prevent memory leaks
+    // ✅ Clean up object URLs to avoid memory leaks
     return () => {
       imagePreviews.forEach((url) => URL.revokeObjectURL(url));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run only once on mount
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = e.target.files ? Array.from(e.target.files) : [];
@@ -63,6 +67,7 @@ export default function Step2MediaDescription({
     const existingFiles = getValues("images")
       ? Array.from(getValues("images")!)
       : [];
+
     const combinedFiles = [...existingFiles, ...newFiles];
     updateFormFiles(combinedFiles);
 
@@ -71,7 +76,6 @@ export default function Step2MediaDescription({
   };
 
   const removeImage = (indexToRemove: number) => {
-    // Revoke URL to free memory
     URL.revokeObjectURL(imagePreviews[indexToRemove]);
 
     const updatedPreviews = imagePreviews.filter(
@@ -89,7 +93,10 @@ export default function Step2MediaDescription({
   const handleTagClick = (tag: string) => {
     const currentDescription = getValues("description") || "";
     const newDescription = `${currentDescription}\n• ${tag}: `;
-    setValue("description", newDescription.trim(), { shouldValidate: true });
+    setValue("description", newDescription.trim(), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
   const textAreaClass = `w-full px-4 py-3 bg-gaming-searchBg border rounded-xl text-gaming-textPrimary placeholder-gaming-textMuted focus:outline-none focus:ring-2 transition-all duration-300 resize-none`;
@@ -99,23 +106,28 @@ export default function Step2MediaDescription({
 
   return (
     <div className="space-y-8">
-      {/* Image Upload */}
+      {/* ✅ Game Images */}
       <div>
         <label className="block text-sm font-medium text-gaming-textPrimary mb-2">
           Game Images <span className="text-gaming-pink">*</span>
         </label>
         <div className="relative">
           <input
-            {...register("images", {
-              required: "Please upload at least one image",
-            })}
             type="file"
             multiple
             accept="image/png, image/jpeg, image/jpg"
-            onChange={handleImageChange}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-            id="images"
+            {...register("images", {
+              required: "Please upload at least one image",
+              validate: (files) =>
+                files && files.length > 0
+                  ? true
+                  : "Please upload at least one image",
+            })}
+            onChange={(e) => {
+              handleImageChange(e);
+            }}
           />
+
           <label
             htmlFor="images"
             className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 hover:border-gaming-purple hover:bg-gaming-cardBg/50 cursor-pointer ${
@@ -140,14 +152,11 @@ export default function Step2MediaDescription({
             {errors.images.message as string}
           </p>
         )}
+
         {imagePreviews.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
             {imagePreviews.map((preview, index) => (
               <div key={index} className="relative group aspect-video">
-                {/*
-                  FIX: Disable the Next.js image warning for this line.
-                  This is the correct approach for client-side blob previews.
-                */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview}
@@ -167,7 +176,7 @@ export default function Step2MediaDescription({
         )}
       </div>
 
-      {/* Description */}
+      {/* ✅ Description */}
       <div>
         <label
           htmlFor="description"
@@ -180,19 +189,22 @@ export default function Step2MediaDescription({
           {...register("description", {
             required: "Description is required",
             minLength: {
-              value: 50,
-              message: "Description must be at least 50 characters",
+              value: 20,
+              message: "Description must be at least 20 characters",
             },
           })}
           rows={7}
           placeholder="Describe your game account in detail..."
-          className={`${textAreaClass} ${errors.description ? errorClass : defaultClass}`}
+          className={`${textAreaClass} ${
+            errors.description ? errorClass : defaultClass
+          }`}
         />
         {errors.description && (
           <p className="text-gaming-error text-sm mt-1">
             {errors.description.message}
           </p>
         )}
+
         <div className="mt-3">
           <p className="text-sm text-gaming-textSecondary mb-2">
             Click to add details to your description:

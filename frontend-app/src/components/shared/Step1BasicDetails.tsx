@@ -135,7 +135,7 @@ export default function Step1BasicDetails({
                 },
               })}
               type="number"
-              placeholder="14000"
+              placeholder="1200"
               className={`${inputClass} pl-10 ${
                 errors.price ? errorClass : defaultClass
               }`}
