@@ -18,7 +18,7 @@ export default function BannerSlider({ banners }: Props) {
 
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % banners.length);
-    }, 5000); // Change every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [banners.length, isPlaying]);
@@ -48,7 +48,7 @@ export default function BannerSlider({ banners }: Props) {
         className="relative h-[240px] sm:h-[280px] md:h-[360px] lg:h-[420px] w-full overflow-hidden rounded-2xl 
                       shadow-gaming-xl border border-gaming-purple/20"
       >
-        {/* Banner Image - Enhanced with cropping and scaling */}
+        {/* Banner Image */}
         <div className="relative w-full h-full">
           <Image
             src={current.image_url}
@@ -62,10 +62,7 @@ export default function BannerSlider({ banners }: Props) {
               transformOrigin: "center center",
             }}
           />
-          {/* Stronger overlay to cover any remaining unwanted text */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20" />
-
-          {/* Additional top overlay to cover template text */}
           <div
             className="absolute top-0 left-0 right-0 h-16 sm:h-20 md:h-24 
                          bg-gradient-to-b from-black/90 to-transparent"
@@ -75,7 +72,6 @@ export default function BannerSlider({ banners }: Props) {
         {/* Content Overlay */}
         <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-12 z-10">
           <div className="max-w-2xl">
-            {/* Title */}
             <h2
               className="text-gaming-textPrimary text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold 
                            mb-2 sm:mb-3 md:mb-4 animate-fade-in leading-tight"
@@ -84,7 +80,6 @@ export default function BannerSlider({ banners }: Props) {
               {current.title}
             </h2>
 
-            {/* Subtitle */}
             <p
               className="text-gaming-textSecondary text-sm sm:text-base md:text-lg lg:text-xl 
                           mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-2 sm:line-clamp-3"
@@ -93,16 +88,31 @@ export default function BannerSlider({ banners }: Props) {
               {current.subtitle}
             </p>
 
-            {/* CTA Button */}
+            {/* FIXED CTA Button - Multiple fallback approaches */}
             {current.cta_text && current.cta_link && (
               <a
                 href={current.cta_link}
-                className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-button hover:bg-gradient-button-hover 
+                className="inline-flex items-center gap-2 sm:gap-3 
+                          bg-gradient-to-r from-[#A55FFF] to-[#FF85FF] 
+                          hover:from-[#6C2BD9] hover:to-[#A55FFF]
                           px-4 sm:px-6 md:px-8 py-2 sm:py-3 md:py-4 rounded-lg sm:rounded-xl 
                           text-white font-bold text-sm sm:text-base md:text-lg
                           shadow-gaming-lg hover:shadow-gaming-xl transition-all duration-300 
                           hover:scale-105 group/button"
-                style={{ textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)" }}
+                style={{
+                  textShadow: "1px 1px 3px rgba(0, 0, 0, 0.6)",
+                  // Fallback inline styles if Tailwind classes don't work
+                  background:
+                    "linear-gradient(90deg, #A55FFF 0%, #FF85FF 100%)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background =
+                    "linear-gradient(90deg, #6C2BD9 0%, #A55FFF 100%)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background =
+                    "linear-gradient(90deg, #A55FFF 0%, #FF85FF 100%)";
+                }}
               >
                 <span>{current.cta_text}</span>
                 <div className="transition-transform duration-300 group-hover/button:translate-x-1">

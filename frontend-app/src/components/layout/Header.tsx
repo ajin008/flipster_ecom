@@ -9,6 +9,7 @@ import { useUserStore } from "@/store/userStore";
 import ProfileDropDown from "./ProfileDropDown";
 import GoogleSignupModal from "../shared/GoogleOnlyAuthenticationModal";
 import { signInwithOauth } from "../../../services/signInWithOAuth";
+import { SellBtn } from "../shared/SellBtn";
 
 export default function Header() {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="px-4 py-2">
+      <header className="px-4 py-2 mb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           {/* Top section: Logo + mobile buttons */}
           <div className="w-full sm:w-auto flex items-center justify-between">
@@ -62,6 +63,7 @@ export default function Header() {
                 >
                   <Bell size={20} />
                 </Button>
+                <SellBtn />
                 <ProfileDropDown />
               </div>
             ) : (
@@ -82,6 +84,7 @@ export default function Header() {
               >
                 <Bell size={28} />
               </Button>
+              <SellBtn />
               <ProfileDropDown />
             </div>
           ) : (
