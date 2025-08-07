@@ -1,6 +1,8 @@
 import React from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { GameListingFormData, GAME_CATEGORIES } from "@/lib/types";
+// 1. Import an icon for the dropdown arrow
+import { FaChevronDown } from "react-icons/fa";
 
 interface Step1BasicDetailsProps {
   register: UseFormRegister<GameListingFormData>;
@@ -31,7 +33,9 @@ export default function Step1BasicDetails({
           {...register("game_name", { required: "Game name is required" })}
           type="text"
           placeholder="e.g., Valorant, Genshin Impact"
-          className={`${inputClass} ${errors.game_name ? errorClass : defaultClass}`}
+          className={`${inputClass} ${
+            errors.game_name ? errorClass : defaultClass
+          }`}
         />
         {errors.game_name && (
           <p className="text-gaming-error text-sm mt-1">
@@ -55,7 +59,9 @@ export default function Step1BasicDetails({
           })}
           type="text"
           placeholder="e.g., Stacked Account with Rare Skins"
-          className={`${inputClass} ${errors.game_title ? errorClass : defaultClass}`}
+          className={`${inputClass} ${
+            errors.game_title ? errorClass : defaultClass
+          }`}
         />
         {errors.game_title && (
           <p className="text-gaming-error text-sm mt-1">
@@ -73,21 +79,33 @@ export default function Step1BasicDetails({
           >
             Category <span className="text-gaming-pink">*</span>
           </label>
-          <select
-            id="category"
-            {...register("category", { required: "Please select a category" })}
-            className={`${inputClass} ${errors.category ? errorClass : defaultClass}`}
-          >
-            {GAME_CATEGORIES.map((category) => (
-              <option
-                key={category.value}
-                value={category.value}
-                className="bg-gaming-cardBg text-gaming-textPrimary"
-              >
-                {category.label}
-              </option>
-            ))}
-          </select>
+          {/* 2. Wrap the select element in a relative container */}
+          <div className="relative">
+            <select
+              id="category"
+              {...register("category", {
+                required: "Please select a category",
+              })}
+              // 3. Add appearance-none to hide the default arrow and pr-10 for spacing
+              className={`${inputClass} appearance-none pr-10 ${
+                errors.category ? errorClass : defaultClass
+              }`}
+            >
+              {GAME_CATEGORIES.map((category) => (
+                <option
+                  key={category.value}
+                  value={category.value}
+                  className="bg-gaming-cardBg text-gaming-textPrimary"
+                >
+                  {category.label}
+                </option>
+              ))}
+            </select>
+            {/* 4. Add the custom arrow icon */}
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gaming-textSecondary">
+              <FaChevronDown className="w-4 h-4" />
+            </div>
+          </div>
           {errors.category && (
             <p className="text-gaming-error text-sm mt-1">
               {errors.category.message}
@@ -118,7 +136,9 @@ export default function Step1BasicDetails({
               })}
               type="number"
               placeholder="14000"
-              className={`${inputClass} pl-10 ${errors.price ? errorClass : defaultClass}`}
+              className={`${inputClass} pl-10 ${
+                errors.price ? errorClass : defaultClass
+              }`}
             />
           </div>
           {errors.price && (

@@ -8,8 +8,11 @@ import Step1BasicDetails from "@/components/shared/Step1BasicDetails";
 import Step2MediaDescription from "@/components/shared/Step2MediaDescription";
 import { FaArrowLeft, FaArrowRight, FaPaperPlane } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  // 2. Initialize the router
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
 
   const {
@@ -50,6 +53,8 @@ export default function Page() {
   const handlePrevious = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+    } else {
+      router.push("/");
     }
   };
 
@@ -118,14 +123,12 @@ export default function Page() {
                   variant="outline"
                   size="lg"
                   onClick={handlePrevious}
-                  disabled={currentStep === 1}
-                  className="!rounded-xl border-gaming-textMuted/30 bg-gaming-cardBg text-gaming-textPrimary hover:border-gaming-purple/50 hover:bg-gaming-searchBg disabled:bg-gaming-cardBg"
+                  // The disabled prop is removed so the button is always active
+                  className="!rounded-xl border-gaming-textMuted/30 bg-gaming-cardBg text-gaming-textPrimary hover:border-gaming-purple/50 hover:bg-gaming-searchBg"
                 >
                   <FaArrowLeft />
                   <span>Back</span>
                 </Button>
-
-                {/* The "Step X of Y" text has been removed from here. */}
 
                 {currentStep < totalSteps ? (
                   <Button
