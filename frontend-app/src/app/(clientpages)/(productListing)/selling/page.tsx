@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/store/userStore";
+import { GameListingFormData } from "@/lib/interface";
+import { createGameListing } from "../../../../../services/gameListings";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 
 // --- Helper Icons (You can place these in a separate file) ---
 
@@ -64,16 +69,6 @@ const ArrowLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// --- Form Data Interface and Constants ---
-interface GameListingFormData {
-  game_name: string;
-  listing_title: string;
-  category: string;
-  price: string;
-  description: string;
-  images: File[];
-}
-
 const categories = [
   "Action",
   "Adventure",
@@ -94,6 +89,8 @@ const detailFeatures = [
 
 // --- Main Page Component ---
 export default function ListGameAccountPage() {
+  const { user } = useUserStore();
+
   const [step, setStep] = useState(1);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const router = useRouter();
@@ -138,9 +135,17 @@ export default function ListGameAccountPage() {
     multiple: true,
   });
 
-  const onSubmit = (data: GameListingFormData) => {
-    console.log("Form Submitted:", data);
-    alert("Game listing submitted successfully! Check the console for data.");
+  const onSubmit = async (data: GameListingFormData) => {
+    try {
+      console.log("Form Submitted:", data);
+      if (!user?.id) throw new Error("user not found");
+
+      await createGameListing({ ...data, user_id: user.id });
+      toast.success("successfully listed your game account");
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      console.error("Submission error:", err);
+    }
   };
 
   const nextStep = async () => {
@@ -194,19 +199,42 @@ export default function ListGameAccountPage() {
 
       <div className="w-full max-w-2xl mx-auto bg-gaming-cardBg/80 backdrop-blur-md rounded-xl shadow-gaming-lg border border-gaming-purple/20 p-6 sm:p-8">
         <div className="mb-8">
-          <div className="flex justify-between text-sm font-semibold text-gaming-textSecondary mb-2">
-            <p className={cn(step >= 1 && "text-gaming-textPrimary")}>
+          {/* The main container now switches from a column to a row layout */}
+          <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:gap-4">
+            {/* Stage 1: Basic Details */}
+            <p
+              className={cn(
+                "w-full border-2 px-4 py-2 text-center text-sm font-semibold transition-all duration-300 sm:w-auto sm:text-left",
+                "rounded-[15px]", // Using a 15px border radius instead of rounded-full
+                step >= 1
+                  ? "text-gaming-textPrimary"
+                  : "text-gaming-textSecondary",
+                step === 1
+                  ? "border-[#FFCC00] shadow-gold-sm"
+                  : "border-gaming-purpleMuted/20"
+              )}
+            >
               Basic Details
             </p>
-            <p className={cn(step >= 2 && "text-gaming-textPrimary")}>
+
+            {/* Connector Line: Hidden on small screens, visible on larger ones */}
+            <div className="hidden h-px flex-1 bg-[#A55FFF] sm:block"></div>
+
+            {/* Stage 2: Media & Description */}
+            <p
+              className={cn(
+                "w-full border-2 px-4 py-2 text-center text-sm font-semibold transition-all duration-300 sm:w-auto sm:text-left",
+                "rounded-[15px]", // Using a 15px border radius instead of rounded-full
+                step >= 2
+                  ? "text-gaming-textPrimary"
+                  : "text-gaming-textSecondary",
+                step === 2
+                  ? "border-[#FFCC00] shadow-gold-sm"
+                  : "border-gaming-purpleMuted/20"
+              )}
+            >
               Media & Description
             </p>
-          </div>
-          <div className="w-full bg-gaming-searchBg rounded-full h-2 border border-gaming-purpleMuted/20 shadow-inner">
-            <div
-              className="bg-gradient-to-r from-gaming-purple to-gaming-purpleLight h-full rounded-full transition-all duration-500 ease-in-out"
-              style={{ width: step === 1 ? "50%" : "100%" }}
-            />
           </div>
         </div>
 

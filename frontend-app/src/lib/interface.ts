@@ -39,3 +39,13 @@ export interface IUser {
   email: string;
   username: string;
 }
+
+export interface GameListingFormData {
+  game_name: string;
+  listing_title: string;
+  category: string;
+  price: string;
+  description: string;
+  images: File[];
+  user_id: string;
+}
