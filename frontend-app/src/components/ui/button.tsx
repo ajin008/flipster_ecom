@@ -20,9 +20,28 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        // New gaming variant with the gradient colors
+        // Gaming variants using your color theme
         gaming:
           "bg-gradient-to-r from-[#A55FFF] to-[#FF85FF] hover:from-[#6C2BD9] hover:to-[#A55FFF] text-white font-bold shadow-gaming-lg hover:shadow-gaming-xl hover:scale-105 focus-visible:ring-[#A55FFF]/30",
+        "gaming-edit":
+          "bg-gaming-bg-card border border-gaming-border text-gaming-purple hover:border-gaming-purple-light hover:bg-gaming-purple/10 hover:text-gaming-purple-light transition-all duration-300",
+        "gaming-delete":
+          "bg-gaming-bg-card border border-red-500/30 text-red-400 hover:border-red-500 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300",
+        "gaming-outline":
+          "border-2 border-gaming-purple text-gaming-purple hover:bg-gaming-purple hover:text-white transition-all duration-300",
+        "gaming-gold":
+          "bg-gradient-to-r from-gaming-gold to-gaming-gold-bright text-black hover:from-gaming-gold-bright hover:to-gaming-gold shadow-gold-md hover:shadow-gold-hover transition-all duration-300",
+
+        //   gaming:
+        //   "bg-gradient-to-r from-gaming-purple to-gaming-purple-light text-white hover:from-gaming-purple-light hover:to-gaming-pink shadow-gaming-button hover:shadow-gaming-hover transition-all duration-300",
+        // "gaming-outline":
+        //   "border-2 border-gaming-purple text-gaming-purple hover:bg-gaming-purple hover:text-white transition-all duration-300",
+        // "gaming-edit":
+        //   "bg-gaming-bg-card border border-gaming-border text-gaming-purple hover:border-gaming-purple-light hover:bg-gaming-purple/10 hover:text-gaming-purple-light transition-all duration-300",
+        // "gaming-delete":
+        //   "bg-gaming-bg-card border border-red-500/30 text-red-400 hover:border-red-500 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300",
+        // "gaming-gold":
+        //   "bg-gradient-to-r from-gaming-gold to-gaming-gold-bright text-black hover:from-gaming-gold-bright hover:to-gaming-gold shadow-gold-md hover:shadow-gold-hover transition-all duration-300",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

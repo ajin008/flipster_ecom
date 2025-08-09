@@ -14,6 +14,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/navigation";
 
 // ✅ Define the menu item type
 type MenuItem = {
@@ -25,6 +26,7 @@ type MenuItem = {
 };
 
 const ProfileDropDown = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +62,7 @@ const ProfileDropDown = () => {
     {
       icon: List,
       label: "My Listing",
-      onClick: () => console.log("My Listing clicked"),
+      onClick: () => router.push("/Mylisting"),
     },
     {
       icon: CreditCard,

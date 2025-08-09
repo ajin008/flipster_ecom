@@ -1,31 +1,31 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Eye-Catching Gaming Background with Purple/Pink Theme */
+/* Eye-Catching Gaming Background with Darker Purple/Pink Theme */
 body {
   background:
     radial-gradient(
       ellipse at top left,
-      rgba(108, 43, 217, 0.15) 0%,
+      rgba(108, 43, 217, 0.25) 0%,
       transparent 50%
     ),
     radial-gradient(
       ellipse at bottom right,
-      rgba(255, 97, 210, 0.08) 0%,
+      rgba(255, 97, 210, 0.15) 0%,
       transparent 60%
     ),
     radial-gradient(
       ellipse at center,
-      rgba(165, 95, 255, 0.05) 0%,
+      rgba(165, 95, 255, 0.1) 0%,
       transparent 80%
     ),
     linear-gradient(
       135deg,
-      #0e061c 0%,
-      #1a0d2f 30%,
-      #1b1033 60%,
-      #6c2bd9 85%,
-      #ff61d2 100%
+      #0b0416 0%,
+      #150826 30%,
+      #180a2a 60%,
+      #5a22b2 85%,
+      #e255bb 100%
     );
   background-size:
     120% 120%,

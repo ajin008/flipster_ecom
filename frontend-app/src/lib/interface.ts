@@ -49,3 +49,24 @@ export interface GameListingFormData {
   images: File[];
   user_id: string;
 }
+
+export interface GameAccount {
+  id: string;
+  user_id: string;
+  gamename: string;
+  price: number;
+  status: string;
+  created_at: string;
+  thumbnail_image?: string;
+  description?: string;
+}
+
+export interface GameListing {
+  id: string;
+  game_name: string;
+  account_title: string;
+  price: number;
+  status: string;
+  image_paths: string[];
+  created_at: string;
+}

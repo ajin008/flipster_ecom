@@ -11,6 +11,8 @@ import { GameListingFormData } from "@/lib/interface";
 import { createGameListing } from "../../../../../services/gameListings";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
+import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 // --- Helper Icons (You can place these in a separate file) ---
 
@@ -93,6 +95,7 @@ export default function ListGameAccountPage() {
 
   const [step, setStep] = useState(1);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const {
@@ -136,15 +139,21 @@ export default function ListGameAccountPage() {
   });
 
   const onSubmit = async (data: GameListingFormData) => {
+    if (isSubmitting) return; // Prevent duplicate submissions
+
+    setIsSubmitting(true);
     try {
       console.log("Form Submitted:", data);
       if (!user?.id) throw new Error("user not found");
 
       await createGameListing({ ...data, user_id: user.id });
       toast.success("successfully listed your game account");
+      router.push("/");
     } catch (err) {
       toast.error(getErrorMessage(err));
       console.error("Submission error:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -186,6 +195,7 @@ export default function ListGameAccountPage() {
     "w-full bg-gaming-searchBg border border-gaming-purpleMuted/50 rounded-md p-3 text-gaming-textPrimary placeholder:text-gaming-textSecondary focus:ring-2 focus:ring-gaming-purpleLight focus:border-gaming-purpleLight outline-none transition-all";
   const errorStyles = "text-gaming-error text-sm mt-1";
 
+  if (!user) return null;
   return (
     <div className="min-h-screen bg-gaming-background bg-gradient-gaming-radial p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center">
       <div className="text-center mb-8">
@@ -341,6 +351,7 @@ export default function ListGameAccountPage() {
                   onClick={() => router.back()}
                   variant="ghost"
                   size="lg"
+                  disabled={isSubmitting}
                 >
                   <ArrowLeftIcon className="size-4" />
                   Back
@@ -348,7 +359,7 @@ export default function ListGameAccountPage() {
                 <Button
                   type="button"
                   onClick={nextStep}
-                  disabled={!isStepOneValid}
+                  disabled={!isStepOneValid || isSubmitting}
                   variant="gaming"
                   size="lg"
                 >
@@ -378,6 +389,7 @@ export default function ListGameAccountPage() {
                     },
                   })}
                   className={cn(inputStyles, "min-h-[180px]")}
+                  disabled={isSubmitting}
                 ></textarea>
                 {errors.description && (
                   <p className={errorStyles}>{errors.description.message}</p>
@@ -393,7 +405,8 @@ export default function ListGameAccountPage() {
                         type="button"
                         key={feature}
                         onClick={() => addDetailToDescription(feature)}
-                        className="px-3 py-1 text-xs font-semibold border border-gaming-purpleMuted/50 bg-gaming-searchBg/50 text-gaming-textSecondary rounded-full hover:bg-gaming-purple/50 hover:text-white transition-colors"
+                        disabled={isSubmitting}
+                        className="px-3 py-1 text-xs font-semibold border border-gaming-purpleMuted/50 bg-gaming-searchBg/50 text-gaming-textSecondary rounded-full hover:bg-gaming-purple/50 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {feature}
                       </button>
@@ -408,9 +421,12 @@ export default function ListGameAccountPage() {
                 </label>
                 <div
                   {...getRootProps()}
-                  className="border-2 border-dashed border-gaming-purpleMuted/50 p-6 rounded-lg text-center cursor-pointer hover:bg-gaming-searchBg/50 hover:border-gaming-purple transition-all"
+                  className={cn(
+                    "border-2 border-dashed border-gaming-purpleMuted/50 p-6 rounded-lg text-center cursor-pointer hover:bg-gaming-searchBg/50 hover:border-gaming-purple transition-all",
+                    isSubmitting && "opacity-50 cursor-not-allowed"
+                  )}
                 >
-                  <input {...getInputProps()} />
+                  <input {...getInputProps()} disabled={isSubmitting} />
                   <div className="flex flex-col items-center justify-center text-gaming-textSecondary">
                     <UploadCloudIcon className="size-10 mb-2 text-gaming-purpleLight" />
                     <p className="font-semibold text-gaming-textPrimary">
@@ -430,34 +446,44 @@ export default function ListGameAccountPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                   {imagePreviews.map((src, idx) => (
                     <div key={idx} className="relative aspect-video">
-                      <img
+                      <Image
                         src={src}
                         alt={`preview-${idx}`}
-                        className="h-full w-full object-cover rounded-md border border-gaming-purpleMuted/30"
+                        fill
+                        className="object-cover rounded-md border border-gaming-purpleMuted/30"
+                        unoptimized // Needed for local blob URLs
                       />
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* MODIFIED: Back button with icon */}
+              {/* MODIFIED: Back button with icon and loading submit button */}
               <div className="pt-4 flex justify-between items-center">
                 <Button
                   type="button"
                   onClick={() => setStep(1)}
                   variant="ghost"
                   size="lg"
+                  disabled={isSubmitting}
                 >
                   <ArrowLeftIcon className="size-4" />
                   Back
                 </Button>
                 <Button
                   type="submit"
-                  disabled={!isStepTwoValid}
+                  disabled={!isStepTwoValid || isSubmitting}
                   variant="gaming"
                   size="lg"
                 >
-                  Submit Listing
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Listing"
+                  )}
                 </Button>
               </div>
             </div>
