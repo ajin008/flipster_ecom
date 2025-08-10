@@ -1,5 +1,5 @@
 import React from "react";
-import { Check, Clock, Home, Eye, X } from "lucide-react";
+import { Check, Clock, Home, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { VerificationModalProps } from "@/lib/interface";
 
