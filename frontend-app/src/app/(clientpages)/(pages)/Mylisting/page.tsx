@@ -4,17 +4,24 @@ import { useUserStore } from "@/store/userStore";
 import { useEffect, useState } from "react";
 import { FetchMyListing } from "../../../../../services/FetchMyListing";
 import { toast } from "sonner";
-import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 import Image from "next/image";
 import { getPublicImageUrl } from "@/lib/utils/getPublicImageUrl";
 import { Button } from "@/components/ui/button";
 import { ListingSkeleton } from "@/components/shared/ListingSkeleton";
 import { Edit, Trash2, Calendar, Gamepad2, MoreVertical } from "lucide-react";
+import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
+import { getErrorMessage } from "@/lib/utils/getErrorMessage";
+import { DeleteGameListing } from "../../../../../services/DeleteGameListing";
 
 export default function Page() {
   const { user } = useUserStore();
   const [listings, setListings] = useState<GameListing[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showDialog, setShowDialog] = useState(false);
+
+  const [selectedListingId, setSelectedListingId] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     const loadListings = async () => {
@@ -32,6 +39,23 @@ export default function Page() {
 
     loadListings();
   }, [user?.id]);
+
+  const handleDelete = async () => {
+    if (!selectedListingId) return;
+
+    try {
+      await DeleteGameListing(selectedListingId);
+      toast.success("Listing deleted successfully");
+
+      setListings((prev) => prev.filter((l) => l.id !== selectedListingId));
+      setShowDialog(false);
+      setSelectedListingId(null);
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      console.log(err);
+    }
+    console.log("handle delete");
+  };
 
   if (loading) {
     return (
@@ -173,7 +197,13 @@ export default function Page() {
                   Edit
                 </button>
                 <div className="w-px bg-gaming-border"></div>
-                <button className="flex-1 flex items-center justify-center py-2.5 text-red-400 hover:bg-red-500/5 hover:text-red-300 transition-colors text-sm">
+                <button
+                  className="flex-1 flex items-center justify-center py-2.5 text-red-400 hover:bg-red-500/5 hover:text-red-300 transition-colors text-sm"
+                  onClick={() => {
+                    setSelectedListingId(listing.id);
+                    setShowDialog(true);
+                  }}
+                >
                   <Trash2 className="w-4 h-4 mr-2" />
                   Delete
                 </button>
@@ -261,6 +291,10 @@ export default function Page() {
                     variant="outline"
                     size="sm"
                     className="flex-1 border-red-500/30 hover:border-red-500 hover:bg-red-500/10 text-red-400 hover:text-red-300"
+                    onClick={() => {
+                      setSelectedListingId(listing.id);
+                      setShowDialog(true);
+                    }}
                   >
                     <Trash2 className="w-4 h-4" />
                     <span className="hidden lg:inline ml-1">Delete</span>
@@ -271,6 +305,18 @@ export default function Page() {
           ))}
         </div>
       </div>
+
+      <ConfirmationDialog
+        isOpen={showDialog}
+        onClose={() => setShowDialog(false)}
+        onConfirm={handleDelete}
+        title="Delete Item"
+        message="Are you sure you want to delete this item? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="destructive"
+        showIcon={true}
+      />
     </div>
   );
 }

@@ -136,11 +136,14 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
       onClick={handleBackdropClick}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-gaming-bg-primary/80 backdrop-blur-gaming" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-gaming" />
 
       {/* Dialog */}
       <div className="relative w-full max-w-md transform transition-all duration-300 ease-gaming">
-        <div className="bg-gaming-bg-card border border-gaming-border rounded-xl shadow-gaming-xl p-6">
+        <div
+          className="bg-gaming-bg-card/95 backdrop-blur-sm border border-gaming-border rounded-xl shadow-gaming-xl p-6"
+          style={{ backgroundColor: "#1a0d2f" }}
+        >
           {/* Icon */}
           {getIcon()}
 
