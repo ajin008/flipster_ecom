@@ -133,11 +133,13 @@ export default function Page() {
                     src={getPublicImageUrl(listing.image_paths[0])}
                     alt={listing.game_name}
                     fill
+                    sizes="(max-width: 768px) 80px, (max-width: 1200px) 33vw, 25vw"
                     className="object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder.jpg";
                     }}
                   />
+
                   {/* Status Badge */}
                   <div className="absolute -top-1 -right-1">
                     <div
