@@ -38,7 +38,7 @@ export default function Page() {
       <div>
         {/* Mobile Loading State */}
         <div className="md:hidden">
-          <div className="mb-4">
+          <div className="mb-2">
             <div className="h-6 bg-gaming-bg-card rounded w-32 animate-pulse"></div>
             <div className="h-3 bg-gaming-bg-card rounded w-48 mt-2 animate-pulse"></div>
           </div>
@@ -51,7 +51,7 @@ export default function Page() {
 
         {/* Desktop Loading State */}
         <div className="hidden md:block">
-          <div className="mb-6">
+          <div className="mb-3">
             <div className="h-8 bg-gaming-bg-card rounded-lg w-48 animate-pulse"></div>
             <div className="h-4 bg-gaming-bg-card rounded w-64 mt-2 animate-pulse"></div>
           </div>

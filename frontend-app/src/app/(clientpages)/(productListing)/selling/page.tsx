@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
+import VerificationModal from "@/components/modal/VerificationModal";
 
 // --- Helper Icons (You can place these in a separate file) ---
 
@@ -52,7 +53,6 @@ const ChevronDownIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// NEW: Icon for the Back buttons
 const ArrowLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -68,6 +68,25 @@ const ArrowLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
   >
     <path d="m12 19-7-7 7-7" />
     <path d="M19 12H5" />
+  </svg>
+);
+
+// NEW: X Icon for remove button
+const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="m18 6-12 12" />
+    <path d="m6 6 12 12" />
   </svg>
 );
 
@@ -93,6 +112,7 @@ const detailFeatures = [
 export default function ListGameAccountPage() {
   const { user } = useUserStore();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -132,6 +152,35 @@ export default function ListGameAccountPage() {
     [setValue, watch]
   );
 
+  // NEW: Function to remove image at specific index
+  const removeImage = useCallback(
+    (indexToRemove: number) => {
+      const currentFiles = watch("images") || [];
+      const currentPreviews = [...imagePreviews];
+
+      // Revoke the object URL to prevent memory leaks
+      if (currentPreviews[indexToRemove]) {
+        URL.revokeObjectURL(currentPreviews[indexToRemove]);
+      }
+
+      // Remove from both arrays
+      const updatedFiles = currentFiles.filter(
+        (_, index) => index !== indexToRemove
+      );
+      const updatedPreviews = currentPreviews.filter(
+        (_, index) => index !== indexToRemove
+      );
+
+      // Update form and state
+      setValue("images", updatedFiles, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+      setImagePreviews(updatedPreviews);
+    },
+    [setValue, watch, imagePreviews]
+  );
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: { "image/png": [], "image/jpeg": [], "image/jpg": [] },
     onDrop,
@@ -148,7 +197,7 @@ export default function ListGameAccountPage() {
 
       await createGameListing({ ...data, user_id: user.id });
       toast.success("successfully listed your game account");
-      router.push("/");
+      setIsModalOpen(true);
     } catch (err) {
       toast.error(getErrorMessage(err));
       console.error("Submission error:", err);
@@ -254,7 +303,7 @@ export default function ListGameAccountPage() {
               <div>
                 <label
                   htmlFor="game_name"
-                  className="block text-sm font-medium text-gaming-textSecondary mb-2"
+                  className="block text-sm font-medium text-primary  mb-2"
                 >
                   Game Name *
                 </label>
@@ -275,7 +324,7 @@ export default function ListGameAccountPage() {
               <div>
                 <label
                   htmlFor="listing_title"
-                  className="block text-sm font-medium text-gaming-textSecondary mb-2"
+                  className="block text-sm font-medium text-primary mb-2"
                 >
                   Listing Title *
                 </label>
@@ -297,7 +346,7 @@ export default function ListGameAccountPage() {
                 <div>
                   <label
                     htmlFor="category"
-                    className="block text-sm font-medium text-gaming-textSecondary mb-2"
+                    className="block text-sm font-medium text-primary mb-2"
                   >
                     Category *
                   </label>
@@ -313,18 +362,18 @@ export default function ListGameAccountPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-gaming-textSecondary pointer-events-none" />
+                    <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-primary pointer-events-none" />
                   </div>
                 </div>
                 <div>
                   <label
                     htmlFor="price"
-                    className="block text-sm font-medium text-gaming-textSecondary mb-2"
+                    className="block text-sm font-medium text-primary mb-2"
                   >
                     Price (₹) *
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gaming-textSecondary">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary">
                       ₹
                     </span>
                     <input
@@ -344,7 +393,6 @@ export default function ListGameAccountPage() {
                 </div>
               </div>
 
-              {/* MODIFIED: Back button with icon */}
               <div className="pt-4 flex justify-between items-center">
                 <Button
                   type="button"
@@ -442,23 +490,53 @@ export default function ListGameAccountPage() {
                 )}
               </div>
 
+              {/* MODIFIED: Image previews with remove buttons */}
               {imagePreviews.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {imagePreviews.map((src, idx) => (
-                    <div key={idx} className="relative aspect-video">
-                      <Image
-                        src={src}
-                        alt={`preview-${idx}`}
-                        fill
-                        className="object-cover rounded-md border border-gaming-purpleMuted/30"
-                        unoptimized // Needed for local blob URLs
-                      />
-                    </div>
-                  ))}
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <p className="text-sm text-gaming-textSecondary">
+                      Selected Images ({imagePreviews.length})
+                    </p>
+                    {imagePreviews.length > 0 && (
+                      <p className="text-xs text-gaming-textSecondary">
+                        Click × to remove an image
+                      </p>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    {imagePreviews.map((src, idx) => (
+                      <div key={idx} className="relative group">
+                        <div className="relative aspect-video">
+                          <Image
+                            src={src}
+                            alt={`preview-${idx}`}
+                            fill
+                            className="object-cover rounded-md border border-gaming-purpleMuted/30"
+                            unoptimized // Needed for local blob URLs
+                          />
+                        </div>
+
+                        {/* Remove button */}
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          disabled={isSubmitting}
+                          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors opacity-90 hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Remove image"
+                        >
+                          <XIcon />
+                        </button>
+
+                        {/* Image index indicator */}
+                        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                          {idx + 1}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {/* MODIFIED: Back button with icon and loading submit button */}
               <div className="pt-4 flex justify-between items-center">
                 <Button
                   type="button"
@@ -493,6 +571,10 @@ export default function ListGameAccountPage() {
           Need help? Contact our support team for assistance with your listing.
         </p>
       </div>
+      <VerificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function MyListingLayout({
   children,
@@ -13,6 +15,10 @@ export default function MyListingLayout({
     router.push("selling");
   };
 
+  const handleBackBtn = () => {
+    router.back();
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gaming-bg">
       {/* Mobile-First Header */}
@@ -21,25 +27,40 @@ export default function MyListingLayout({
           <div className="max-w-7xl mx-auto">
             {/* Mobile Header */}
             <div className="flex items-center justify-between md:hidden">
-              <div>
-                <h1 className="text-xl font-bold text-gaming-text-primary truncate">
-                  My Listings
-                </h1>
-                <p className="text-xs text-gaming-text-secondary">
-                  Manage your listings
-                </p>
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleBackBtn}
+                  className="shrink-0"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+                <div>
+                  <h1 className="text-xl font-bold text-gaming-text-primary truncate">
+                    My Listings
+                  </h1>
+                  <p className="text-xs text-gaming-text-secondary">
+                    Manage your listings
+                  </p>
+                </div>
               </div>
-              <button
-                className="px-3 py-2 bg-gaming-purple hover:bg-gaming-purple-light text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
-                onClick={handleNewListingBtn}
-              >
-                + New
-              </button>
+              <Button variant="gaming" onClick={handleNewListingBtn}>
+                + New Listing
+              </Button>
             </div>
 
             {/* Desktop Header */}
             <div className="hidden md:flex items-center justify-between">
               <div className="flex items-center space-x-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleBackBtn}
+                  className="shrink-0"
+                >
+                  <ArrowLeft className="h-8 w-8" />
+                </Button>
                 <div>
                   <h1 className="text-2xl lg:text-3xl font-bold text-gaming-text-primary">
                     My Listings
@@ -51,33 +72,9 @@ export default function MyListingLayout({
               </div>
 
               <div className="flex items-center space-x-3">
-                <button className="px-4 py-2 bg-gaming-purple/20 hover:bg-gaming-purple/30 text-gaming-purple-light border border-gaming-purple/30 rounded-lg transition-all duration-200">
-                  Filter
-                </button>
-                <button
-                  className="px-6 py-2 bg-gaming-purple hover:bg-gaming-purple-light text-white rounded-lg transition-all duration-200 shadow-gaming-md hover:shadow-gaming-lg"
-                  onClick={handleNewListingBtn}
-                >
+                <Button variant="gaming" onClick={handleNewListingBtn}>
                   + New Listing
-                </button>
-              </div>
-            </div>
-
-            {/* Mobile Filter Bar */}
-            <div className="mt-3 md:hidden">
-              <div className="flex items-center space-x-2 overflow-x-auto pb-2">
-                <button className="flex-shrink-0 px-3 py-1.5 bg-gaming-purple/20 hover:bg-gaming-purple/30 text-gaming-purple-light border border-gaming-purple/30 rounded-md text-sm transition-colors">
-                  All
-                </button>
-                <button className="flex-shrink-0 px-3 py-1.5 bg-gaming-bg-card hover:bg-gaming-border text-gaming-text-secondary border border-gaming-border rounded-md text-sm transition-colors whitespace-nowrap">
-                  Active
-                </button>
-                <button className="flex-shrink-0 px-3 py-1.5 bg-gaming-bg-card hover:bg-gaming-border text-gaming-text-secondary border border-gaming-border rounded-md text-sm transition-colors whitespace-nowrap">
-                  Sold
-                </button>
-                <button className="flex-shrink-0 px-3 py-1.5 bg-gaming-bg-card hover:bg-gaming-border text-gaming-text-secondary border border-gaming-border rounded-md text-sm transition-colors whitespace-nowrap">
-                  Filter
-                </button>
+                </Button>
               </div>
             </div>
           </div>

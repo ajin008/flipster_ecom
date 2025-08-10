@@ -70,3 +70,8 @@ export interface GameListing {
   image_paths: string[];
   created_at: string;
 }
+
+export interface VerificationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
