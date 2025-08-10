@@ -4,7 +4,6 @@ import {
   BarChart3,
   Home,
   List,
-  CreditCard,
   UserCircle,
   Edit3,
   ShoppingBag,
@@ -65,11 +64,6 @@ const ProfileDropDown = () => {
       onClick: () => router.push("/Mylisting"),
     },
     {
-      icon: CreditCard,
-      label: "Payout Options",
-      onClick: () => console.log("Payout Options clicked"),
-    },
-    {
       icon: UserCircle,
       label: "My Profile",
       onClick: () => console.log("My Profile clicked"),
@@ -120,16 +114,19 @@ const ProfileDropDown = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-purple-500/25 hover:scale-105 border border-purple-500/30"
       >
-        <User size={20} className="text-white" />
+        <User size={24} className="text-white" />
       </button>
 
       {/* Dropdown Modal */}
       {isOpen && (
-        <div className="absolute top-12 right-0 w-64 md:w-80 bg-slate-950 backdrop-blur-xl rounded-xl shadow-2xl border z-50 overflow-hidden">
+        <div className="absolute top-14 md:top-12 right-0 w-80 sm:w-96 md:w-80 bg-slate-950 backdrop-blur-xl rounded-xl shadow-2xl border z-50 overflow-hidden">
           {/* Header */}
           <div className="px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-purple-600 to-purple-700 border-b border-purple-500/30">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <div
+                className="w-12 h-12 md:w-10 md:h-10
+ rounded-full bg-white/20 flex items-center justify-center"
+              >
                 <User size={16} className="text-white md:w-5 md:h-5" />
               </div>
               <div>
@@ -151,7 +148,7 @@ const ProfileDropDown = () => {
                 <button
                   key={index}
                   onClick={() => handleItemClick(item)}
-                  className={`w-full px-4 py-3 md:px-6 md:py-4 flex items-center gap-3 md:gap-4 hover:bg-gray-800/60 transition-all duration-200 text-left group ${
+                  className={`w-full px-6 py-5 md:px-6 md:py-4 flex items-center gap-3 md:gap-4 hover:bg-gray-800/60 transition-all duration-200 text-left group ${
                     item.className || "text-gray-200 hover:text-white"
                   }`}
                 >
@@ -163,7 +160,7 @@ const ProfileDropDown = () => {
                     {item.label}
                   </span>
                   {item.badge && (
-                    <span className="px-2 py-1 text-xs font-bold bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-full">
+                    <span className="px-2 py-1 text-sm font-bold bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-full">
                       {item.badge}
                     </span>
                   )}
@@ -173,7 +170,7 @@ const ProfileDropDown = () => {
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2 md:px-6 md:py-3 bg-gray-900/60 border-t border-gray-700/50">
+          <div className="px-3 py-1 md:px-6 md:py-4 bg-gray-900/60 border-t border-gray-700/50">
             <p className="text-xs md:text-sm text-gray-400 text-center">
               FlipSter Gaming Platform
             </p>

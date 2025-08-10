@@ -303,7 +303,7 @@ export default function ListGameAccountPage() {
               <div>
                 <label
                   htmlFor="game_name"
-                  className="block text-sm font-medium text-primary  mb-2"
+                  className="block text-sm font-medium text-white  mb-2"
                 >
                   Game Name *
                 </label>
@@ -324,7 +324,7 @@ export default function ListGameAccountPage() {
               <div>
                 <label
                   htmlFor="listing_title"
-                  className="block text-sm font-medium text-primary mb-2"
+                  className="block text-sm font-medium text-white mb-2"
                 >
                   Listing Title *
                 </label>
@@ -346,7 +346,7 @@ export default function ListGameAccountPage() {
                 <div>
                   <label
                     htmlFor="category"
-                    className="block text-sm font-medium text-primary mb-2"
+                    className="block text-sm font-medium text-white mb-2"
                   >
                     Category *
                   </label>
@@ -362,18 +362,18 @@ export default function ListGameAccountPage() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-primary pointer-events-none" />
+                    <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-white pointer-events-none" />
                   </div>
                 </div>
                 <div>
                   <label
                     htmlFor="price"
-                    className="block text-sm font-medium text-primary mb-2"
+                    className="block text-sm font-medium text-white mb-2"
                   >
                     Price (₹) *
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white">
                       ₹
                     </span>
                     <input
