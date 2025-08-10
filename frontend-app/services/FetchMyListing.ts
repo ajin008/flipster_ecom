@@ -7,9 +7,13 @@ export const FetchMyListing = async ({ user_id }: { user_id: string }) => {
     .eq("user_id", user_id)
     .order("created_at", { ascending: false });
 
-  if (error) {
-    throw new Error(`Failed to fetch listings: ${error.message}`);
-  }
+  if (error) throw new Error(error.message);
 
-  return data;
+  return data.map((item) => ({
+    ...item,
+    image_paths: item.image_paths?.map(
+      (path: string) =>
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/${path}`
+    ),
+  }));
 };
