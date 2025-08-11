@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { FetchMyListing } from "../../../../../services/FetchMyListing";
 import { toast } from "sonner";
 import Image from "next/image";
-import { getPublicImageUrl } from "@/lib/utils/getPublicImageUrl";
 import { Button } from "@/components/ui/button";
 import { ListingSkeleton } from "@/components/shared/ListingSkeleton";
 import { Edit, Trash2, Calendar, Gamepad2, MoreVertical } from "lucide-react";
@@ -130,7 +129,7 @@ export default function Page() {
                 {/* Image */}
                 <div className="relative w-20 h-20 flex-shrink-0">
                   <Image
-                    src={getPublicImageUrl(listing.image_paths[0])}
+                    src={listing.image_paths[0]}
                     alt={listing.game_name}
                     fill
                     sizes="(max-width: 768px) 80px, (max-width: 1200px) 33vw, 25vw"
@@ -226,7 +225,7 @@ export default function Page() {
               {/* Desktop Image Container */}
               <div className="relative aspect-video overflow-hidden">
                 <Image
-                  src={getPublicImageUrl(listing.image_paths[0])}
+                  src={listing.image_paths[0]}
                   alt={listing.game_name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
