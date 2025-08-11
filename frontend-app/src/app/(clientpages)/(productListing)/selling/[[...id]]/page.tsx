@@ -463,26 +463,31 @@ export default function ListGameAccountPage() {
                 </div>
               </div>
 
-              <div className="pt-4 flex justify-between items-center">
-                <Button
-                  type="button"
-                  onClick={() => router.back()}
-                  variant="ghost"
-                  size="lg"
-                  disabled={isSubmitting}
-                >
-                  <ArrowLeftIcon className="size-4" />
-                  Back
-                </Button>
-                <Button
-                  type="button"
-                  onClick={nextStep}
-                  disabled={!isStepOneValid || isSubmitting}
-                  variant="gaming"
-                  size="lg"
-                >
-                  Next
-                </Button>
+              {/* FIXED: Improved button alignment for all screen sizes */}
+              <div className="pt-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
+                  <Button
+                    type="button"
+                    onClick={() => router.back()}
+                    variant="ghost"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2"
+                  >
+                    <ArrowLeftIcon className="size-4" />
+                    Back
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={nextStep}
+                    disabled={!isStepOneValid || isSubmitting}
+                    variant="gaming"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    Next
+                  </Button>
+                </div>
               </div>
             </div>
           )}
@@ -607,35 +612,39 @@ export default function ListGameAccountPage() {
                 </div>
               )}
 
-              <div className="pt-4 flex justify-between items-center">
-                <Button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  variant="ghost"
-                  size="lg"
-                  disabled={isSubmitting}
-                >
-                  <ArrowLeftIcon className="size-4" />
-                  Back
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={!isStepTwoValid || isSubmitting}
-                  variant="gaming"
-                  size="lg"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="size-4 animate-spin" />
-
-                      {isEditMode ? "Saving..." : "Submitting..."}
-                    </>
-                  ) : isEditMode ? (
-                    "Save Changes"
-                  ) : (
-                    "Submit Listing"
-                  )}
-                </Button>
+              {/* FIXED: Consistent button alignment for all screen sizes */}
+              <div className="pt-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
+                  <Button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    variant="ghost"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2"
+                  >
+                    <ArrowLeftIcon className="size-4" />
+                    Back
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={!isStepTwoValid || isSubmitting}
+                    variant="gaming"
+                    size="lg"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        {isEditMode ? "Saving..." : "Submitting..."}
+                      </>
+                    ) : isEditMode ? (
+                      "Save Changes"
+                    ) : (
+                      "Submit Listing"
+                    )}
+                  </Button>
+                </div>
               </div>
             </div>
           )}
