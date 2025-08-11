@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ListingSkeleton } from "@/components/shared/ListingSkeleton";
-import { Edit, Trash2, Calendar, Gamepad2, MoreVertical } from "lucide-react";
+import { Edit, Trash2, Calendar, Gamepad2 } from "lucide-react";
 import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 import { DeleteGameListing } from "../../../../../services/DeleteGameListing";
