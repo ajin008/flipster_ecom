@@ -1,19 +1,25 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/store/userStore";
 import { GameListingFormData } from "@/lib/interface";
-import { createGameListing } from "../../../../../services/gameListings";
+import {
+  createGameListing,
+  updateGameListing,
+} from "../../../../../../services/gameListings";
+import { fetchListingById } from "../../../../../../services/fetchListingById";
+
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import VerificationModal from "@/components/modal/VerificationModal";
+import { ListingSkeleton } from "@/components/shared/ListingSkeleton";
 
 // --- Helper Icons (You can place these in a separate file) ---
 
@@ -110,12 +116,18 @@ const detailFeatures = [
 
 // --- Main Page Component ---
 export default function ListGameAccountPage() {
+  const params = useParams();
+  const listingId = params.id ? (params.id[0] as string) : null;
+  const isEditMode = !!listingId;
+
   const { user } = useUserStore();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const router = useRouter();
 
   const {
@@ -126,6 +138,7 @@ export default function ListGameAccountPage() {
     watch,
     trigger,
     getValues,
+    reset,
   } = useForm<GameListingFormData>({
     mode: "onChange",
     defaultValues: {
@@ -138,18 +151,54 @@ export default function ListGameAccountPage() {
     },
   });
 
+  useEffect(() => {
+    if (isEditMode && listingId) {
+      const loadListingData = async () => {
+        setIsLoading(true); // Ensure loading state is active
+        try {
+          // This is the function we just created
+          const listingData = await fetchListingById(listingId);
+
+          // Use the reset function from react-hook-form to populate all fields
+          reset({
+            game_name: listingData.game_name,
+            listing_title: listingData.account_title,
+            category: listingData.category,
+            price: listingData.price.toString(),
+            description: listingData.description,
+            images: listingData.image_paths, // Store original full image URLs
+          });
+
+          // Set the state for image previews
+          setImagePreviews(listingData.image_paths);
+          toast.success("Listing data loaded!");
+        } catch (err) {
+          toast.error(getErrorMessage(err));
+          router.push("/");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      loadListingData();
+    }
+  }, [listingId, isEditMode, reset, router]);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const currentFiles = watch("images") || [];
-      const updatedFiles = [...currentFiles, ...acceptedFiles];
-      setValue("images", updatedFiles, {
+      const currentImages = getValues("images") || [];
+      const updatedImages = [...currentImages, ...acceptedFiles];
+      setValue("images", updatedImages, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      const previews = updatedFiles.map((file) => URL.createObjectURL(file));
-      setImagePreviews(previews);
+
+      const newPreviews = acceptedFiles.map((file) =>
+        URL.createObjectURL(file)
+      );
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
     },
-    [setValue, watch]
+    [getValues, setValue]
   );
 
   // NEW: Function to remove image at specific index
@@ -191,20 +240,40 @@ export default function ListGameAccountPage() {
     if (isSubmitting) return; // Prevent duplicate submissions
 
     setIsSubmitting(true);
-    try {
-      console.log("Form Submitted:", data);
-      if (!user?.id) throw new Error("user not found");
 
-      await createGameListing({ ...data, user_id: user.id });
-      toast.success("successfully listed your game account");
-      setIsModalOpen(true);
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-      console.error("Submission error:", err);
-    } finally {
-      setIsSubmitting(false);
+    if (isEditMode) {
+      await updateGameListing(listingId, data);
+      toast.success("updated success fully");
+      router.push("/Mylisting");
+    } else {
+      try {
+        console.log("Form Submitted:", data);
+        if (!user?.id) throw new Error("user not found");
+
+        await createGameListing({ ...data, user_id: user.id });
+        toast.success("successfully listed your game account");
+        setIsModalOpen(true);
+      } catch (err) {
+        toast.error(getErrorMessage(err));
+        console.error("Submission error:", err);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-full max-w-2xl p-8">
+          <h1 className="text-3xl text-center font-bold mb-4">
+            Loading Listing...
+          </h1>
+          <ListingSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   const nextStep = async () => {
     const valid = await trigger([
@@ -249,10 +318,12 @@ export default function ListGameAccountPage() {
     <div className="min-h-screen bg-gaming-background bg-gradient-gaming-radial p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center">
       <div className="text-center mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-gaming-textPrimary">
-          List Your Game Account
+          {isEditMode ? "Edit Your Listing" : "List Your Game Account"}
         </h1>
         <p className="text-gaming-textSecondary mt-2">
-          Sell your gaming account to other players safely and securely
+          {isEditMode
+            ? "Update the details and save your changes."
+            : "Sell your gaming account to other players safely and securely."}
         </p>
       </div>
 
@@ -557,8 +628,11 @@ export default function ListGameAccountPage() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      Submitting...
+
+                      {isEditMode ? "Saving..." : "Submitting..."}
                     </>
+                  ) : isEditMode ? (
+                    "Save Changes"
                   ) : (
                     "Submit Listing"
                   )}

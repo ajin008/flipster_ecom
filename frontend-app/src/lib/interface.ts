@@ -46,7 +46,7 @@ export interface GameListingFormData {
   category: string;
   price: string;
   description: string;
-  images: File[];
+  images: (File | string)[];
   user_id: string;
 }
 

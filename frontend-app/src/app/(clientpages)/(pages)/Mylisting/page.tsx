@@ -11,6 +11,7 @@ import { Edit, Trash2, Calendar, Gamepad2, MoreVertical } from "lucide-react";
 import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
 import { DeleteGameListing } from "../../../../../services/DeleteGameListing";
+import Link from "next/link";
 
 export default function Page() {
   const { user } = useUserStore();
@@ -193,10 +194,12 @@ export default function Page() {
 
               {/* Mobile Action Buttons */}
               <div className="flex border-t border-gaming-border">
-                <button className="flex-1 flex items-center justify-center py-2.5 text-gaming-text-primary hover:bg-gaming-purple/5 hover:text-gaming-purple-light transition-colors text-sm">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </button>
+                <Link href={`/selling ${listing.id}`} className="flex-1">
+                  <button className="flex-1 flex items-center justify-center py-2.5 text-gaming-text-primary hover:bg-gaming-purple/5 hover:text-gaming-purple-light transition-colors text-sm">
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
+                  </button>
+                </Link>
                 <div className="w-px bg-gaming-border"></div>
                 <button
                   className="flex-1 flex items-center justify-center py-2.5 text-red-400 hover:bg-red-500/5 hover:text-red-300 transition-colors text-sm"
@@ -280,14 +283,16 @@ export default function Page() {
 
                 {/* Desktop Action Buttons */}
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 border-gaming-border hover:border-gaming-purple hover:bg-gaming-purple/10 text-gaming-text-primary hover:text-gaming-purple-light"
-                  >
-                    <Edit className="w-4 h-4" />
-                    <span className="hidden lg:inline ml-1">Edit</span>
-                  </Button>
+                  <Link href={`/selling/${listing.id}`} className="flex-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-gaming-border hover:border-gaming-purple hover:bg-gaming-purple/10 text-gaming-text-primary hover:text-gaming-purple-light"
+                    >
+                      <Edit className="w-4 h-4" />
+                      <span className="hidden lg:inline ml-1">Edit</span>
+                    </Button>
+                  </Link>
                   <Button
                     variant="outline"
                     size="sm"

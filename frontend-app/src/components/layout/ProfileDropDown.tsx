@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import {
   User,
   BarChart3,
@@ -13,19 +14,18 @@ import {
   LogOut,
 } from "lucide-react";
 import { useUserStore } from "@/store/userStore";
-import { useRouter } from "next/navigation";
 
 // ✅ Define the menu item type
 type MenuItem = {
   icon: React.ElementType;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
+  href?: string;
   className?: string;
   badge?: string;
 };
 
 const ProfileDropDown = () => {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -51,48 +51,48 @@ const ProfileDropDown = () => {
     {
       icon: BarChart3,
       label: "Sales Dashboard",
-      onClick: () => console.log("Sales Dashboard clicked"),
+      href: "/sales-dashboard",
     },
     {
       icon: Home,
       label: "Dashboard",
-      onClick: () => console.log("Dashboard clicked"),
+      href: "/dashboard",
     },
     {
       icon: List,
       label: "My Listing",
-      onClick: () => router.push("/Mylisting"),
+      href: "/Mylisting",
     },
     {
       icon: UserCircle,
       label: "My Profile",
-      onClick: () => console.log("My Profile clicked"),
+      href: "/profile",
     },
     {
       icon: Edit3,
       label: "Edit Profile",
-      onClick: () => console.log("Edit Profile clicked"),
+      href: "/profile/edit",
     },
     {
       icon: ShoppingBag,
       label: "My Purchases",
-      onClick: () => console.log("My Purchases clicked"),
+      href: "/purchases",
     },
     {
       icon: Heart,
       label: "My Favourites",
-      onClick: () => console.log("My Favourites clicked"),
+      href: "/favourites",
     },
     {
       icon: Users,
       label: "Be An Affiliate",
-      onClick: () => console.log("Be An Affiliate clicked"),
+      href: "/affiliate",
       badge: "NEW",
     },
     {
       icon: HelpCircle,
       label: "Help & Support",
-      onClick: () => console.log("Help & Support clicked"),
+      href: "/support",
     },
     {
       icon: LogOut,
@@ -103,8 +103,57 @@ const ProfileDropDown = () => {
   ];
 
   const handleItemClick = (item: MenuItem) => {
-    item.onClick();
+    if (item.onClick) {
+      item.onClick();
+    }
     setIsOpen(false);
+  };
+
+  const renderMenuItem = (item: MenuItem, index: number) => {
+    const IconComponent = item.icon;
+    const baseClasses = `w-full px-6 py-5 md:px-6 md:py-4 flex items-center gap-3 md:gap-4 hover:bg-gray-800/60 transition-all duration-200 text-left group ${
+      item.className || "text-gray-200 hover:text-white"
+    }`;
+
+    const content = (
+      <>
+        <IconComponent
+          size={18}
+          className="group-hover:text-purple-400 transition-colors md:w-5 md:h-5"
+        />
+        <span className="text-sm md:text-base font-medium flex-1">
+          {item.label}
+        </span>
+        {item.badge && (
+          <span className="px-2 py-1 text-sm font-bold bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-full">
+            {item.badge}
+          </span>
+        )}
+      </>
+    );
+
+    if (item.href) {
+      return (
+        <Link
+          key={index}
+          href={item.href}
+          onClick={() => setIsOpen(false)}
+          className={baseClasses}
+        >
+          {content}
+        </Link>
+      );
+    } else {
+      return (
+        <button
+          key={index}
+          onClick={() => handleItemClick(item)}
+          className={baseClasses}
+        >
+          {content}
+        </button>
+      );
+    }
   };
 
   return (
@@ -123,10 +172,7 @@ const ProfileDropDown = () => {
           {/* Header */}
           <div className="px-4 py-3 md:px-6 md:py-4 bg-gradient-to-r from-purple-600 to-purple-700 border-b border-purple-500/30">
             <div className="flex items-center gap-3">
-              <div
-                className="w-12 h-12 md:w-10 md:h-10
- rounded-full bg-white/20 flex items-center justify-center"
-              >
+              <div className="w-12 h-12 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <User size={16} className="text-white md:w-5 md:h-5" />
               </div>
               <div>
@@ -141,33 +187,7 @@ const ProfileDropDown = () => {
           </div>
 
           {/* Menu Items */}
-          <div className="py-2">
-            {menuItems.map((item, index) => {
-              const IconComponent = item.icon;
-              return (
-                <button
-                  key={index}
-                  onClick={() => handleItemClick(item)}
-                  className={`w-full px-6 py-5 md:px-6 md:py-4 flex items-center gap-3 md:gap-4 hover:bg-gray-800/60 transition-all duration-200 text-left group ${
-                    item.className || "text-gray-200 hover:text-white"
-                  }`}
-                >
-                  <IconComponent
-                    size={18}
-                    className="group-hover:text-purple-400 transition-colors md:w-5 md:h-5"
-                  />
-                  <span className="text-sm md:text-base font-medium flex-1">
-                    {item.label}
-                  </span>
-                  {item.badge && (
-                    <span className="px-2 py-1 text-sm font-bold bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+          <div className="py-2">{menuItems.map(renderMenuItem)}</div>
 
           {/* Footer */}
           <div className="px-3 py-1 md:px-6 md:py-4 bg-gray-900/60 border-t border-gray-700/50">
