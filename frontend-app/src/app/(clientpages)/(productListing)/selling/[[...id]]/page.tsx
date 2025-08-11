@@ -296,13 +296,18 @@ export default function ListGameAccountPage() {
     document.getElementById("description")?.focus();
   };
 
+  const gameNameValue = watch("game_name");
+  const titleValue = watch("listing_title");
+  const priceValue = watch("price");
+
   const isStepOneValid =
-    dirtyFields.game_name &&
-    dirtyFields.listing_title &&
-    dirtyFields.price &&
+    !!gameNameValue &&
+    !!titleValue &&
+    !!priceValue &&
     !errors.game_name &&
     !errors.listing_title &&
     !errors.price;
+
   const isStepTwoValid =
     (watch("images")?.length ?? 0) > 0 &&
     dirtyFields.description &&
