@@ -2,36 +2,48 @@ import { GameListingFormData } from "@/lib/interface";
 import supabase from "@/lib/supabaseClient";
 import { v4 as uuidv4 } from "uuid";
 
-export const createGameListing = async (data: GameListingFormData) => {
+export const createGameListing = async (
+  data: GameListingFormData & { user_id: string }
+) => {
+  const { images, user_id, ...otherData } = data;
+  const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET;
+
+  if (!bucketName) {
+    throw new Error("Supabase bucket name is not configured.");
+  }
+
   const uploadedImagePaths: string[] = [];
 
-  for (const image of data.images) {
-    const fileName = `${Date.now()}-${image.name}`;
-    const filePath = `${data.user_id}/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("game-images")
-      .upload(filePath, image);
-
-    if (uploadError) {
-      throw new Error(`Image upload failed: ${uploadError.message}`);
+  for (const file of images) {
+    if (!(file instanceof File)) {
+      continue;
     }
 
+    const filePath = `${otherData.game_name}/${uuidv4()}-${file.name}`;
+    const { error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error("Image upload failed:", uploadError);
+      throw new Error("Image upload failed.");
+    }
     uploadedImagePaths.push(filePath);
   }
 
   const { error: insertError } = await supabase.from("game_accounts").insert({
-    game_name: data.game_name,
-    account_title: data.listing_title,
-    category: data.category,
-    price: parseFloat(data.price),
-    description: data.description,
-    user_id: data.user_id,
-    image_paths: uploadedImagePaths, // Make sure you add a text[] column in Supabase
+    game_name: otherData.game_name,
+    account_title: otherData.listing_title,
+    price: Number(otherData.price),
+    description: otherData.description,
+    category: otherData.category,
+    user_id: user_id,
+    image_paths: uploadedImagePaths,
   });
 
   if (insertError) {
-    throw new Error(`Listing creation failed: ${insertError.message}`);
+    console.error("Database insert failed:", insertError);
+    throw new Error("Listing creation failed.");
   }
 
   return { success: true };

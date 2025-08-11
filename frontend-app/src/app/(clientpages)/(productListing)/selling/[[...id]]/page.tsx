@@ -166,12 +166,11 @@ export default function ListGameAccountPage() {
             category: listingData.category,
             price: listingData.price.toString(),
             description: listingData.description,
-            images: listingData.image_paths, // Store original full image URLs
+            images: listingData.image_paths,
           });
 
           // Set the state for image previews
           setImagePreviews(listingData.image_paths);
-          toast.success("Listing data loaded!");
         } catch (err) {
           toast.error(getErrorMessage(err));
           router.push("/");
@@ -237,7 +236,7 @@ export default function ListGameAccountPage() {
   });
 
   const onSubmit = async (data: GameListingFormData) => {
-    if (isSubmitting) return; // Prevent duplicate submissions
+    if (isSubmitting) return;
 
     setIsSubmitting(true);
 
