@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   User,
-  BarChart3,
   Home,
   List,
   UserCircle,
@@ -49,14 +48,9 @@ const ProfileDropDown = () => {
 
   const menuItems: MenuItem[] = [
     {
-      icon: BarChart3,
-      label: "Sales Dashboard",
-      href: "/sales-dashboard",
-    },
-    {
       icon: Home,
       label: "Dashboard",
-      href: "/dashboard",
+      href: "/Dashboard",
     },
     {
       icon: List,
