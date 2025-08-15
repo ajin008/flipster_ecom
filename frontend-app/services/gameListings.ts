@@ -12,6 +12,12 @@ export const createGameListing = async (
     throw new Error("Supabase bucket name is not configured.");
   }
 
+  const isStoreExisting = await userHasListings(user_id);
+
+  if (!isStoreExisting) {
+    await createStore(user_id);
+  }
+
   const uploadedImagePaths: string[] = [];
 
   for (const file of images) {
@@ -106,4 +112,108 @@ export const updateGameListing = async (
   if (updateError) {
     throw new Error(updateError.message);
   }
+};
+
+export const userHasListings = async (userId: string): Promise<boolean> => {
+  const { count, error } = await supabase
+    .from("game_accounts")
+    .select("*", { head: true, count: "exact" })
+    .eq("user_id", userId);
+  if (error) {
+    console.error("Error checking for listings:", error.message);
+    throw new Error("Failed to check for existing listings.");
+  }
+
+  return count !== null && count > 0;
+};
+
+export const createStore = async (userId: string) => {
+  console.log("userid from createStore:", userId);
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", userId)
+    .single();
+
+  if (profileError || !profileData) {
+    console.error("Error fetching profile:", profileError);
+    throw new Error("Could not find a user profile to create the store.");
+  }
+
+  const storeName = profileData.username;
+
+  const { error: createStoreError } = await supabase.from("stores").insert({
+    user_id: userId,
+    store_name: storeName,
+  });
+
+  if (createStoreError) {
+    console.error("Error creating store:", createStoreError);
+    throw new Error("Database operation failed: Could not create the store.");
+  }
+
+  return { success: true };
+};
+
+export const getStoreData = async (userId: string) => {
+  if (!userId) return null;
+
+  // --- Step 1: Fetch core data from the 'stores' table ---
+  const storePromise = supabase
+    .from("stores")
+    .select("store_name, rating, views, created_at")
+    .eq("user_id", userId)
+    .single();
+
+  // --- Step 2: Fetch counts from the 'game_accounts' table ---
+  const activeListingsPromise = supabase
+    .from("game_accounts")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("status", "active"); // Assuming you have a 'status' column
+
+  const soldListingsPromise = supabase
+    .from("game_accounts")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("status", "sold"); // Assuming you have a 'status' column
+
+  // --- Execute all promises in parallel for efficiency ---
+  const [storeResult, activeListingsResult, soldListingsResult] =
+    await Promise.all([
+      storePromise,
+      activeListingsPromise,
+      soldListingsPromise,
+    ]);
+
+  // Handle case where no store is found
+  if (storeResult.error) {
+    console.error("Could not fetch store data:", storeResult.error.message);
+    return null;
+  }
+
+  // --- TODO: Fetch from an 'orders' table when you have one ---
+  // const pendingOrdersCount = ... query your 'orders' table where seller_id = userId and status = 'pending'
+  // const totalEarningsSum = ... query your 'orders' table to SUM(price) where seller_id = userId and status = 'completed'
+
+  // --- Step 3: Combine all the data into one object ---
+  const combinedData = {
+    storeName: storeResult.data.store_name,
+    rating: storeResult.data.rating,
+    profileViews: storeResult.data.views,
+    joinDate: new Date(storeResult.data.created_at).toLocaleDateString(
+      "en-US",
+      {
+        month: "short",
+        year: "numeric",
+      }
+    ),
+    totalListings: activeListingsResult.count ?? 0,
+    soldListings: soldListingsResult.count ?? 0,
+    // Using placeholder data until you have an 'orders' table
+    pendingOrders: 3,
+    totalEarnings: 2850,
+  };
+
+  return combinedData;
 };
