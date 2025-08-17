@@ -4,6 +4,8 @@ import "./globals.css";
 import TopProgressBar from "@/components/shared/TopProgressBar";
 import GamingToaster from "@/components/shared/GamingToaster";
 import { Analytics } from "@vercel/analytics/next";
+import PWAInstallModal from "@/components/shared/PWAInstallModal";
+import ServiceWorkerProvider from "@/providers/ServiceWorkerProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,8 +41,10 @@ export default function RootLayout({
         <div className="container mx-auto px-2 sm:px-4 py-4 flex min-h-screen flex-col">
           <TopProgressBar />
           <GamingToaster />
+          <PWAInstallModal />
           <main className="flex-grow">
             {children}
+            <ServiceWorkerProvider />
             <Analytics />
           </main>
         </div>
