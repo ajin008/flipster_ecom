@@ -12,9 +12,9 @@ export const createGameListing = async (
     throw new Error("Supabase bucket name is not configured.");
   }
 
-  const isStoreExisting = await userHasListings(user_id);
+  const storeExists = await userHasStore(user_id);
 
-  if (!isStoreExisting) {
+  if (!storeExists) {
     await createStore(user_id);
   }
 
@@ -45,6 +45,8 @@ export const createGameListing = async (
     category: otherData.category,
     user_id: user_id,
     image_paths: uploadedImagePaths,
+    login_credentials: otherData.login_credentials,
+    is_verified: false,
   });
 
   if (insertError) {
@@ -106,6 +108,7 @@ export const updateGameListing = async (
       description: otherData.description,
       category: otherData.category,
       image_paths: finalImagePaths,
+      login_credentials: otherData.login_credentials,
     })
     .eq("id", listingId);
 
@@ -114,14 +117,15 @@ export const updateGameListing = async (
   }
 };
 
-export const userHasListings = async (userId: string): Promise<boolean> => {
+export const userHasStore = async (userId: string): Promise<boolean> => {
   const { count, error } = await supabase
-    .from("game_accounts")
+    .from("stores")
     .select("*", { head: true, count: "exact" })
     .eq("user_id", userId);
+
   if (error) {
-    console.error("Error checking for listings:", error.message);
-    throw new Error("Failed to check for existing listings.");
+    console.error("Error checking for store:", error.message);
+    throw new Error("Failed to check for existing store.");
   }
 
   return count !== null && count > 0;
@@ -161,7 +165,7 @@ export const getStoreData = async (userId: string) => {
   // --- Step 1: Fetch core data from the 'stores' table ---
   const storePromise = supabase
     .from("stores")
-    .select("store_name, rating, views, created_at")
+    .select("store_name, rating, views, created_at,level")
     .eq("user_id", userId)
     .single();
 
@@ -170,21 +174,32 @@ export const getStoreData = async (userId: string) => {
     .from("game_accounts")
     .select("*", { count: "exact", head: true })
     .eq("user_id", userId)
-    .eq("status", "active"); // Assuming you have a 'status' column
+    .eq("status", "available");
+
+  const pendingListingsPromise = supabase
+    .from("game_accounts")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("status", "pending");
 
   const soldListingsPromise = supabase
     .from("game_accounts")
     .select("*", { count: "exact", head: true })
     .eq("user_id", userId)
-    .eq("status", "sold"); // Assuming you have a 'status' column
+    .eq("status", "sold");
 
   // --- Execute all promises in parallel for efficiency ---
-  const [storeResult, activeListingsResult, soldListingsResult] =
-    await Promise.all([
-      storePromise,
-      activeListingsPromise,
-      soldListingsPromise,
-    ]);
+  const [
+    storeResult,
+    activeListingsResult,
+    soldListingsResult,
+    pendingListingsResult,
+  ] = await Promise.all([
+    storePromise,
+    activeListingsPromise,
+    soldListingsPromise,
+    pendingListingsPromise,
+  ]);
 
   // Handle case where no store is found
   if (storeResult.error) {
@@ -199,6 +214,7 @@ export const getStoreData = async (userId: string) => {
   // --- Step 3: Combine all the data into one object ---
   const combinedData = {
     storeName: storeResult.data.store_name,
+    level: storeResult.data.level,
     rating: storeResult.data.rating,
     profileViews: storeResult.data.views,
     joinDate: new Date(storeResult.data.created_at).toLocaleDateString(
@@ -211,8 +227,8 @@ export const getStoreData = async (userId: string) => {
     totalListings: activeListingsResult.count ?? 0,
     soldListings: soldListingsResult.count ?? 0,
     // Using placeholder data until you have an 'orders' table
-    pendingOrders: 3,
-    totalEarnings: 2850,
+    pendingOrders: pendingListingsResult.count ?? 0,
+    totalEarnings: 0,
   };
 
   return combinedData;

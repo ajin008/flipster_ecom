@@ -48,6 +48,7 @@ export interface GameListingFormData {
   description: string;
   images: (File | string)[];
   user_id: string;
+  login_credentials: string;
 }
 
 export interface GameAccount {

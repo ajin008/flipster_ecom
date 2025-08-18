@@ -147,6 +147,7 @@ export default function ListGameAccountPage() {
       category: "Action",
       price: "",
       description: "",
+      login_credentials: "",
       images: [],
     },
   });
@@ -154,22 +155,20 @@ export default function ListGameAccountPage() {
   useEffect(() => {
     if (isEditMode && listingId) {
       const loadListingData = async () => {
-        setIsLoading(true); // Ensure loading state is active
+        setIsLoading(true);
         try {
-          // This is the function we just created
           const listingData = await fetchListingById(listingId);
 
-          // Use the reset function from react-hook-form to populate all fields
           reset({
             game_name: listingData.game_name,
             listing_title: listingData.account_title,
             category: listingData.category,
             price: listingData.price.toString(),
             description: listingData.description,
+            login_credentials: listingData.login_credentials || "",
             images: listingData.image_paths,
           });
 
-          // Set the state for image previews
           setImagePreviews(listingData.image_paths);
         } catch (err) {
           toast.error(getErrorMessage(err));
@@ -200,18 +199,15 @@ export default function ListGameAccountPage() {
     [getValues, setValue]
   );
 
-  // NEW: Function to remove image at specific index
   const removeImage = useCallback(
     (indexToRemove: number) => {
       const currentFiles = watch("images") || [];
       const currentPreviews = [...imagePreviews];
 
-      // Revoke the object URL to prevent memory leaks
       if (currentPreviews[indexToRemove]) {
         URL.revokeObjectURL(currentPreviews[indexToRemove]);
       }
 
-      // Remove from both arrays
       const updatedFiles = currentFiles.filter(
         (_, index) => index !== indexToRemove
       );
@@ -219,7 +215,6 @@ export default function ListGameAccountPage() {
         (_, index) => index !== indexToRemove
       );
 
-      // Update form and state
       setValue("images", updatedFiles, {
         shouldValidate: true,
         shouldDirty: true,
@@ -242,7 +237,7 @@ export default function ListGameAccountPage() {
 
     if (isEditMode) {
       await updateGameListing(listingId, data);
-      toast.success("updated success fully");
+      toast.success("updated successfully");
       router.push("/Mylisting");
     } else {
       try {
@@ -280,6 +275,7 @@ export default function ListGameAccountPage() {
       "listing_title",
       "category",
       "price",
+      "login_credentials",
     ]);
     if (valid) setStep(2);
   };
@@ -299,14 +295,17 @@ export default function ListGameAccountPage() {
   const gameNameValue = watch("game_name");
   const titleValue = watch("listing_title");
   const priceValue = watch("price");
+  const loginCredentialsValue = watch("login_credentials");
 
   const isStepOneValid =
     !!gameNameValue &&
     !!titleValue &&
     !!priceValue &&
+    !!loginCredentialsValue &&
     !errors.game_name &&
     !errors.listing_title &&
-    !errors.price;
+    !errors.price &&
+    !errors.login_credentials;
 
   const isStepTwoValid =
     (watch("images")?.length ?? 0) > 0 &&
@@ -333,13 +332,11 @@ export default function ListGameAccountPage() {
 
       <div className="w-full max-w-2xl mx-auto bg-gaming-cardBg/80 backdrop-blur-md rounded-xl shadow-gaming-lg border border-gaming-purple/20 p-6 sm:p-8">
         <div className="mb-8">
-          {/* The main container now switches from a column to a row layout */}
           <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:gap-4">
-            {/* Stage 1: Basic Details */}
             <p
               className={cn(
                 "w-full border-2 px-4 py-2 text-center text-sm font-semibold transition-all duration-300 sm:w-auto sm:text-left",
-                "rounded-[15px]", // Using a 15px border radius instead of rounded-full
+                "rounded-[15px]",
                 step >= 1
                   ? "text-gaming-textPrimary"
                   : "text-gaming-textSecondary",
@@ -351,14 +348,12 @@ export default function ListGameAccountPage() {
               Basic Details
             </p>
 
-            {/* Connector Line: Hidden on small screens, visible on larger ones */}
             <div className="hidden h-px flex-1 bg-[#A55FFF] sm:block"></div>
 
-            {/* Stage 2: Media & Description */}
             <p
               className={cn(
                 "w-full border-2 px-4 py-2 text-center text-sm font-semibold transition-all duration-300 sm:w-auto sm:text-left",
-                "rounded-[15px]", // Using a 15px border radius instead of rounded-full
+                "rounded-[15px]",
                 step >= 2
                   ? "text-gaming-textPrimary"
                   : "text-gaming-textSecondary",
@@ -468,7 +463,37 @@ export default function ListGameAccountPage() {
                 </div>
               </div>
 
-              {/* FIXED: Improved button alignment for all screen sizes */}
+              <div>
+                <label
+                  htmlFor="login_credentials"
+                  className="block text-sm font-medium text-white mb-2"
+                >
+                  Login Credentials *
+                </label>
+                <textarea
+                  id="login_credentials"
+                  placeholder="Enter your login details (e.g., Gmail + Password OR Facebook ID + Password)"
+                  {...register("login_credentials", {
+                    required: "Login credentials are required",
+                    minLength: {
+                      value: 10,
+                      message: "Please provide detailed login information",
+                    },
+                  })}
+                  className={cn(inputStyles, "min-h-[100px] resize-vertical")}
+                  rows={3}
+                />
+                {errors.login_credentials && (
+                  <p className={errorStyles}>
+                    {errors.login_credentials.message}
+                  </p>
+                )}
+                <p className="text-xs text-gaming-textSecondary mt-1">
+                  ⚠️ This information will be shared with the buyer upon
+                  purchase. Only provide accurate login details.
+                </p>
+              </div>
+
               <div className="pt-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
                   <Button
@@ -570,7 +595,6 @@ export default function ListGameAccountPage() {
                 )}
               </div>
 
-              {/* MODIFIED: Image previews with remove buttons */}
               {imagePreviews.length > 0 && (
                 <div>
                   <div className="flex justify-between items-center mb-3">
@@ -592,11 +616,10 @@ export default function ListGameAccountPage() {
                             alt={`preview-${idx}`}
                             fill
                             className="object-cover rounded-md border border-gaming-purpleMuted/30"
-                            unoptimized // Needed for local blob URLs
+                            unoptimized
                           />
                         </div>
 
-                        {/* Remove button */}
                         <button
                           type="button"
                           onClick={() => removeImage(idx)}
@@ -607,7 +630,6 @@ export default function ListGameAccountPage() {
                           <XIcon />
                         </button>
 
-                        {/* Image index indicator */}
                         <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
                           {idx + 1}
                         </div>
@@ -617,7 +639,6 @@ export default function ListGameAccountPage() {
                 </div>
               )}
 
-              {/* FIXED: Consistent button alignment for all screen sizes */}
               <div className="pt-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
                   <Button

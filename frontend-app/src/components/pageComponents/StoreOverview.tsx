@@ -25,6 +25,7 @@ import { StoreOverviewLoading } from "../layout/StoreOverviewLoading";
 // Define a type for our fetched store data
 interface StoreData {
   storeName: string;
+  level: string;
   rating: number;
   profileViews: number;
   joinDate: string;
@@ -190,7 +191,7 @@ export default function StoreOverview() {
                   </h1>
                   <Badge className="bg-gaming-gold text-gaming-bg-primary px-1.5 py-0.5 text-xs">
                     <Award className="w-3 h-3 mr-1" />
-                    Pro
+                    <h1>{storeData.level}</h1>
                   </Badge>
                 </div>
 
