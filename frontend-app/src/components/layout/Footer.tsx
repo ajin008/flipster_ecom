@@ -16,6 +16,7 @@ import {
   Award,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Footer() {
   const router = useRouter();
@@ -200,12 +201,18 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-status-away ">
               <p>© {new Date().getFullYear()} Flipster Pte Ltd.</p>
               <div className="flex gap-4">
-                <a href="#" className="hover:text-gray-300 transition-colors">
+                <Link
+                  href="/terms"
+                  className="hover:text-gray-300 transition-colors"
+                >
                   Terms
-                </a>
-                <a href="#" className="hover:text-gray-300 transition-colors">
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="hover:text-gray-300 transition-colors"
+                >
                   Privacy
-                </a>
+                </Link>
               </div>
             </div>
             <div className="text-xs text-status-away">
