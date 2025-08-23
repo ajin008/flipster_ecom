@@ -20,7 +20,7 @@ import { getStoreData } from "../../../services/gameListings";
 import { useUserStore } from "@/store/userStore";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { StoreOverviewLoading } from "../layout/StoreOverviewLoading";
+import { StoreOverviewLoading } from "./StoreOverviewLoading";
 
 // Define a type for our fetched store data
 interface StoreData {

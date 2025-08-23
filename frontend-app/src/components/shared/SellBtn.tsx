@@ -175,7 +175,7 @@ export const SellBtn = () => {
   return (
     <motion.button
       onClick={handleBtn}
-      className="relative flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#ff9800] via-[#ffb74d] to-[#ffc107] hover:from-[#f57c00] hover:via-[#ff9800] hover:to-[#ffb300] rounded-xl font-bold text-lg text-gray-900 shadow-lg focus:outline-none focus:ring-4 focus:ring-[#ff9800]/30 overflow-hidden backdrop-blur-sm border border-white/20 select-none"
+      className="relative flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#ff9800] via-[#ffb74d] to-[#ffc107] hover:from-[#f57c00] hover:via-[#ff9800] hover:to-[#ffb300] rounded-xl font-bold text-lg text-white shadow-lg focus:outline-none focus:ring-4 focus:ring-[#ff9800]/30 overflow-hidden backdrop-blur-sm border border-white/20 select-none"
       variants={buttonVariants}
       initial="initial"
       animate="animate"
@@ -225,10 +225,7 @@ export const SellBtn = () => {
         whileTap="tap"
         animate={isClicked ? "clicked" : "initial"}
       >
-        <Plus
-          className="h-6 w-6 text-gray-900 drop-shadow-sm"
-          strokeWidth={2.5}
-        />
+        <Plus className="h-6 w-6 text-white drop-shadow-sm" strokeWidth={2.5} />
 
         {/* Icon glow effect */}
         {isClicked && !shouldReduceMotion && (
