@@ -17,7 +17,6 @@ const GoogleSignupModal: React.FC<GoogleSignupModalProps> = ({
   onGoogleSignup,
   isLoading = false,
 }) => {
-  // Handle escape key press
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isOpen && !isLoading) {
@@ -80,7 +79,6 @@ const GoogleSignupModal: React.FC<GoogleSignupModalProps> = ({
             {/* Gaming glow effect */}
             <div className="absolute inset-0 pointer-events-none opacity-30 bg-gradient-gaming-radial" />
 
-            {/* Close button - Fixed with higher z-index and standard colors */}
             <button
               onClick={handleCloseClick}
               disabled={isLoading}
