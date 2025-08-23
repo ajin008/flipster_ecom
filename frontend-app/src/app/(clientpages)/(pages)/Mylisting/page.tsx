@@ -2,7 +2,7 @@
 import { GameListing } from "@/lib/interface";
 import { useUserStore } from "@/store/userStore";
 import { useEffect, useState } from "react";
-import { FetchMyListing } from "../../../../../services/FetchMyListing";
+import { FetchMyListing } from "../../../../../services/users/FetchMyListing";
 import { toast } from "sonner";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { ListingSkeleton } from "@/components/shared/ListingSkeleton";
 import { Edit, Trash2, Calendar, Gamepad2 } from "lucide-react";
 import ConfirmationDialog from "@/components/shared/ConfirmationDialog";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";
-import { DeleteGameListing } from "../../../../../services/DeleteGameListing";
+import { DeleteGameListing } from "../../../../../services/users/DeleteGameListing";
 import Link from "next/link";
 
 export default function Page() {

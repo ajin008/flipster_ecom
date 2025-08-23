@@ -1,5 +1,5 @@
 // components/HeroSection.tsx
-import { getBannerData } from "../../../services/getTopBanner";
+import { getBannerData } from "../../../services/banners/getTopBanner";
 import BannerSlider from "./BannerSlider";
 import { ArrowRight, Gamepad2 } from "lucide-react";
 

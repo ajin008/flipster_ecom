@@ -11,8 +11,8 @@ import { GameListingFormData } from "@/lib/interface";
 import {
   createGameListing,
   updateGameListing,
-} from "../../../../../../services/gameListings";
-import { fetchListingById } from "../../../../../../services/fetchListingById";
+} from "../../../../../../services/users/gameListings";
+import { fetchListingById } from "../../../../../../services/users/fetchListingById";
 
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/utils/getErrorMessage";

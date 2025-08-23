@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 import GoogleSignupModal from "../components/shared/GoogleOnlyAuthenticationModal";
-import { signInwithOauth } from "../../services/signInWithOAuth";
+import { signInwithOauth } from "../../services/auth/signInWithOAuth";
 
 type GoogleSignupModalContextType = {
   openModal: () => void;
