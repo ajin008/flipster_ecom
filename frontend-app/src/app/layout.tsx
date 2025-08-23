@@ -7,6 +7,8 @@ import { Analytics } from "@vercel/analytics/next";
 import PWAInstallModal from "@/components/shared/PWAInstallModal";
 import ServiceWorkerProvider from "@/providers/ServiceWorkerProvider";
 
+import { GoogleSignupModalProvider } from "@/context/GoogleSignupModalContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -38,16 +40,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="container mx-auto px-2 sm:px-4 py-4 flex min-h-screen flex-col">
-          <TopProgressBar />
-          <GamingToaster />
-          <PWAInstallModal />
-          <main className="flex-grow">
-            {children}
-            <ServiceWorkerProvider />
-            <Analytics />
-          </main>
-        </div>
+        <GoogleSignupModalProvider>
+          <div className="container mx-auto px-2 sm:px-4 py-4 flex min-h-screen flex-col">
+            <TopProgressBar />
+            <GamingToaster />
+            <PWAInstallModal />
+            <main className="flex-grow">
+              {children}
+              <ServiceWorkerProvider />
+              <Analytics />
+            </main>
+          </div>
+        </GoogleSignupModalProvider>
       </body>
     </html>
   );

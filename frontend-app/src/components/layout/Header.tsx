@@ -7,15 +7,13 @@ import { Bell } from "react-feather";
 import NotificationsModal from "./NotificationsModal";
 import { useUserStore } from "@/store/userStore";
 import ProfileDropDown from "./ProfileDropDown";
-import GoogleSignupModal from "../shared/GoogleOnlyAuthenticationModal";
-import { signInwithOauth } from "../../../services/signInWithOAuth";
-import { SellBtn } from "../shared/SellBtn";
+
+import { useGoogleSignupModal } from "@/context/GoogleSignupModalContext";
 
 export default function Header() {
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
-
-  const [showModal, setShowModal] = useState(false);
+  const { openModal } = useGoogleSignupModal();
 
   const router = useRouter();
 
@@ -40,10 +38,6 @@ export default function Header() {
     }
   };
 
-  const handleGetInBtn = () => {
-    setShowModal(true);
-  };
-
   return (
     <>
       <header className="px-4 py-2 mb-4">
@@ -63,12 +57,11 @@ export default function Header() {
                 >
                   <Bell size={20} />
                 </Button>
-                <SellBtn />
                 <ProfileDropDown />
               </div>
             ) : (
               <div className="flex items-center gap-2 sm:hidden">
-                <Button onClick={handleGetInBtn}>GET IN</Button>
+                <Button onClick={openModal}>GET IN</Button>
               </div>
             )}
           </div>
@@ -84,12 +77,11 @@ export default function Header() {
               >
                 <Bell size={28} />
               </Button>
-              <SellBtn />
               <ProfileDropDown />
             </div>
           ) : (
             <div className="hidden sm:flex items-center gap-2 sm:ml-auto">
-              <Button onClick={handleGetInBtn}>GET IN</Button>
+              <Button onClick={openModal}>GET IN</Button>
             </div>
           )}
         </div>
@@ -97,11 +89,6 @@ export default function Header() {
       <NotificationsModal
         isOpen={isNotificationModalOpen}
         onClose={() => setIsNotificationModalOpen(false)}
-      />
-      <GoogleSignupModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onGoogleSignup={() => signInwithOauth()}
       />
     </>
   );
