@@ -4,9 +4,9 @@ import { Button } from "../ui/button";
 import ZesTEXLogo from "./ZesTEXLogo";
 import { useRouter } from "next/navigation";
 import { Bell } from "react-feather";
-import NotificationsModal from "./NotificationsModal";
+import NotificationsModal from "../Home/NotificationsModal";
 import { useUserStore } from "@/store/userStore";
-import ProfileDropDown from "./ProfileDropDown";
+import ProfileDropDown from "../Home/ProfileDropDown";
 
 import { useGoogleSignupModal } from "@/context/GoogleSignupModalContext";
 
