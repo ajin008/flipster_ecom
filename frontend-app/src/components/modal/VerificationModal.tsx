@@ -42,14 +42,6 @@ export default function VerificationModal({
             className="relative bg-gaming-bg-card backdrop-blur-md p-6"
             style={{ backdropFilter: "blur(24px)" }}
           >
-            {/* Close button */}
-            {/* <button
-              onClick={onClose}
-              className="absolute top-4 right-4 text-gaming-text-secondary hover:text-gaming-text-primary transition-colors duration-200"
-            >
-              <X size={20} />
-            </button> */}
-
             {/* Icon and status */}
             <div className="text-center mb-6">
               <div className="relative inline-flex items-center justify-center w-20 h-20 mb-4">
@@ -107,25 +99,23 @@ export default function VerificationModal({
               </p>
             </div>
 
-            {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* Action buttons - FIXED HEIGHT ISSUE */}
+            <div className="flex flex-col gap-3">
               {/* Go to Home */}
               <Button
                 onClick={handleGoHome}
                 variant="gaming-outline"
-                size="lg"
-                className="flex-1 h-16 sm:h-10"
+                className="w-full h-12 flex items-center justify-center gap-2 text-base font-medium"
               >
                 <Home size={18} />
-                <span className="font-medium">Go to Home</span>
+                <span>Go to Home</span>
               </Button>
 
               {/* View Listing */}
               <Button
                 onClick={handleViewListing}
                 variant="gaming"
-                size="lg"
-                className="flex-1 h-16 sm:h-10"
+                className="w-full h-12 flex items-center justify-center gap-2 text-base font-medium"
               >
                 <Eye size={18} />
                 <span>View Listing</span>

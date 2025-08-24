@@ -20,6 +20,7 @@ import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import VerificationModal from "@/components/modal/VerificationModal";
 import { ListingSkeleton } from "@/components/shared/ListingSkeleton";
+import { fetchCategories } from "../../../../../../services/users/FetchCategories";
 
 // --- Helper Icons (You can place these in a separate file) ---
 
@@ -96,15 +97,6 @@ const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const categories = [
-  "Action",
-  "Adventure",
-  "RPG",
-  "Strategy",
-  "Sport",
-  "Simulation",
-  "MMO",
-];
 const detailFeatures = [
   "Account Level",
   "Rare Characters",
@@ -121,6 +113,33 @@ export default function ListGameAccountPage() {
   const isEditMode = !!listingId;
 
   const { user } = useUserStore();
+
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setIsLoadingCategories(true);
+        const data = await fetchCategories();
+        setCategories(data);
+        console.log("categories:", categories);
+      } catch (error) {
+        console.error("Failed to load categories:", error);
+        // fallback
+        setCategories([
+          { id: "fallback-1", name: "Action" },
+          { id: "fallback-2", name: "RPG" },
+        ]);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -144,7 +163,7 @@ export default function ListGameAccountPage() {
     defaultValues: {
       game_name: "",
       listing_title: "",
-      category: "Action",
+      category_id: "",
       price: "",
       description: "",
       login_credentials: "",
@@ -162,7 +181,7 @@ export default function ListGameAccountPage() {
           reset({
             game_name: listingData.game_name,
             listing_title: listingData.account_title,
-            category: listingData.category,
+            category_id: listingData.category_id,
             price: listingData.price.toString(),
             description: listingData.description,
             login_credentials: listingData.login_credentials || "",
@@ -256,6 +275,16 @@ export default function ListGameAccountPage() {
     }
   };
 
+  if (isLoadingCategories) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-full max-w-2xl p-8">
+          <h1 className="text-3xl text-center font-bold mb-4">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -273,7 +302,7 @@ export default function ListGameAccountPage() {
     const valid = await trigger([
       "game_name",
       "listing_title",
-      "category",
+      "category_id",
       "price",
       "login_credentials",
     ]);
@@ -415,20 +444,20 @@ export default function ListGameAccountPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label
-                    htmlFor="category"
+                    htmlFor="category_id"
                     className="block text-sm font-medium text-white mb-2"
                   >
                     Category *
                   </label>
                   <div className="relative">
                     <select
-                      id="category"
-                      {...register("category")}
+                      id="category_id"
+                      {...register("category_id", { required: true })}
                       className={cn(inputStyles, "appearance-none pr-10")}
                     >
                       {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
                         </option>
                       ))}
                     </select>
@@ -654,7 +683,12 @@ export default function ListGameAccountPage() {
                   </Button>
                   <Button
                     type="submit"
-                    disabled={!isStepTwoValid || isSubmitting}
+                    disabled={
+                      isSubmitting ||
+                      (!isEditMode
+                        ? !isStepTwoValid
+                        : !Object.keys(dirtyFields).length)
+                    }
                     variant="gaming"
                     size="lg"
                     className="w-full sm:w-auto flex items-center justify-center gap-2"

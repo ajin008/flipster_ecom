@@ -43,7 +43,7 @@ export interface IUser {
 export interface GameListingFormData {
   game_name: string;
   listing_title: string;
-  category: string;
+  category_id: string;
   price: string;
   description: string;
   images: (File | string)[];

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export const createGameListing = async (
   data: GameListingFormData & { user_id: string }
 ) => {
-  const { images, user_id, ...otherData } = data;
+  const { images, user_id, category_id, ...otherData } = data;
   const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET;
 
   if (!bucketName) {
@@ -13,17 +13,15 @@ export const createGameListing = async (
   }
 
   const storeExists = await userHasStore(user_id);
-
   if (!storeExists) {
     await createStore(user_id);
   }
 
+  // --- Step 1: Upload Images ---
   const uploadedImagePaths: string[] = [];
 
   for (const file of images) {
-    if (!(file instanceof File)) {
-      continue;
-    }
+    if (!(file instanceof File)) continue;
 
     const filePath = `${otherData.game_name}/${uuidv4()}-${file.name}`;
     const { error: uploadError } = await supabase.storage
@@ -34,87 +32,45 @@ export const createGameListing = async (
       console.error("Image upload failed:", uploadError);
       throw new Error("Image upload failed.");
     }
+
     uploadedImagePaths.push(filePath);
   }
 
-  const { error: insertError } = await supabase.from("game_accounts").insert({
-    game_name: otherData.game_name,
-    account_title: otherData.listing_title,
-    price: Number(otherData.price),
-    description: otherData.description,
-    category: otherData.category,
-    user_id: user_id,
-    image_paths: uploadedImagePaths,
-    login_credentials: otherData.login_credentials,
-    is_verified: false,
-  });
+  // --- Step 2: Insert into game_accounts ---
+  const { data: gameAccount, error: insertError } = await supabase
+    .from("game_accounts")
+    .insert({
+      game_name: otherData.game_name,
+      account_title: otherData.listing_title,
+      price: Number(otherData.price),
+      description: otherData.description,
+      user_id: user_id,
+      image_paths: uploadedImagePaths,
+      login_credentials: otherData.login_credentials,
+      is_verified: false,
+    })
+    .select("id") // 👈 fetch back the new game account id
+    .single();
 
   if (insertError) {
     console.error("Database insert failed:", insertError);
     throw new Error("Listing creation failed.");
   }
 
+  // --- Step 3: Insert into game_account_categories ---
+  const { error: categoryError } = await supabase
+    .from("game_account_categories")
+    .insert({
+      game_account_id: gameAccount.id,
+      category_id, // 👈 selected category id from dropdown
+    });
+
+  if (categoryError) {
+    console.error("Category insert failed:", categoryError);
+    throw new Error("Category linking failed.");
+  }
+
   return { success: true };
-};
-
-export const updateGameListing = async (
-  listingId: string,
-  formData: GameListingFormData
-) => {
-  console.log("update game listing is triggering");
-  const { images, ...otherData } = formData;
-  const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET!;
-
-  if (!bucketName) {
-    throw new Error("Supabase bucket name is not configured.");
-  }
-
-  // Step 1: Separate new files from existing image URLs
-  const newFiles = images.filter((img): img is File => img instanceof File);
-  const existingUrls = images.filter(
-    (img): img is string => typeof img === "string"
-  );
-  // Step 2: Upload any new files to Supabase Storage
-  const uploadedImagePaths: string[] = [];
-  for (const file of newFiles) {
-    const filePath = `${otherData.game_name}/${uuidv4()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, file);
-
-    if (uploadError) {
-      console.error("Upload Error:", uploadError);
-      throw new Error("Could not upload a new image.");
-    }
-    uploadedImagePaths.push(filePath);
-  }
-
-  // Step 3: To get the final list of paths, we need to strip the base URL
-  // from existingImageUrls to get just their relative paths.
-  const baseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/`;
-  const existingImagePaths = existingUrls.map((url) =>
-    url.replace(baseUrl, "")
-  );
-
-  const finalImagePaths = [...existingImagePaths, ...uploadedImagePaths];
-
-  // Step 4: Update the database record
-  const { error: updateError } = await supabase
-    .from("game_accounts")
-    .update({
-      game_name: otherData.game_name,
-      account_title: otherData.listing_title,
-      price: Number(otherData.price),
-      description: otherData.description,
-      category: otherData.category,
-      image_paths: finalImagePaths,
-      login_credentials: otherData.login_credentials,
-    })
-    .eq("id", listingId);
-
-  if (updateError) {
-    throw new Error(updateError.message);
-  }
 };
 
 export const userHasStore = async (userId: string): Promise<boolean> => {
@@ -232,4 +188,70 @@ export const getStoreData = async (userId: string) => {
   };
 
   return combinedData;
+};
+
+export const updateGameListing = async (
+  listingId: string,
+  formData: GameListingFormData & { category_id: string }
+) => {
+  console.log("update game listing is triggering");
+  const { images, category_id, ...otherData } = formData;
+  const bucketName = process.env.NEXT_PUBLIC_SUPABASE_BUCKET!;
+
+  if (!bucketName) {
+    throw new Error("Supabase bucket name is not configured.");
+  }
+
+  // Step 1: Separate new files from existing image URLs
+  const newFiles = images.filter((img): img is File => img instanceof File);
+  const existingUrls = images.filter(
+    (img): img is string => typeof img === "string"
+  );
+
+  // Step 2: Upload any new files
+  const uploadedImagePaths: string[] = [];
+  for (const file of newFiles) {
+    const filePath = `${otherData.game_name}/${uuidv4()}-${file.name}`;
+    const { error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error("Upload Error:", uploadError);
+      throw new Error("Could not upload a new image.");
+    }
+    uploadedImagePaths.push(filePath);
+  }
+
+  // Step 3: Clean up image paths
+  const baseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/`;
+  const existingImagePaths = existingUrls.map((url) =>
+    url.replace(baseUrl, "")
+  );
+
+  const finalImagePaths = [...existingImagePaths, ...uploadedImagePaths];
+
+  // Step 4: Update the game account (without category)
+  const { error: updateError } = await supabase
+    .from("game_accounts")
+    .update({
+      game_name: otherData.game_name,
+      account_title: otherData.listing_title,
+      price: Number(otherData.price),
+      description: otherData.description,
+      image_paths: finalImagePaths,
+      login_credentials: otherData.login_credentials,
+    })
+    .eq("id", listingId);
+
+  if (updateError) {
+    throw new Error(updateError.message);
+  }
+
+  await supabase.rpc("update_game_account_category", {
+    listing_id: listingId,
+    new_category_id: category_id,
+  });
+
+  return { success: true };
 };
